@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인 페이지</title>
+</head>
+<body>
+<h1>로그인 페이지</h1>
+<hr/>
+
+<h2>로그인 유저 : </h2>
+<div sec:authorize="isAnonymous()" style="background-color:pink; padding:1em;">
+  <form action="/login" method="post" >
+    <input type="text" name="username" />
+    <input type="password" name="password" />
+    <button type="submit">로그인</button>
+  </form>
+  <br>
+  <a href="/signinForm">회원가입하기</a><br>
+</div>
+
+<div sec:authorize="isAuthenticated()" style="background-color:pink; padding:1em;">
+  <a href="/logout">로그아웃</a>
+</div>
+
+</body>
+</html>
