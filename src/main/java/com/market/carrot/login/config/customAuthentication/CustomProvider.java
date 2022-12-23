@@ -25,10 +25,9 @@ public class CustomProvider implements AuthenticationProvider {
      */
     String username = authentication.getName();
     String password = (String) authentication.getCredentials();
-    String encodedPassword = passwordEncoder.encode(password);
     MemberContext memberContext = (MemberContext) userDetailsService.loadUserByUsername(username);
 
-    if (passwordEncoder.matches(password, encodedPassword)) {
+    if (!passwordEncoder.matches(password, memberContext.getPassword())) {
       throw new BadCredentialsException("일치하지 않는 비밀번호입니다.");
     }
 
