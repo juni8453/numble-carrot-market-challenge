@@ -1,8 +1,8 @@
 package com.market.carrot.login.service;
 
-import com.market.carrot.login.domain.User;
+import com.market.carrot.login.domain.Member;
 
 public interface LoginService {
 
-  void save(User user);
+  void save(Member member);
 }

@@ -5,14 +5,14 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class UserCreateDto {
+public class MemberCreateDto {
 
   private String username;
   private String password;
   private String email;
 
-  public static User toEntity(UserCreateDto userCreateDto, String encodedPassword) {
-    return User.builder()
+  public static Member toEntity(MemberCreateDto userCreateDto, String encodedPassword) {
+    return Member.builder()
         .username(userCreateDto.getUsername())
         .password(encodedPassword)
         .email(userCreateDto.getEmail())
