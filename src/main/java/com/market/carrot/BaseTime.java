@@ -1,4 +1,4 @@
-package com.market.carrot.login;
+package com.market.carrot;
 
 import java.time.LocalDateTime;
 import javax.persistence.EntityListeners;
