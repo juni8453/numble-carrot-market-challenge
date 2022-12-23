@@ -1,6 +1,5 @@
-package com.market.carrot.login.domain;
+package com.market.carrot.login;
 
-import com.market.carrot.login.BaseTime;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

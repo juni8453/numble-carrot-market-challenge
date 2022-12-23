@@ -1,8 +1,7 @@
 package com.market.carrot.login.controller;
 
-import com.market.carrot.login.domain.LoginService;
-import com.market.carrot.login.domain.User;
-import com.market.carrot.login.domain.UserCreateDto;
+import com.market.carrot.login.LoginService;
+import com.market.carrot.login.UserCreateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -12,13 +11,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequiredArgsConstructor
 @Controller
-public class HomeController {
+public class LoginController {
 
   private final LoginService loginService;
   private final PasswordEncoder passwordEncoder;
 
   @GetMapping("/")
-  public @ResponseBody String index() {
+  public @ResponseBody
+  String index() {
     return "index";
   }
 
@@ -44,12 +44,14 @@ public class HomeController {
   }
 
   @GetMapping("/user")
-  public @ResponseBody String user() {
+  public @ResponseBody
+  String user() {
     return "user";
   }
 
   @GetMapping("/admin")
-  public @ResponseBody String admin() {
+  public @ResponseBody
+  String admin() {
     return "admin";
   }
 }

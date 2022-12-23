@@ -1,4 +1,4 @@
-package com.market.carrot.login.domain;
+package com.market.carrot.login;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
