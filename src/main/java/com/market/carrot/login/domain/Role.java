@@ -1,4 +1,4 @@
-package com.market.carrot.login;
+package com.market.carrot.login.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
