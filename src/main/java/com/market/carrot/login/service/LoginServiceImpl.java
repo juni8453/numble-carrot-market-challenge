@@ -1,5 +1,7 @@
-package com.market.carrot.login.domain;
+package com.market.carrot.login.service;
 
+import com.market.carrot.login.domain.LoginRepository;
+import com.market.carrot.login.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +14,7 @@ public class LoginServiceImpl implements LoginService {
 
   @Transactional
   @Override
-  public void save(User user) {
-    loginRepository.save(user);
+  public void save(Member member) {
+    loginRepository.save(member);
   }
 }
