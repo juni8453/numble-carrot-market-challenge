@@ -39,6 +39,7 @@ public class SecurityConfig {
     http.authorizeRequests()
         .antMatchers("/user/**").authenticated()
         .antMatchers("/admin/**").hasRole("ADMIN")
+        .antMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
         .anyRequest().permitAll();
 
     // Form Login 인증 설정
