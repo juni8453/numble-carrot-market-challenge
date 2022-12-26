@@ -1,6 +1,6 @@
 package com.market.carrot.member.controller;
 
-import com.market.carrot.GlobalResponseDto;
+import com.market.carrot.global.GlobalResponseDto;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
