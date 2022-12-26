@@ -48,12 +48,15 @@ public class CustomOAuth2UserDetailsService extends DefaultOAuth2UserService {
     String email = userInfo.getEmail();
     Role role = Role.USER;
 
-    // 중복 회원 검사를 통해 이미 있다면 그 회원을 가져오고
     Optional<Member> findMember = loginRepository.findByUsername(username);
-    findMember.ifPresent(value -> member = value);
 
     // 없다면 회원을 만들고 DB 에 저장 후 MemberContext 에 넣기위해 반환.
-    member = saveMemberInfo(username, password, email, role);
+    if (findMember.isEmpty()) {
+      member = saveMemberInfo(username, password, email, role);
+    }
+
+    // 이미 있다면 그 회원을 가져오고 member 변수에 저장
+    findMember.ifPresent(value -> member = value);
 
     return new MemberContext(member, oAuth2User.getAttributes());
   }
