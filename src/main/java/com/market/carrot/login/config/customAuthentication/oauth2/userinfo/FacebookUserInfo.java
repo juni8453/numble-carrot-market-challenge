@@ -1,21 +1,16 @@
-package com.market.carrot.login.config.customAuthentication.provider;
+package com.market.carrot.login.config.customAuthentication.oauth2.userinfo;
 
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class GoogleUserInfo implements OAuth2UserInfo {
+public class FacebookUserInfo implements OAuth2UserInfo {
 
   private final Map<String, Object> attributes;
 
   @Override
   public String getProviderId() {
-    return (String) attributes.get("sub");
-  }
-
-  @Override
-  public String getProvider() {
-    return "google";
+    return (String) attributes.get("id");
   }
 
   @Override

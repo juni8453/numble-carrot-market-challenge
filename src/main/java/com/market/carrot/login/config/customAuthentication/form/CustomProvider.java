@@ -1,5 +1,6 @@
-package com.market.carrot.login.config.customAuthentication;
+package com.market.carrot.login.config.customAuthentication.form;
 
+import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

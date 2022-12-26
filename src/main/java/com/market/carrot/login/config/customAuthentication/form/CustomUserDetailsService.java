@@ -1,5 +1,6 @@
-package com.market.carrot.login.config.customAuthentication;
+package com.market.carrot.login.config.customAuthentication.form;
 
+import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.login.domain.LoginRepository;
 import com.market.carrot.login.domain.Member;
 import lombok.RequiredArgsConstructor;
