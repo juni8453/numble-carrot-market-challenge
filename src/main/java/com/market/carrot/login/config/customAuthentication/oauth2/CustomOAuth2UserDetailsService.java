@@ -1,6 +1,9 @@
-package com.market.carrot.login.config.customAuthentication;
+package com.market.carrot.login.config.customAuthentication.oauth2;
 
-import com.market.carrot.login.config.customAuthentication.provider.OAuth2UserInfo;
+import com.market.carrot.login.config.customAuthentication.common.MemberContext;
+import com.market.carrot.login.config.customAuthentication.oauth2.factory.OAuthFactory;
+import com.market.carrot.login.config.customAuthentication.oauth2.providerType.CheckOAuthProvider;
+import com.market.carrot.login.config.customAuthentication.oauth2.userinfo.OAuth2UserInfo;
 import com.market.carrot.login.domain.LoginRepository;
 import com.market.carrot.login.domain.Member;
 import com.market.carrot.login.domain.Role;
@@ -25,54 +28,50 @@ import org.springframework.stereotype.Service;
 public class CustomOAuth2UserDetailsService extends DefaultOAuth2UserService {
 
   private final LoginRepository loginRepository;
-  private OAuth2UserInfo userInfo;
+  private Member member;
 
   /**
    * Form Login 에서 loadUserByUsername(username) 는 회원가입 처리가 아닌, DB 에서 회원을 찾아 해당 회원의 정보 + 권한을
-   * Authentication 에 담는 역할 OAuth Login 에서 loadUser(userRequest) 는 강제 회원 가입, 중복 유저 검증 및 이미 있는 회원이라면 검증 처리
+   * Authentication 에 담는 역할 OAuth Login 에서 loadUser(userRequest) 는 강제 회원 가입, 중복 유저 검증 및 이미 있는 회원이라면
+   * 검증 처리
    */
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-    Member member;
     OAuth2User oAuth2User = super.loadUser(userRequest);
-    String provider = userRequest.getClientRegistration().getRegistrationId();
-    String providerId = oAuth2User.getAttribute("sub");
-    String username = provider + "_" + providerId;
+    String providerName = userRequest.getClientRegistration().getRegistrationId();
+    CheckOAuthProvider OAuthType = checkType(providerName);
+    OAuth2UserInfo userInfo = OAuthType.getUserInfo(oAuth2User);
+
+    String providerId = userInfo.getProviderId();
+    String username = providerName + "_" + providerId;
     String password = "";
-    String email = oAuth2User.getAttribute("email");
+    String email = userInfo.getEmail();
     Role role = Role.USER;
 
-    // 중복 회원 검사를 통해 이미 있다면 그 회원을 가져오고, 없다면 회원을 만들고 DB 에 저장한다.
+    // 중복 회원 검사를 통해 이미 있다면 그 회원을 가져오고
     Optional<Member> findMember = loginRepository.findByUsername(username);
+    findMember.ifPresent(value -> member = value);
 
-    if (findMember.isPresent()) { // 이미 있는 값이라면
-      member = findMember.get();
-
-    } else {
-      member = Member.builder()
-          .username(username)
-          .password(password)
-          .email(email)
-          .role(role)
-          .build();
-
-      loginRepository.save(member);
-    }
+    // 없다면 회원을 만들고 DB 에 저장 후 MemberContext 에 넣기위해 반환.
+    member = saveMemberInfo(username, password, email, role);
 
     return new MemberContext(member, oAuth2User.getAttributes());
   }
 
-  private Member saveMemberInfo(OAuth2UserInfo userInfo, String provider, String providerId,
-      String username) {
-    String email = userInfo.getEmail();
-    String password = "";
-    Role role = Role.USER;
+  private CheckOAuthProvider checkType(String provider) {
+    return new OAuthFactory().getProvider(provider);
+  }
 
-    return Member.builder()
+  private Member saveMemberInfo(String username, String password, String email, Role role) {
+    member = Member.builder()
         .username(username)
         .password(password)
         .email(email)
         .role(role)
         .build();
+
+    loginRepository.save(member);
+
+    return member;
   }
 }
