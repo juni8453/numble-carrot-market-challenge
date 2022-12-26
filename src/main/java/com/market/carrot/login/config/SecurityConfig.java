@@ -1,6 +1,6 @@
 package com.market.carrot.login.config;
 
-import com.market.carrot.login.config.customAuthentication.CustomOAuth2UserDetailsService;
+import com.market.carrot.login.config.customAuthentication.oauth2.CustomOAuth2UserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;

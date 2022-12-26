@@ -1,4 +1,4 @@
-package com.market.carrot.login.config.customAuthentication;
+package com.market.carrot.login.config.customAuthentication.common;
 
 import com.market.carrot.login.domain.Member;
 import java.util.ArrayList;
@@ -74,7 +74,7 @@ public class MemberContext implements UserDetails, OAuth2User {
 
   @Override
   public Map<String, Object> getAttributes() {
-    return null;
+    return attributes;
   }
 
   @Override

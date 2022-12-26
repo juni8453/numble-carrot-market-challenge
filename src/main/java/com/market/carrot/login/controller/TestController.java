@@ -1,6 +1,6 @@
 package com.market.carrot.login.controller;
 
-import com.market.carrot.login.config.customAuthentication.MemberContext;
+import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
