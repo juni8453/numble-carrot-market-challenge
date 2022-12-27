@@ -1,6 +1,6 @@
-package com.market.carrot.Exception;
+package com.market.carrot.global.Exception;
 
-import com.market.carrot.GlobalResponseDto;
+import com.market.carrot.global.GlobalResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

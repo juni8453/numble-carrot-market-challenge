@@ -1,4 +1,4 @@
-package com.market.carrot.Exception;
+package com.market.carrot.global.Exception;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

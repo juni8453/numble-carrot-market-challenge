@@ -1,6 +1,7 @@
 package com.market.carrot.login.domain;
 
 import com.market.carrot.BaseTime;
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Member extends BaseTime {
+public class Member extends BaseTime implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

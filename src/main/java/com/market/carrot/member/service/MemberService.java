@@ -1,6 +1,6 @@
 package com.market.carrot.member.service;
 
-import com.market.carrot.GlobalResponseDto;
+import com.market.carrot.global.GlobalResponseDto;
 
 public interface MemberService {
 

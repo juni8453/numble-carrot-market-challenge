@@ -1,4 +1,4 @@
-package com.market.carrot;
+package com.market.carrot.global;
 
 import lombok.Builder;
 import lombok.Getter;
