@@ -27,19 +27,11 @@ jobs:
           sed -i "s|datasource_url|$DATASOURCE_URL|g" main/resources/application-deploy.yml
           sed -i "s|datasource_username|$DATASOURCE_USERNAME|g" main/resources/application-deploy.yml
           sed -i "s|datasource_password|$DATASOURCE_PASSWORD|g" main/resources/application-deploy.yml
-#          sed -i "s|oauth_google_clientId|$OAUTH_GOOGLE_CLIENTID|g" main/resources/application-deploy.yml
-#          sed -i "s|oauth_google_clientSecret|$OAUTH_GOOGLE_CLIENTSECRET|g" main/resources/application-deploy.yml
-#          sed -i "s|oauth_facebook_clientId|$OAUTH_FACEBOOK_CLIENTID|g" main/resources/application-deploy.yml
-#          sed -i "s|oauth_facebook_clientSecret|$OAUTH_FACEBOOK_CLIENTSECRET|g" main/resources/application-deploy.yml
 
         env:
           DATASOURCE_URL : ${{ secrets.DATASOURCE_URL }}
           DATASOURCE_USERNAME : ${{ secrets.DATASOURCE_USERNAME }}
           DATASOURCE_PASSWORD : ${{ secrets.DATASOURCE_PASSWORD }}
-#          OAUTH_GOOGLE_CLIENTID : ${{ secrets.OAUTH_GOOGLE_CLIENTID }}
-#          OAUTH_GOOGLE_CLIENTSECRET : ${{ secrets.OAUTH_GOOGLE_CLIENTSECRET }}
-#          OAUTH_FACEBOOK_CLIENTID : ${{ secrets.OAUTH_FACEBOOK_CLIENTID }}
-#          OAUTH_FACEBOOK_CLIENTSECRET : ${{ secrets.OAUTH_FACEBOOK_CLIENTSECRET }}
 
       - name: Insert OAuth2 information into application-oauth2.yml
         run: |
