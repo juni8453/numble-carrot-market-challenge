@@ -1,0 +1,18 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: oauth_google_clientId
+            clientSecret: oauth_google_clientSecret
+            scope:
+              - email
+              - profile
+
+          facebook:
+            clientId: oauth_facebook_clientId
+            clientSecret: oauth_facebook_clientSecret
+            scope:
+              - email
+              - public_profile
