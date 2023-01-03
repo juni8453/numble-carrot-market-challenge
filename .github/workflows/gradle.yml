@@ -23,13 +23,13 @@ jobs:
 
       - name: Insert data source information into application-deploy.yml
         run: |
-          sed -i "s|datasource_url|$DATASOURCE_URL|g" ./src/main/resources/application-deploy.yml
-          sed -i "s|datasource_username|$DATASOURCE_USERNAME|g" ./src/main/resources/application-deploy.yml
-          sed -i "s|datasource_password|$DATASOURCE_PASSWORD|g" ./src/main/resources/application-deploy.yml
-          sed -i "s|oauth_google_clientId|$OAUTH_GOOGLE_CLIENTID|g" ./src/main/resources/application-deploy.yml
-          sed -i "s|oauth_google_clientSecret|$OAUTH_GOOGLE_CLIENTSECRET|g" ./src/main/resources/application-deploy.yml
-          sed -i "s|oauth_facebook_clientId|$OAUTH_FACEBOOK_CLIENTID|g" ./src/main/resources/application-deploy.yml
-          sed -i "s|oauth_facebook_clientSecret|$OAUTH_FACEBOOK_CLIENTSECRET|g" ./src/main/resources/application-deploy.yml    
+          sed -i "s|datasource_url|$DATASOURCE_URL|g" ../src/main/resources/application-deploy.yml
+          sed -i "s|datasource_username|$DATASOURCE_USERNAME|g" ../src/main/resources/application-deploy.yml
+          sed -i "s|datasource_password|$DATASOURCE_PASSWORD|g" ../src/main/resources/application-deploy.yml
+          sed -i "s|oauth_google_clientId|$OAUTH_GOOGLE_CLIENTID|g" ../src/main/resources/application-deploy.yml
+          sed -i "s|oauth_google_clientSecret|$OAUTH_GOOGLE_CLIENTSECRET|g" ../src/main/resources/application-deploy.yml
+          sed -i "s|oauth_facebook_clientId|$OAUTH_FACEBOOK_CLIENTID|g" ../src/main/resources/application-deploy.yml
+          sed -i "s|oauth_facebook_clientSecret|$OAUTH_FACEBOOK_CLIENTSECRET|g" ../src/main/resources/application-deploy.yml    
 
         env:
           DATASOURCE_URL : ${{ secrets.DATASOURCE_URL }}
