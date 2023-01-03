@@ -43,12 +43,11 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: |
-          ls -al
           chmod +x gradlew
           
       - name: Build with Gradle
         run: | 
-          ./gradlew build
+          ./gradlew bootJar
           
       # 도커 빌드(도커 이미지 생성)
       - name: Docker build
