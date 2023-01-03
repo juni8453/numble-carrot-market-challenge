@@ -1,0 +1,72 @@
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # JDK11로 gradle 빌드
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Insert data source information into application-deploy.yml
+        run: |
+          sed -i "s|datasource_url|$DATASOURCE_URL|g" ./src/main/resources/application-deploy.yml
+          sed -i "s|datasource_username|$DATASOURCE_USERNAME|g" ./src/main/resources/application-deploy.yml
+          sed -i "s|datasource_password|$DATASOURCE_PASSWORD|g" ./src/main/resources/application-deploy.yml
+          sed -i "s|oauth_google_clientId|$OAUTH_GOOGLE_CLIENTID|g" ./src/main/resources/application-deploy.yml
+          sed -i "s|oauth_google_clientSecret|$OAUTH_GOOGLE_CLIENTSECRET|g" ./src/main/resources/application-deploy.yml
+          sed -i "s|oauth_facebook_clientId|$OAUTH_FACEBOOK_CLIENTID|g" ./src/main/resources/application-deploy.yml
+          sed -i "s|oauth_facebook_clientSecret|$OAUTH_FACEBOOK_CLIENTSECRET|g" ./src/main/resources/application-deploy.yml    
+
+        env:
+          DATASOURCE_URL : ${{ secrets.DATASOURCE_URL }}
+          DATASOURCE_USERNAME : ${{ secrets.DATASOURCE_USERNAME }}
+          DATASOURCE_PASSWORD : ${{ secrets.DATASOURCE_PASSWORD }}
+          OAUTH_GOOGLE_CLIENTID : ${{ secrets.OAUTH_GOOGLE_CLIENTID }}
+          OAUTH_GOOGLE_CLIENTSECRET : ${{ secrets.OAUTH_GOOGLE_CLIENTSECRET }}
+          OAUTH_FACEBOOK_CLIENTID : ${{ secrets.OAUTH_FACEBOOK_CLIENTID }}
+          OAUTH_FACEBOOK_CLIENTSECRET : ${{ secrets.OAUTH_FACEBOOK_CLIENTSECRET }}
+
+      - name: Grant execute permission for gradlew
+        run: |
+          chmod +x gradlew
+          
+      - name: Build with Gradle
+        run: | 
+          ./gradlew build
+          
+      # 도커 빌드(도커 이미지 생성)
+      - name: Docker build
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/carrot-market
+          docker push ${{ secrets.DOCKER_USERNAME }}/carrot-market
+          docker rmi ${{ secrets.DOCKER_USERNAME }}/carrot-market
+          
+      # 도커 이미지 배포 및 실행(EC2 ubuntu20.04로 배포)
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_HOST_DNS }} #(생성한 인스턴스의 DNS주소)
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }} #(인스턴스를 생성할 때 다운받은 pem키안에 값을 모두 복사해서 붙여넣기)
+          envs: GITHUB_SHA
+          script: |
+            sudo docker ps -a -q --filter "name=carrot-market" | grep -q . && docker stop carrot-market && docker rm carrot-market | true
+            sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/carrot-market
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/carrot-market
+            sudo docker run -d -p 80:8080 -e PROFILES=deploy --name carrot-market ${{ secrets.DOCKER_USERNAME }}/carrot-market
+            sudo docker rmi -f $(docker images -f "dangling=true" -q) || true
