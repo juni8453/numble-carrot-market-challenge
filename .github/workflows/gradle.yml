@@ -23,8 +23,8 @@ jobs:
 
       - name: Insert data source information into application-deploy.yml
         run: |
-          cd ../../src
           ls -al
+          cd ../../src
           sed -i "s|datasource_url|$DATASOURCE_URL|g" /main/resources/application-deploy.yml
           sed -i "s|datasource_username|$DATASOURCE_USERNAME|g" /main/resources/application-deploy.yml
           sed -i "s|datasource_password|$DATASOURCE_PASSWORD|g" /main/resources/application-deploy.yml
