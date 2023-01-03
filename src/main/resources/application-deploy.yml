@@ -15,7 +15,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
       default_batch_fetch_size: 500
 
     properties:
