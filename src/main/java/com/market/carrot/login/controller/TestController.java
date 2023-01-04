@@ -1,14 +1,19 @@
 package com.market.carrot.login.controller;
 
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
+import javax.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+@RequiredArgsConstructor
 @Controller
 public class TestController {
+
+  private final HttpSession httpSession;
 
   /**
    * 직접 전역적으로 저장된 Authentication 구현체 내부 유저 정보를 가져오던가,
@@ -36,5 +41,11 @@ public class TestController {
     System.out.println("권한 : " + memberContext2.getMember().getRole());
 
     return "저장된 Authentication 구현체 정보 확인하기";
+  }
+
+  @GetMapping("/session")
+  public @ResponseBody
+  String session() {
+    return httpSession.getId();
   }
 }
