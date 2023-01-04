@@ -18,4 +18,14 @@ public class GlobalExceptionHandler {
         .message(notFoundEntityException.getMessage())
         .build();
   }
+
+  @ExceptionHandler(UserDuplicatedException.class)
+  public GlobalResponseDto notFoundEntity(UserDuplicatedException userDuplicatedException) {
+    log.error("UserDuplicatedException 발생: {}", userDuplicatedException.getMessage());
+
+    return GlobalResponseDto.builder()
+        .code(-1)
+        .message(userDuplicatedException.getMessage())
+        .build();
+  }
 }

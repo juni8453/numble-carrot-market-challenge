@@ -1,8 +1,10 @@
 package com.market.carrot.login.service;
 
+import com.market.carrot.global.Exception.UserDuplicatedException;
 import com.market.carrot.login.domain.LoginRepository;
 import com.market.carrot.login.domain.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +17,10 @@ public class LoginServiceImpl implements LoginService {
   @Transactional
   @Override
   public void save(Member member) {
+    if (loginRepository.findByUsername(member.getUsername()).isPresent()) {
+      throw new UserDuplicatedException("중복되는 유저 아이디입니다.", HttpStatus.BAD_REQUEST);
+    }
+
     loginRepository.save(member);
   }
 }
