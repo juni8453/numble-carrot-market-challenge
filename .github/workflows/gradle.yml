@@ -40,12 +40,16 @@ jobs:
           sed -i "s|oauth_google_clientSecret|$OAUTH_GOOGLE_CLIENTSECRET|g" main/resources/application-oauth2.yml
           sed -i "s|oauth_facebook_clientId|$OAUTH_FACEBOOK_CLIENTID|g" main/resources/application-oauth2.yml
           sed -i "s|oauth_facebook_clientSecret|$OAUTH_FACEBOOK_CLIENTSECRET|g" main/resources/application-oauth2.yml
+          sed -i "s|oauth_github_clientId|$OAUTH_GITHUB_CLIENTID|g" main/resources/application-oauth2.yml
+          sed -i "s|oauth_github_clientSecret|$OAUTH_GITHUB_CLIENTSECRET|g" main/resources/application-oauth2.yml
 
         env:
           OAUTH_GOOGLE_CLIENTID : ${{ secrets.OAUTH_GOOGLE_CLIENTID }}
           OAUTH_GOOGLE_CLIENTSECRET : ${{ secrets.OAUTH_GOOGLE_CLIENTSECRET }}
           OAUTH_FACEBOOK_CLIENTID : ${{ secrets.OAUTH_FACEBOOK_CLIENTID }}
           OAUTH_FACEBOOK_CLIENTSECRET : ${{ secrets.OAUTH_FACEBOOK_CLIENTSECRET }}
+          OAUTH_GITHUB_CLIENTID : ${{ secrets.OAUTH_GITHUB_CLIENTID }}
+          OAUTH_GITHUB_CLIENTSECRET : ${{ secrets.OAUTH_GITHUB_CLIENTSECRET }}
 
       - name: Grant execute permission for gradlew
         run: |

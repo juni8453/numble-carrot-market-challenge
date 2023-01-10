@@ -16,3 +16,10 @@ spring:
             scope:
               - email
               - public_profile
+
+          github:
+            clientId: oauth_github_clientId
+            clientSecret: oauth_github_clientSecret
+            scope:
+              - id
+              - email
