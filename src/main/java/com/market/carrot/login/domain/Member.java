@@ -28,7 +28,7 @@ public class Member extends BaseTime implements Serializable {
 
   private String password;
 
-  @Column(length = 50, nullable = false)
+  @Column(length = 50)
   private String email;
 
   @Enumerated(EnumType.STRING)
