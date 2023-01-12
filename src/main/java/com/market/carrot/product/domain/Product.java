@@ -1,5 +1,6 @@
 package com.market.carrot.product.domain;
 
+import com.market.carrot.BaseTime;
 import com.market.carrot.category.domain.Category;
 import com.market.carrot.login.domain.Member;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import org.hibernate.annotations.DynamicInsert;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Product {
+public class Product extends BaseTime {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

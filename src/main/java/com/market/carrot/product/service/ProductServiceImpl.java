@@ -1,6 +1,5 @@
 package com.market.carrot.product.service;
 
-import com.market.carrot.product.domain.Product;
 import com.market.carrot.product.domain.ProductRepository;
 import com.market.carrot.product.dto.response.CategoryByProductResponse;
 import com.market.carrot.product.dto.response.ImagesResponse;
@@ -29,6 +28,8 @@ public class ProductServiceImpl implements ProductService {
             .content(product.getContent())
             .price(product.getPrice())
             .heartCount(product.getHeartCount())
+            .createdDate(product.getCreatedDate())
+            .modifiedDate(product.getModifiedDate())
             .member(MemberByProductResponse.from(product))
             .category(CategoryByProductResponse.from(product))
             .images(ImagesResponse.from(product))
