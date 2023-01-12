@@ -6,6 +6,7 @@ import com.market.carrot.product.service.ProductService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +25,17 @@ public class ProductApiController {
         .code(1)
         .message("모든 제품 조회 성공")
         .body(productResponses)
+        .build();
+  }
+
+  @GetMapping("/product/{id}")
+  public GlobalResponseDto detail(@PathVariable Long id) {
+    ProductResponse productResponse = productService.detail(id);
+
+    return GlobalResponseDto.builder()
+        .code(1)
+        .message("단일 제품 조회 성공")
+        .body(productResponse)
         .build();
   }
 }

@@ -7,4 +7,6 @@ public interface ProductService {
 
   List<ProductResponse> readAll();
 
+  ProductResponse detail(Long id);
+
 }
