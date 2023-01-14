@@ -5,6 +5,7 @@ import com.market.carrot.category.domain.Category;
 import com.market.carrot.login.domain.Member;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -51,6 +53,29 @@ public class Product extends BaseTime {
   @JoinColumn(name = "category_id")
   private Category category;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-  private List<ProductImage> productImage = new ArrayList<>();
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+  private final List<ProductImage> productImage = new ArrayList<>();
+
+  @Builder
+  private Product(String title, String content, int price) {
+    this.title = title;
+    this.content = content;
+    this.price = price;
+  }
+
+  public static Product createProduct(String title, String content, int price) {
+    return new Product(title, content, price);
+  }
+
+  public void addMember(Member findMember) {
+    this.member = findMember;
+  }
+
+  public void addCategory(Category findCategory) {
+    this.category = findCategory;
+  }
+
+  public void addImages(ProductImage productImage) {
+    this.productImage.add(productImage);
+  }
 }
