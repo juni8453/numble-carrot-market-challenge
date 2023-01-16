@@ -3,6 +3,7 @@ package com.market.carrot.product.domain;
 import com.market.carrot.BaseTime;
 import com.market.carrot.category.domain.Category;
 import com.market.carrot.login.domain.Member;
+import com.market.carrot.product.dto.request.UpdateProductRequest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -54,7 +55,7 @@ public class Product extends BaseTime {
   private Category category;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-  private final List<ProductImage> productImage = new ArrayList<>();
+  private List<ProductImage> productImages = new ArrayList<>();
 
   @Builder
   private Product(String title, String content, int price) {
@@ -67,6 +68,18 @@ public class Product extends BaseTime {
     return new Product(title, content, price);
   }
 
+  public void updateProduct(UpdateProductRequest productRequest) {
+    this.title = productRequest.getTitle();
+    this.content = productRequest.getContent();
+    this.price = productRequest.getPrice();
+    this.productImages.clear();
+
+    for (ProductImage productImage : productRequest.getImagesUrl()) {
+      this.productImages.add(productImage);
+      productImage.addProduct(this);
+    }
+  }
+
   public void addMember(Member findMember) {
     this.member = findMember;
   }
@@ -76,6 +89,6 @@ public class Product extends BaseTime {
   }
 
   public void addImages(ProductImage productImage) {
-    this.productImage.add(productImage);
+    this.productImages.add(productImage);
   }
 }

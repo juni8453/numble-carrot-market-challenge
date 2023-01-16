@@ -18,7 +18,7 @@ public class ImagesResponse {
   }
 
   public static ImagesResponse from(Product product) {
-    List<ProductImage> productImage = product.getProductImage();
+    List<ProductImage> productImage = product.getProductImages();
 
     List<ImageResponse> imageResponses = productImage.stream()
         .map(ImageResponse::from)
