@@ -10,6 +10,7 @@ import com.market.carrot.product.domain.Product;
 import com.market.carrot.product.domain.ProductImage;
 import com.market.carrot.product.domain.ProductRepository;
 import com.market.carrot.product.dto.request.CreateProductRequest;
+import com.market.carrot.product.dto.request.UpdateProductRequest;
 import com.market.carrot.product.dto.response.CategoryByProductResponse;
 import com.market.carrot.product.dto.response.ImagesResponse;
 import com.market.carrot.product.dto.response.MemberByProductResponse;
@@ -33,41 +34,28 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public List<ProductResponse> readAll() {
 
-    return productRepository.readAll().stream()
-        .map(product -> ProductResponse.builder()
-            .id(product.getId())
-            .title(product.getTitle())
-            .content(product.getContent())
-            .price(product.getPrice())
-            .heartCount(product.getHeartCount())
-            .createdDate(product.getCreatedDate())
-            .modifiedDate(product.getModifiedDate())
-            .member(MemberByProductResponse.from(product))
-            .category(CategoryByProductResponse.from(product))
-            .images(ImagesResponse.from(product))
-            .build())
-        .collect(Collectors.toList());
+    return productRepository.readAll().stream().map(
+        product -> ProductResponse.builder().id(product.getId()).title(product.getTitle())
+            .content(product.getContent()).price(product.getPrice())
+            .heartCount(product.getHeartCount()).createdDate(product.getCreatedDate())
+            .modifiedDate(product.getModifiedDate()).member(MemberByProductResponse.from(product))
+            .category(CategoryByProductResponse.from(product)).images(ImagesResponse.from(product))
+            .build()).collect(Collectors.toList());
   }
 
   @Transactional(readOnly = true)
   @Override
   public ProductResponse detail(Long id) {
-    Product findProduct = productRepository.findById(id)
-        .orElseThrow(
-            () -> new NotFoundEntityException("해당 제품이 존재하지 않습니다.", HttpStatus.BAD_REQUEST));
+    Product findProduct = productRepository.findById(id).orElseThrow(
+        () -> new NotFoundEntityException("해당 제품이 존재하지 않습니다.", HttpStatus.BAD_REQUEST));
 
-    return ProductResponse.builder()
-        .id(findProduct.getId())
-        .title(findProduct.getTitle())
-        .content(findProduct.getContent())
-        .price(findProduct.getPrice())
-        .heartCount(findProduct.getHeartCount())
-        .createdDate(findProduct.getCreatedDate())
+    return ProductResponse.builder().id(findProduct.getId()).title(findProduct.getTitle())
+        .content(findProduct.getContent()).price(findProduct.getPrice())
+        .heartCount(findProduct.getHeartCount()).createdDate(findProduct.getCreatedDate())
         .modifiedDate(findProduct.getModifiedDate())
         .member(MemberByProductResponse.from(findProduct))
         .category(CategoryByProductResponse.from(findProduct))
-        .images(ImagesResponse.from(findProduct))
-        .build();
+        .images(ImagesResponse.from(findProduct)).build();
   }
 
   @Transactional
@@ -99,5 +87,14 @@ public class ProductServiceImpl implements ProductService {
 
     // 연관관계 셋팅 후 Product 저장
     productRepository.save(saveProduct);
+  }
+
+  // 수정 시 제목, 내용, 가격, 제품 이미지 변경 요청이 올 수 있다.
+  @Transactional
+  @Override
+  public void update(Long id, UpdateProductRequest productRequest) {
+    Product findProduct = productRepository.findById(id)
+        .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 제품입니다.", HttpStatus.BAD_REQUEST));
+    findProduct.updateProduct(productRequest);
   }
 }

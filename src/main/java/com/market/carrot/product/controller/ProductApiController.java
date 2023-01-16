@@ -3,12 +3,15 @@ package com.market.carrot.product.controller;
 import com.market.carrot.global.GlobalResponseDto;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.product.dto.request.CreateProductRequest;
+import com.market.carrot.product.dto.request.UpdateProductRequest;
 import com.market.carrot.product.dto.response.ProductResponse;
 import com.market.carrot.product.service.ProductService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,5 +56,21 @@ public class ProductApiController {
         .code(1)
         .message("상품 등록 성공")
         .build();
+  }
+
+  @PatchMapping("/product/{id}")
+  public GlobalResponseDto update(@PathVariable Long id,
+      @RequestBody UpdateProductRequest productRequest) {
+    productService.update(id, productRequest);
+
+    return GlobalResponseDto.builder()
+        .code(1)
+        .message("상품 수정 성공")
+        .build();
+  }
+
+  @DeleteMapping("/product/{id}")
+  public GlobalResponseDto delete(@PathVariable Long id) {
+    return null;
   }
 }
