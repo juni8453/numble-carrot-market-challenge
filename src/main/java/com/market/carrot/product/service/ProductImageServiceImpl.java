@@ -23,4 +23,13 @@ public class ProductImageServiceImpl implements ProductImageService {
 
     findProductImage.updateProductImage(imageRequest);
   }
+
+  @Transactional
+  @Override
+  public void deleteImage(Long id) {
+    ProductImage findProductImage = productImageRepository.findById(id)
+        .orElseThrow(() -> new NotFoundEntityException("존재하지 않는 이미지입니다.", HttpStatus.BAD_REQUEST));
+
+    productImageRepository.delete(findProductImage);
+  }
 }
