@@ -72,12 +72,6 @@ public class Product extends BaseTime {
     this.title = productRequest.getTitle();
     this.content = productRequest.getContent();
     this.price = productRequest.getPrice();
-    this.productImages.clear();
-
-    for (ProductImage productImage : productRequest.getImagesUrl()) {
-      this.productImages.add(productImage);
-      productImage.addProduct(this);
-    }
   }
 
   public void addMember(Member findMember) {
