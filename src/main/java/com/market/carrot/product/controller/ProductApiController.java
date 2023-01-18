@@ -71,6 +71,11 @@ public class ProductApiController {
 
   @DeleteMapping("/product/{id}")
   public GlobalResponseDto delete(@PathVariable Long id) {
-    return null;
+    productService.delete(id);
+
+    return GlobalResponseDto.builder()
+        .code(1)
+        .message("상품 삭제 성공")
+        .build();
   }
 }

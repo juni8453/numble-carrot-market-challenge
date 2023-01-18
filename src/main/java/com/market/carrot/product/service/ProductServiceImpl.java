@@ -89,12 +89,20 @@ public class ProductServiceImpl implements ProductService {
     productRepository.save(saveProduct);
   }
 
-  // 수정 시 제목, 내용, 가격, 제품 이미지 변경 요청이 올 수 있다.
   @Transactional
   @Override
   public void update(Long id, UpdateProductRequest productRequest) {
     Product findProduct = productRepository.findById(id)
         .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 제품입니다.", HttpStatus.BAD_REQUEST));
     findProduct.updateProduct(productRequest);
+  }
+
+  @Transactional
+  @Override
+  public void delete(Long id) {
+    Product findProduct = productRepository.findById(id)
+        .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 제품입니다.", HttpStatus.BAD_REQUEST));
+
+    productRepository.delete(findProduct);
   }
 }
