@@ -5,8 +5,8 @@ import com.market.carrot.product.dto.request.UpdateProductImageRequest;
 import com.market.carrot.product.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +18,7 @@ public class ProductImageApiController {
 
   private final ProductImageService productImageService;
 
-  @PatchMapping("/image/{id}")
+  @PostMapping("/image/{id}")
   public GlobalResponseDto updateProductImage(
       @PathVariable Long id, @RequestBody UpdateProductImageRequest imageRequest) {
 
