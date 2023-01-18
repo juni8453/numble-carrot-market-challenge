@@ -15,4 +15,6 @@ public interface ProductService {
   void save(CreateProductRequest productRequest, MemberContext member);
 
   void update(Long id, UpdateProductRequest productRequest);
+
+  void delete(Long id);
 }
