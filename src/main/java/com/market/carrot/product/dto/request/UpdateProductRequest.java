@@ -1,7 +1,5 @@
 package com.market.carrot.product.dto.request;
 
-import com.market.carrot.product.domain.ProductImage;
-import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -17,6 +15,4 @@ public class UpdateProductRequest {
 
   @NotNull(message = "상품 가격을 적어주세요.")
   private int price;
-
-  private List<ProductImage> imagesUrl;
 }

@@ -1,6 +1,7 @@
 package com.market.carrot.global.Exception;
 
 import com.market.carrot.global.GlobalResponseDto;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +53,16 @@ public class GlobalExceptionHandler {
         .code(-1)
         .message("Valid 관련 예외 발생")
         .body(responses)
+        .build();
+  }
+
+  @ExceptionHandler(SQLException.class)
+  public GlobalResponseDto sqlException(SQLException sqlException) {
+    log.error("SQLException 발생: {}", sqlException.getMessage());
+
+    return GlobalResponseDto.builder()
+        .code(-1)
+        .message(sqlException.getMessage())
         .build();
   }
 }
