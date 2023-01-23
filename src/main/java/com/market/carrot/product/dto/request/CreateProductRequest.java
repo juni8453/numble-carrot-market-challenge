@@ -4,8 +4,11 @@ import com.market.carrot.product.domain.ProductImage;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class CreateProductRequest {
 
@@ -22,4 +25,18 @@ public class CreateProductRequest {
   private int price;
 
   private List<ProductImage> imagesUrl;
+
+  private CreateProductRequest(Long categoryId, String title, String content, int price,
+      List<ProductImage> imagesUrl) {
+    this.categoryId = categoryId;
+    this.title = title;
+    this.content = content;
+    this.price = price;
+    this.imagesUrl = imagesUrl;
+  }
+
+  public static CreateProductRequest testConstructor(Long categoryId, String title, String content, int price,
+      List<ProductImage> imagesUrl) {
+    return new CreateProductRequest(categoryId, title, content, price, imagesUrl);
+  }
 }

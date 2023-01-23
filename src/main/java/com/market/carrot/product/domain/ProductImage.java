@@ -34,4 +34,16 @@ public class ProductImage {
   public void addProduct(Product product) {
     this.product = product;
   }
+
+  /**
+   * Test 용 생성자 및 팩토리 메서드
+   */
+  private ProductImage(Long id, String imageUrl) {
+    this.id = id;
+    this.imageUrl = imageUrl;
+  }
+
+  public static ProductImage testConstructor(Long id, String imageUrl) {
+    return new ProductImage(id, imageUrl);
+  }
 }
