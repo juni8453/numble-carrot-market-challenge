@@ -20,7 +20,3 @@ public abstract class BaseTime {
   private LocalDateTime modifiedDate;
 
 }
-
-/**
- * TODO 회원가입 처리까지 했고, 커스텀 로그인 시작하면 된다!!
- */
