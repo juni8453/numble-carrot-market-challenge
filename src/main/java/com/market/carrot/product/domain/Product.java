@@ -74,6 +74,14 @@ public class Product extends BaseTime {
     this.price = productRequest.getPrice();
   }
 
+  public void plusHeartCount() {
+    this.heartCount += 1;
+  }
+
+  public void minusHeartCount() {
+    this.heartCount -= 1;
+  }
+
   public void addMember(Member findMember) {
     this.member = findMember;
   }

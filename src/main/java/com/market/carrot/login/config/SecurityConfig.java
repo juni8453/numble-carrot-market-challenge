@@ -41,6 +41,7 @@ public class SecurityConfig {
         .antMatchers("/admin/**").hasRole("ADMIN")
         .antMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
         .antMatchers("/api/product/**").hasAnyRole("USER", "ADMIN")
+        .antMatchers("/api/likes/**").hasAnyRole("USER", "ADMIN")
         .anyRequest().permitAll();
 
     // Form Login 인증 설정
