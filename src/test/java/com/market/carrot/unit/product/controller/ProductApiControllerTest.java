@@ -81,13 +81,10 @@ public class ProductApiControllerTest {
   @Test
   void 단일_상품_조회() throws Exception {
     // given
-    CreateProductRequest request = getCreateProductRequest();
-    ProductResponse response = getProductResponse(request);
-
-    given(productService.detail(request.getCategoryId())).willReturn(response);
+    given(productService.detail(anyLong())).willReturn(any(ProductResponse.class));
 
     // when & then
-    mvc.perform(get("/api/product/" + request.getCategoryId())
+    mvc.perform(get("/api/product/" + 1)
             .with(csrf()))
         .andDo(print())
         .andExpect(status().isOk());
