@@ -1,8 +1,11 @@
 package com.market.carrot.unit.product.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -15,6 +18,7 @@ import com.market.carrot.login.domain.Role;
 import com.market.carrot.product.controller.ProductApiController;
 import com.market.carrot.product.domain.ProductImage;
 import com.market.carrot.product.dto.request.CreateProductRequest;
+import com.market.carrot.product.dto.request.UpdateProductRequest;
 import com.market.carrot.product.dto.response.CategoryByProductResponse;
 import com.market.carrot.product.dto.response.ImageResponse;
 import com.market.carrot.product.dto.response.ImagesResponse;
@@ -32,7 +36,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 // @WebMvcTest 사용 시 JPA 관련 Bean 을 찾지 못해서 JpaMetamodelMappingContext 를 Mock 으로 등록
@@ -74,7 +77,7 @@ public class ProductApiControllerTest {
   }
 
   @DisplayName("상품 아이디를 통해 단일 상품을 조회할 수 있다.")
-  @WithMockUser
+  @WithMockCustomUser
   @Test
   void 단일_상품_조회() throws Exception {
     // given
@@ -85,6 +88,84 @@ public class ProductApiControllerTest {
 
     // when & then
     mvc.perform(get("/api/product/" + request.getCategoryId())
+            .with(csrf()))
+        .andDo(print())
+        .andExpect(status().isOk());
+  }
+
+  @DisplayName("모든 상품을 조회할 수 있다.")
+  @WithMockCustomUser
+  @Test
+  void 모든_상품_조회() throws Exception {
+    // given
+    Long categoryId = 1L;
+    String aTitle = "A Product Title";
+    String aContent = "A Product Content";
+    int aPrice = 10_000;
+    List<ProductImage> aImagesUrl = List.of(
+        ProductImage.testConstructor(1L, "A Product URL1"),
+        ProductImage.testConstructor(2L, "A Product URL2"));
+
+    String bTitle = "B Product Title";
+    String bContent = "B Product Content";
+    int bPrice = 20_000;
+    List<ProductImage> bImageUrl = List.of(
+        ProductImage.testConstructor(1L, "B Product URL1"),
+        ProductImage.testConstructor(2L, "B Product URL2"));
+
+    CreateProductRequest createAProduct = CreateProductRequest.testConstructor(categoryId,
+        aTitle, aContent, aPrice, aImagesUrl);
+
+    CreateProductRequest createBProduct = CreateProductRequest.testConstructor(categoryId,
+        bTitle, bContent, bPrice, bImageUrl);
+
+    ProductResponse aResponse = getProductResponse(createAProduct);
+    ProductResponse bResponse = getProductResponse(createBProduct);
+
+    List<ProductResponse> responses = List.of(aResponse, bResponse);
+
+    // when & then
+    given(productService.readAll()).willReturn(responses);
+
+    mvc.perform(get("/api/product")
+            .with(csrf()))
+        .andDo(print())
+        .andExpect(status().isOk());
+  }
+
+  @DisplayName("상품 아이디를 통해 상품을 수정할 수 있다.")
+  @WithMockCustomUser
+  @Test
+  void 상품_수정() throws Exception {
+    // given
+    String updateTitle = "Update Title";
+    String updateContent = "Update Content";
+    int updatePrice = 40_000;
+
+    UpdateProductRequest request = UpdateProductRequest.testConstructor(updateTitle,
+        updateContent, updatePrice);
+
+    willDoNothing().given(productService).update(anyLong(), any(UpdateProductRequest.class));
+
+    // when & then
+    mvc.perform(post("/api/product/" + 1)
+            .with(csrf())
+            .content(mapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk());
+  }
+
+  @DisplayName("상품 아이디를 통해 상품을 삭제할 수 있다.")
+  @WithMockCustomUser
+  @Test
+  void 상품_삭제() throws Exception {
+    // given
+    willDoNothing().given(productService).delete(anyLong());
+
+    // when & then
+    mvc.perform(delete("/api/product/" + 1)
             .with(csrf()))
         .andDo(print())
         .andExpect(status().isOk());
