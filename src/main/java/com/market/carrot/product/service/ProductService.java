@@ -5,12 +5,13 @@ import com.market.carrot.product.dto.request.CreateProductRequest;
 import com.market.carrot.product.dto.request.UpdateProductRequest;
 import com.market.carrot.product.dto.response.ProductResponse;
 import java.util.List;
+import org.springframework.hateoas.EntityModel;
 
 public interface ProductService {
 
   List<ProductResponse> readAll();
 
-  ProductResponse detail(Long id);
+  EntityModel<ProductResponse> detail(Long id, MemberContext member);
 
   void save(CreateProductRequest productRequest, MemberContext member);
 

@@ -9,6 +9,8 @@ import com.market.carrot.product.service.ProductService;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,13 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping(value = "/api/product", produces = MediaTypes.HAL_JSON_VALUE)
 @RestController
 public class ProductApiController {
 
   private final ProductService productService;
 
-  @GetMapping("/product")
+  @GetMapping
   public GlobalResponseDto read() {
     List<ProductResponse> productResponses = productService.readAll();
 
@@ -36,9 +38,10 @@ public class ProductApiController {
         .build();
   }
 
-  @GetMapping("/product/{id}")
-  public GlobalResponseDto detail(@PathVariable Long id) {
-    ProductResponse productResponse = productService.detail(id);
+  @GetMapping("/{id}")
+  public GlobalResponseDto detail(@PathVariable Long id,
+      @AuthenticationPrincipal MemberContext member) {
+    EntityModel<ProductResponse> productResponse = productService.detail(id, member);
 
     return GlobalResponseDto.builder()
         .code(1)
@@ -47,7 +50,7 @@ public class ProductApiController {
         .build();
   }
 
-  @PostMapping("/product")
+  @PostMapping
   public GlobalResponseDto save(@Valid @RequestBody CreateProductRequest productRequest,
       @AuthenticationPrincipal MemberContext member) {
     productService.save(productRequest, member);
@@ -58,7 +61,7 @@ public class ProductApiController {
         .build();
   }
 
-  @PostMapping("/product/{id}")
+  @PostMapping("/{id}")
   public GlobalResponseDto update(@PathVariable Long id,
       @Valid @RequestBody UpdateProductRequest productRequest) {
     productService.update(id, productRequest);
@@ -69,7 +72,7 @@ public class ProductApiController {
         .build();
   }
 
-  @DeleteMapping("/product/{id}")
+  @DeleteMapping("/{id}")
   public GlobalResponseDto delete(@PathVariable Long id) {
     productService.delete(id);
 
