@@ -40,7 +40,7 @@ public class SecurityConfig {
         .antMatchers("/user/**").authenticated()
         .antMatchers("/admin/**").hasRole("ADMIN")
         .antMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
-        .antMatchers("/api/product/**").hasAnyRole("USER", "ADMIN")
+        .antMatchers("/api/product/**").permitAll()
         .antMatchers("/api/likes/**").hasAnyRole("USER", "ADMIN")
         .anyRequest().permitAll();
 
