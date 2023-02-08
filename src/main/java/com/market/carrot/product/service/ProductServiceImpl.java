@@ -13,6 +13,7 @@ import com.market.carrot.product.domain.Product;
 import com.market.carrot.product.domain.ProductImage;
 import com.market.carrot.product.domain.ProductRepository;
 import com.market.carrot.product.dto.request.CreateProductRequest;
+import com.market.carrot.product.dto.request.ProductImageRequest;
 import com.market.carrot.product.dto.request.UpdateProductRequest;
 import com.market.carrot.product.dto.response.CategoryByProductResponse;
 import com.market.carrot.product.dto.response.ImagesResponse;
@@ -100,7 +101,8 @@ public class ProductServiceImpl implements ProductService {
     String content = productRequest.getContent();
     int price = productRequest.getPrice();
     Long categoryId = productRequest.getCategoryId();
-    List<ProductImage> imagesUrl = productRequest.getImagesUrl();
+//    List<ProductImage> imagesUrl = productRequest.getImagesUrl();
+    List<ProductImageRequest> imagesUrl = productRequest.getImagesUrl();
 
     Product saveProduct = Product.createProduct(title, content, price);
 
@@ -114,8 +116,12 @@ public class ProductServiceImpl implements ProductService {
     saveProduct.addMember(findMember);
     saveProduct.addCategory(findCategory);
 
+    List<ProductImage> imageUrls = imagesUrl.stream()
+        .map(imageUrl -> ProductImage.createConstructor(imageUrl.getImageUrl()))
+        .collect(Collectors.toList());
+
     // ProductImage FK 인 product_id 값을 셋팅하기 위해 각 ProductImage 객체에 addProduct() 호출
-    for (ProductImage imageUrl : imagesUrl) {
+    for (ProductImage imageUrl : imageUrls) {
       imageUrl.addProduct(saveProduct);
       saveProduct.addImages(imageUrl);
     }
