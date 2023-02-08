@@ -66,12 +66,8 @@ public class CustomOAuth2UserDetailsService extends DefaultOAuth2UserService {
   }
 
   private Member saveMemberInfo(String username, String password, String email, Role role) {
-    member = Member.builder()
-        .username(username)
-        .password(password)
-        .email(email)
-        .role(role)
-        .build();
+    Member member = Member.createMember(
+        username, password, email, role);
 
     loginRepository.save(member);
 
