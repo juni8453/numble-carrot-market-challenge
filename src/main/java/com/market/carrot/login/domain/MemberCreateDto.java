@@ -12,11 +12,11 @@ public class MemberCreateDto {
   private String email;
 
   public static Member toEntity(MemberCreateDto userCreateDto, String encodedPassword) {
-    return Member.builder()
-        .username(userCreateDto.getUsername())
-        .password(encodedPassword)
-        .email(userCreateDto.getEmail())
-        .role(Role.USER)
-        .build();
+    return Member.createMember(
+        userCreateDto.getUsername(),
+        encodedPassword,
+        userCreateDto.getEmail(),
+        Role.USER
+    );
   }
 }

@@ -1,6 +1,5 @@
 package com.market.carrot.product.dto.request;
 
-import com.market.carrot.product.domain.ProductImage;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -24,10 +23,10 @@ public class CreateProductRequest {
   @NotNull(message = "상품 가격을 적어주세요.")
   private int price;
 
-  private List<ProductImage> imagesUrl;
+  private List<ProductImageRequest> imagesUrl;
 
   private CreateProductRequest(Long categoryId, String title, String content, int price,
-      List<ProductImage> imagesUrl) {
+      List<ProductImageRequest> imagesUrl) {
     this.categoryId = categoryId;
     this.title = title;
     this.content = content;
@@ -36,7 +35,7 @@ public class CreateProductRequest {
   }
 
   public static CreateProductRequest testConstructor(Long categoryId, String title, String content, int price,
-      List<ProductImage> imagesUrl) {
+      List<ProductImageRequest> imagesUrl) {
     return new CreateProductRequest(categoryId, title, content, price, imagesUrl);
   }
 }

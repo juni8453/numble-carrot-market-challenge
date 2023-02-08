@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,11 +33,27 @@ public class Member extends BaseTime implements Serializable {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  @Builder
   public Member(String username, String password, String email, Role role) {
     this.username = username;
     this.password = password;
     this.email = email;
     this.role = role;
+  }
+
+  public Member(Long id, String username, String password, String email, Role role) {
+    this.id = id;
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.role = role;
+  }
+
+  public static Member createMember(String username, String password, String email, Role role) {
+    return new Member(username, password, email, role);
+  }
+
+  public static Member testConstructor(Long id, String username, String password, String email,
+      Role role) {
+    return new Member(id, username, password, email, role);
   }
 }
