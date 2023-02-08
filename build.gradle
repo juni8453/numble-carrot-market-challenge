@@ -26,6 +26,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 	implementation 'org.springframework.session:spring-session-jdbc'
+	implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
 	testImplementation 'org.springframework.security:spring-security-test'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client', version: '2.7.6'
