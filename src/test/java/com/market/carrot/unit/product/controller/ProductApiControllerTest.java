@@ -24,6 +24,8 @@ import com.market.carrot.product.dto.response.ImageResponse;
 import com.market.carrot.product.dto.response.ImagesResponse;
 import com.market.carrot.product.dto.response.MemberByProductResponse;
 import com.market.carrot.product.dto.response.ProductResponse;
+import com.market.carrot.product.hateoas.ProductModel;
+import com.market.carrot.product.hateoas.ProductModelAssembler;
 import com.market.carrot.product.service.ProductService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,6 +36,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
@@ -71,7 +75,7 @@ public class ProductApiControllerTest {
             .with(csrf())
             .content(mapper.writeValueAsString(request))
             .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
+            .accept(MediaTypes.HAL_JSON_VALUE))
         .andDo(print())
         .andExpect(status().isOk());
   }
@@ -81,7 +85,12 @@ public class ProductApiControllerTest {
   @Test
   void 단일_상품_조회() throws Exception {
     // given
-    given(productService.detail(anyLong())).willReturn(any(ProductResponse.class));
+    MemberContext member = (MemberContext) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    CreateProductRequest request = getCreateProductRequest();
+    ProductResponse productResponse = getProductResponse(request);
+    ProductModel productModel = new ProductModel(productResponse);
+
+    given(productService.detail(productResponse.getId(), member)).willReturn(productModel);
 
     // when & then
     mvc.perform(get("/api/product/" + 1)
@@ -122,7 +131,11 @@ public class ProductApiControllerTest {
     List<ProductResponse> responses = List.of(aResponse, bResponse);
 
     // when & then
-    given(productService.readAll()).willReturn(responses);
+    MemberContext member = (MemberContext) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    ProductModelAssembler assembler = new ProductModelAssembler();
+    CollectionModel<ProductModel> collectionModel = assembler.toCollectionModel(responses);
+
+    given(productService.readAll(member)).willReturn(collectionModel);
 
     mvc.perform(get("/api/product")
             .with(csrf()))
@@ -149,7 +162,7 @@ public class ProductApiControllerTest {
             .with(csrf())
             .content(mapper.writeValueAsString(request))
             .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
+            .accept(MediaTypes.HAL_JSON_VALUE))
         .andDo(print())
         .andExpect(status().isOk());
   }
