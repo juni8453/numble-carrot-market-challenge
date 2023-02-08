@@ -101,7 +101,6 @@ public class ProductServiceImpl implements ProductService {
     String content = productRequest.getContent();
     int price = productRequest.getPrice();
     Long categoryId = productRequest.getCategoryId();
-//    List<ProductImage> imagesUrl = productRequest.getImagesUrl();
     List<ProductImageRequest> imagesUrl = productRequest.getImagesUrl();
 
     Product saveProduct = Product.createProduct(title, content, price);
