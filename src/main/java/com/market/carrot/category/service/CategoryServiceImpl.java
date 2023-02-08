@@ -16,7 +16,7 @@ public class CategoryServiceImpl implements CategoryService {
 
   @Transactional
   @Override
-  public void save(CreateCategoryRequest categoryRequest, MemberContext member) {
+  public void save(CreateCategoryRequest categoryRequest) {
     String name = categoryRequest.getName();
     Category saveCategory = Category.createCategory(name);
 
