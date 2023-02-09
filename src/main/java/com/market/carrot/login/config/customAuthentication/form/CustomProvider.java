@@ -1,9 +1,11 @@
 package com.market.carrot.login.config.customAuthentication.form;
 
+import com.market.carrot.global.Exception.BadCredentialsException;
+import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -29,7 +31,7 @@ public class CustomProvider implements AuthenticationProvider {
     MemberContext memberContext = (MemberContext) userDetailsService.loadUserByUsername(username);
 
     if (!passwordEncoder.matches(password, memberContext.getPassword())) {
-      throw new BadCredentialsException("일치하지 않는 비밀번호입니다.");
+      throw new BadCredentialsException(ExceptionMessage.BAD_CREDENTIALS, HttpStatus.BAD_REQUEST);
     }
 
     return new UsernamePasswordAuthenticationToken(

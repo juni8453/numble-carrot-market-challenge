@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public class UserDuplicatedException extends RuntimeException {
+public class IsNotWriterException extends RuntimeException {
 
   private final ExceptionMessage errorMessage;
   private final HttpStatus httpStatus;

@@ -1,5 +1,6 @@
 package com.market.carrot.member.service;
 
+import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.Exception.NotFoundEntityException;
 import com.market.carrot.global.GlobalResponseDto;
 import com.market.carrot.login.domain.Member;
@@ -20,10 +21,11 @@ public class MemberServiceImpl implements MemberService {
   @Override
   public GlobalResponseDto detail(Long id) {
     Member findMember = memberRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 멤버입니다.", HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
 
     return GlobalResponseDto.builder()
         .code(1)
+        .httpStatus(HttpStatus.OK)
         .message("멤버 단건조회 성공")
         .body(ResponseMemberDetail.of(findMember))
         .build();
@@ -33,12 +35,13 @@ public class MemberServiceImpl implements MemberService {
   @Override
   public GlobalResponseDto delete(Long id) {
     Member findMember = memberRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 멤버입니다.", HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
 
     memberRepository.delete(findMember);
 
     return GlobalResponseDto.builder()
         .code(1)
+        .httpStatus(HttpStatus.OK)
         .message("멤버 탈퇴 성공")
         .build();
   }

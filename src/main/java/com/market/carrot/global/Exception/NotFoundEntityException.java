@@ -6,11 +6,11 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public class NotFoundEntityException extends RuntimeException {
 
-  private final String errorMessage;
+  private final ExceptionMessage errorMessage;
   private final HttpStatus httpStatus;
 
   @Override
   public String getMessage() {
-    return errorMessage;
+    return errorMessage.getErrorMessage();
   }
 }

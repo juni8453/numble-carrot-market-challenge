@@ -2,6 +2,8 @@ package com.market.carrot.product.domain;
 
 import com.market.carrot.BaseTime;
 import com.market.carrot.category.domain.Category;
+import com.market.carrot.global.Exception.ExceptionMessage;
+import com.market.carrot.global.Exception.IsNotWriterException;
 import com.market.carrot.login.domain.Member;
 import com.market.carrot.product.dto.request.UpdateProductRequest;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.http.HttpStatus;
 
 @DynamicInsert
 @Getter
@@ -68,10 +71,22 @@ public class Product extends BaseTime {
     return new Product(title, content, price);
   }
 
-  public void updateProduct(UpdateProductRequest productRequest) {
-    this.title = productRequest.getTitle();
-    this.content = productRequest.getContent();
-    this.price = productRequest.getPrice();
+  public void updateProduct(UpdateProductRequest productRequest, Member member) {
+    if (checkUser(member)) {
+      this.title = productRequest.getTitle();
+      this.content = productRequest.getContent();
+      this.price = productRequest.getPrice();
+    }
+
+    throw new IsNotWriterException(ExceptionMessage.IS_NOT_WRITER_BY_UPDATE, HttpStatus.BAD_REQUEST);
+  }
+
+  public boolean checkUser(Member member) {
+    if (this.getMember().getUsername().equals(member.getUsername())) {
+      return true;
+    }
+
+    return false;
   }
 
   public void plusHeartCount() {
