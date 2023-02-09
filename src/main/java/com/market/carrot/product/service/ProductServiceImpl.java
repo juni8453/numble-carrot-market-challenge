@@ -4,6 +4,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 import com.market.carrot.category.domain.Category;
 import com.market.carrot.category.domain.CategoryRepository;
+import com.market.carrot.global.Exception.IsNotWriterException;
 import com.market.carrot.global.Exception.NotFoundEntityException;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.login.domain.Member;
@@ -131,19 +132,30 @@ public class ProductServiceImpl implements ProductService {
 
   @Transactional
   @Override
-  public void update(Long id, UpdateProductRequest productRequest) {
+  public void update(Long id, UpdateProductRequest productRequest, MemberContext member) {
     Product findProduct = productRepository.findById(id)
         .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 제품입니다.", HttpStatus.BAD_REQUEST));
-    findProduct.updateProduct(productRequest);
+
+    Member findMember = memberRepository.findById(member.getMember().getId())
+        .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 회원입니다.", HttpStatus.BAD_REQUEST));
+
+    findProduct.updateProduct(productRequest, findMember);
   }
 
   @Transactional
   @Override
-  public void delete(Long id) {
+  public void delete(Long id, MemberContext member) {
     Product findProduct = productRepository.findById(id)
         .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 제품입니다.", HttpStatus.BAD_REQUEST));
 
-    productRepository.delete(findProduct);
+    Member findMember = memberRepository.findById(member.getMember().getId())
+        .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 회원입니다.", HttpStatus.BAD_REQUEST));
+
+    if (findProduct.checkUser(findMember)) {
+      productRepository.delete(findProduct);
+    }
+
+    throw new IsNotWriterException("삭제 가능한 회원이 아닙니다.", HttpStatus.BAD_REQUEST);
   }
 
   /**

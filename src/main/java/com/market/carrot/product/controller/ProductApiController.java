@@ -2,7 +2,6 @@ package com.market.carrot.product.controller;
 
 import com.market.carrot.global.GlobalResponseDto;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
-import com.market.carrot.product.domain.ProductRepository;
 import com.market.carrot.product.dto.request.CreateProductRequest;
 import com.market.carrot.product.dto.request.UpdateProductRequest;
 import com.market.carrot.product.hateoas.ProductModel;
@@ -63,8 +62,9 @@ public class ProductApiController {
 
   @PostMapping("/{id}")
   public GlobalResponseDto update(@PathVariable Long id,
+      @AuthenticationPrincipal MemberContext member,
       @Valid @RequestBody UpdateProductRequest productRequest) {
-    productService.update(id, productRequest);
+    productService.update(id, productRequest, member);
 
     return GlobalResponseDto.builder()
         .code(1)
@@ -73,8 +73,9 @@ public class ProductApiController {
   }
 
   @DeleteMapping("/{id}")
-  public GlobalResponseDto delete(@PathVariable Long id) {
-    productService.delete(id);
+  public GlobalResponseDto delete(@PathVariable Long id,
+      @AuthenticationPrincipal MemberContext member) {
+    productService.delete(id, member);
 
     return GlobalResponseDto.builder()
         .code(1)

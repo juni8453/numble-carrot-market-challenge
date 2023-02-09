@@ -14,6 +14,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+  @ExceptionHandler(IsNotWriterException.class)
+  public GlobalResponseDto isNotWriter(IsNotWriterException isNotWriterException) {
+    log.error("isNotWriterException 발생: {}", isNotWriterException.getMessage());
+
+    return GlobalResponseDto.builder()
+        .code(-1)
+        .message(isNotWriterException.getMessage())
+        .build();
+  }
+
   @ExceptionHandler(NotFoundEntityException.class)
   public GlobalResponseDto notFoundEntity(NotFoundEntityException notFoundEntityException) {
     log.error("NotFoundEntityException 발생: {}", notFoundEntityException.getMessage());
