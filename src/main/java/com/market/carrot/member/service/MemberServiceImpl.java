@@ -25,6 +25,7 @@ public class MemberServiceImpl implements MemberService {
 
     return GlobalResponseDto.builder()
         .code(1)
+        .httpStatus(HttpStatus.OK)
         .message("멤버 단건조회 성공")
         .body(ResponseMemberDetail.of(findMember))
         .build();
@@ -40,6 +41,7 @@ public class MemberServiceImpl implements MemberService {
 
     return GlobalResponseDto.builder()
         .code(1)
+        .httpStatus(HttpStatus.OK)
         .message("멤버 탈퇴 성공")
         .build();
   }
