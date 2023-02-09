@@ -1,5 +1,6 @@
 package com.market.carrot.product.service;
 
+import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.Exception.NotFoundEntityException;
 import com.market.carrot.product.domain.ProductImage;
 import com.market.carrot.product.domain.ProductImageRepository;
@@ -19,7 +20,7 @@ public class ProductImageServiceImpl implements ProductImageService {
   @Override
   public void updateImage(Long id, UpdateProductImageRequest imageRequest) {
     ProductImage findProductImage = productImageRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException("존재하지 않는 이미지입니다.", HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_IMAGE, HttpStatus.BAD_REQUEST));
 
     findProductImage.updateProductImage(imageRequest);
   }
@@ -28,7 +29,7 @@ public class ProductImageServiceImpl implements ProductImageService {
   @Override
   public void deleteImage(Long id) {
     ProductImage findProductImage = productImageRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException("존재하지 않는 이미지입니다.", HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_IMAGE, HttpStatus.BAD_REQUEST));
 
     productImageRepository.delete(findProductImage);
   }

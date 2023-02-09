@@ -2,6 +2,7 @@ package com.market.carrot.product.domain;
 
 import com.market.carrot.BaseTime;
 import com.market.carrot.category.domain.Category;
+import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.Exception.IsNotWriterException;
 import com.market.carrot.login.domain.Member;
 import com.market.carrot.product.dto.request.UpdateProductRequest;
@@ -77,7 +78,7 @@ public class Product extends BaseTime {
       this.price = productRequest.getPrice();
     }
 
-    throw new IsNotWriterException("수정 가능한 회원이 아닙니다.", HttpStatus.BAD_REQUEST);
+    throw new IsNotWriterException(ExceptionMessage.IS_NOT_WRITER_BY_UPDATE, HttpStatus.BAD_REQUEST);
   }
 
   public boolean checkUser(Member member) {

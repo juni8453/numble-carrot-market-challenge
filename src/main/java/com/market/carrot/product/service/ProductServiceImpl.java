@@ -4,6 +4,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 import com.market.carrot.category.domain.Category;
 import com.market.carrot.category.domain.CategoryRepository;
+import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.Exception.IsNotWriterException;
 import com.market.carrot.global.Exception.NotFoundEntityException;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
@@ -77,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public ProductModel detail(Long id, MemberContext member) {
     Product findProduct = productRepository.findById(id).orElseThrow(
-        () -> new NotFoundEntityException("해당 제품이 존재하지 않습니다.", HttpStatus.BAD_REQUEST));
+        () -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT, HttpStatus.BAD_REQUEST));
 
     ProductResponse productResponse = ProductResponse.builder()
         .id(findProduct.getId())
@@ -107,10 +108,10 @@ public class ProductServiceImpl implements ProductService {
     Product saveProduct = Product.createProduct(title, content, price);
 
     Member findMember = memberRepository.findById(member.getMember().getId())
-        .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 회원입니다.", HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
 
     Category findCategory = categoryRepository.findById(categoryId)
-        .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 카테고리입니다.", HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_CATEGORY, HttpStatus.BAD_REQUEST));
 
     // 연관관계에 의한 Member, Category, Image 값 셋팅
     saveProduct.addMember(findMember);
@@ -134,10 +135,10 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public void update(Long id, UpdateProductRequest productRequest, MemberContext member) {
     Product findProduct = productRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 제품입니다.", HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT, HttpStatus.BAD_REQUEST));
 
     Member findMember = memberRepository.findById(member.getMember().getId())
-        .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 회원입니다.", HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
 
     findProduct.updateProduct(productRequest, findMember);
   }
@@ -146,16 +147,16 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public void delete(Long id, MemberContext member) {
     Product findProduct = productRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 제품입니다.", HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT, HttpStatus.BAD_REQUEST));
 
     Member findMember = memberRepository.findById(member.getMember().getId())
-        .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 회원입니다.", HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
 
     if (findProduct.checkUser(findMember)) {
       productRepository.delete(findProduct);
     }
 
-    throw new IsNotWriterException("삭제 가능한 회원이 아닙니다.", HttpStatus.BAD_REQUEST);
+    throw new IsNotWriterException(ExceptionMessage.IS_NOT_WRITER_BY_DELETE, HttpStatus.BAD_REQUEST);
   }
 
   /**

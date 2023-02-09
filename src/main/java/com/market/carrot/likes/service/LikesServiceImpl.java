@@ -1,5 +1,6 @@
 package com.market.carrot.likes.service;
 
+import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.Exception.NotFoundEntityException;
 import com.market.carrot.likes.domain.Likes;
 import com.market.carrot.likes.domain.LikesRepository;
@@ -25,10 +26,10 @@ public class LikesServiceImpl implements LikesService {
   @Override
   public void like(Long id, MemberContext member) {
     Product findProduct = productRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 제품입니다.", HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT, HttpStatus.BAD_REQUEST));
 
     Member findMember = memberRepository.findById(member.getMember().getId())
-        .orElseThrow(() -> new NotFoundEntityException("찾을 수 없는 회원입니다.", HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
 
     Likes findLikes = likesRepository.findByUsernameAndProductId(findMember.getUsername(), id);
 
