@@ -156,13 +156,13 @@ public class ProductServiceImpl implements ProductService {
   private ProductModel getResponseByProductDetail(MemberContext member,
       ProductResponse productResponse) {
     Long productId = productResponse.getId();
-    Long memberOfProductId = productResponse.getMember().getId();
+    String memberOfProductName = productResponse.getMember().getUsername();
 
     ProductModel entityModelByProductResponse = new ProductModel(productResponse);
     addHateoasLink(entityModelByProductResponse, productId);
 
     // 자신이 작성한 상품인 경우 삭제 및 수정 API 호출이 가능하다.
-    if (member != null && member.getMember().getId().equals(memberOfProductId)) {
+    if (member != null && member.getMember().getUsername().equals(memberOfProductName)) {
       addHateoasLink(entityModelByProductResponse, productId, "product-delete");
       addHateoasLink(entityModelByProductResponse, productId, "product-update");
     }
