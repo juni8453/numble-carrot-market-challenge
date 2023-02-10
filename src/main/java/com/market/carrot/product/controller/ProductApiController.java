@@ -1,6 +1,7 @@
 package com.market.carrot.product.controller;
 
 import com.market.carrot.global.GlobalResponseDto;
+import com.market.carrot.global.GlobalResponseMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.product.dto.request.CreateProductRequest;
 import com.market.carrot.product.dto.request.UpdateProductRequest;
@@ -36,7 +37,7 @@ public class ProductApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message("모든 제품 조회 성공")
+        .message(GlobalResponseMessage.SUCCESS_GET_PRODUCTS.getSuccessMessage())
         .body(productResponses)
         .build();
   }
@@ -50,7 +51,7 @@ public class ProductApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message("단일 제품 조회 성공")
+        .message(GlobalResponseMessage.SUCCESS_GET_PRODUCT.getSuccessMessage())
         .body(productResponse)
         .build();
   }
@@ -64,7 +65,7 @@ public class ProductApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.CREATED)
-        .message("상품 등록 성공")
+        .message(GlobalResponseMessage.SUCCESS_POST_INSERT_PRODUCT.getSuccessMessage())
         .build();
   }
 
@@ -78,7 +79,7 @@ public class ProductApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message("상품 수정 성공")
+        .message(GlobalResponseMessage.SUCCESS_POST_UPDATE_PRODUCT.getSuccessMessage())
         .build();
   }
 
@@ -91,7 +92,7 @@ public class ProductApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message("상품 삭제 성공")
+        .message(GlobalResponseMessage.SUCCESS_DELETE_PRODUCT.getSuccessMessage())
         .build();
   }
 }
