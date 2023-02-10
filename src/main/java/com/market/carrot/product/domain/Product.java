@@ -72,13 +72,13 @@ public class Product extends BaseTime {
   }
 
   public void updateProduct(UpdateProductRequest productRequest, Member member) {
-    if (checkUser(member)) {
-      this.title = productRequest.getTitle();
-      this.content = productRequest.getContent();
-      this.price = productRequest.getPrice();
+    if (!checkUser(member)) {
+      throw new IsNotWriterException(ExceptionMessage.IS_NOT_WRITER_BY_UPDATE, HttpStatus.BAD_REQUEST);
     }
 
-    throw new IsNotWriterException(ExceptionMessage.IS_NOT_WRITER_BY_UPDATE, HttpStatus.BAD_REQUEST);
+    this.title = productRequest.getTitle();
+    this.content = productRequest.getContent();
+    this.price = productRequest.getPrice();
   }
 
   public boolean checkUser(Member member) {

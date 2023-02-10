@@ -1,6 +1,7 @@
 package com.market.carrot.integration.product.controller;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -19,6 +20,7 @@ import com.market.carrot.login.domain.Role;
 import com.market.carrot.login.service.LoginService;
 import com.market.carrot.product.dto.request.CreateProductRequest;
 import com.market.carrot.product.dto.request.ProductImageRequest;
+import com.market.carrot.product.dto.request.UpdateProductRequest;
 import com.market.carrot.product.service.ProductService;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -87,13 +89,13 @@ public class ProductApiControllerTest {
     CreateProductRequest createProductRequest = getCreateProductRequest();
 
     // when & then
-    mvc.perform(post("/api/product")
+    mvc.perform(post("/api/product/")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(accept)
             .content(mapper.writeValueAsString(createProductRequest)))
-        .andDo(print())
-        .andExpect(status().isOk())
+            .andDo(print())
+        .andExpect(status().isCreated())
         .andExpect(header().string(HttpHeaders.CONTENT_TYPE, accept));
   }
 
@@ -153,7 +155,7 @@ public class ProductApiControllerTest {
   @Test
   void 비회원_모든_상품조회() throws Exception {
     // when & then
-    mvc.perform(get("/api/product")
+    mvc.perform(get("/api/product/")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
@@ -169,7 +171,7 @@ public class ProductApiControllerTest {
   @Test
   void 회원_모든_상품조회() throws Exception {
     // when & then
-    mvc.perform(get("/api/product")
+    mvc.perform(get("/api/product/")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
@@ -180,19 +182,70 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("body.links[0].rel").value("product-save"));
   }
 
+  @DisplayName("비회원인 경우 수정 API 를 호출하면 로그인 페이지로 Redirect 된다.")
   @Test
-  void 상품_수정() {
+  void 비회원_상품_수정() throws Exception {
+    // when & then
+    mvc.perform(post("/api/product/1")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(accept))
+        .andDo(print())
+        .andExpect(status().is3xxRedirection())
+        .andExpect(header().exists(HttpHeaders.LOCATION));
+  }
+
+  @DisplayName("회원일 경우 자신이 등록한 상품을 수정할 수 있다.")
+  @WithMockCustomUser(username = "username")
+  @Test
+  void 회원_상품_수정() throws Exception {
     // given
+    UpdateProductRequest updateProductRequest = getUpdateProductRequest();
 
     // when & then
+    mvc.perform(post("/api/product/1")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(accept)
+            .content(mapper.writeValueAsString(updateProductRequest)))
+        .andDo(print())
+        .andExpect(status().isOk());
+  }
+
+  @WithMockCustomUser(username = "anotherUser")
+  @Test
+  void 자신이_등록한_상품이_아닌경우_상품수정() throws Exception {
 
   }
 
+  @DisplayName("비회원인 경우 삭제 API 를 호출하면 로그인 페이지로 Redirect 된다.")
   @Test
-  void 상품_삭제() {
-    // given
-
+  void 비회원_상품_삭제() throws Exception {
     // when & then
+    mvc.perform(delete("/api/product/1")
+        .with(csrf())
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(accept))
+        .andDo(print())
+        .andExpect(status().is3xxRedirection())
+        .andExpect(header().exists(HttpHeaders.LOCATION));
+  }
+
+  @DisplayName("회원일 경우 자신이 등록한 상품을 삭제할 수 있다.")
+  @WithMockCustomUser
+  @Test
+  void 회원_상품_삭제() throws Exception {
+    // when & then
+    mvc.perform(delete("/api/product/1")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(accept))
+        .andDo(print())
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void 자신이_등록한_상품이_아닌경우_상품삭제() throws Exception {
 
   }
 
@@ -222,7 +275,7 @@ public class ProductApiControllerTest {
   }
 
   private CreateProductRequest getCreateProductRequest() {
-    Long categoryId = 2L;
+    Long categoryId = 1L;
     String title = "Product Title";
     String content = "Product Content";
     int price = 20_000;
@@ -233,5 +286,9 @@ public class ProductApiControllerTest {
     );
 
     return CreateProductRequest.testConstructor(categoryId, title, content, price, imagesUrl);
+  }
+
+  private UpdateProductRequest getUpdateProductRequest() {
+    return UpdateProductRequest.testConstructor("update title", "update content", 50000);
   }
 }

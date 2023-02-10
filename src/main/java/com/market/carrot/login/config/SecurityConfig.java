@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -40,7 +41,11 @@ public class SecurityConfig {
         .antMatchers("/user/**").authenticated()
         .antMatchers("/admin/**").hasRole("ADMIN")
         .antMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
-        .antMatchers("/api/product/**").permitAll()
+
+        .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
+        .antMatchers(HttpMethod.POST, "/api/product/**").hasAnyRole("USER", "ADMIN")
+        .antMatchers(HttpMethod.DELETE, "/api/product/**").hasAnyRole("USER", "ADMIN")
+
         .antMatchers("/api/likes/**").hasAnyRole("USER", "ADMIN")
         .anyRequest().permitAll();
 
