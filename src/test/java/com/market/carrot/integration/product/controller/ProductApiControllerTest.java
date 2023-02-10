@@ -87,13 +87,13 @@ public class ProductApiControllerTest {
     CreateProductRequest createProductRequest = getCreateProductRequest();
 
     // when & then
-    mvc.perform(post("/api/product")
+    mvc.perform(post("/api/product/")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(accept)
             .content(mapper.writeValueAsString(createProductRequest)))
-        .andDo(print())
-        .andExpect(status().isOk())
+            .andDo(print())
+        .andExpect(status().isCreated())
         .andExpect(header().string(HttpHeaders.CONTENT_TYPE, accept));
   }
 
@@ -153,7 +153,7 @@ public class ProductApiControllerTest {
   @Test
   void 비회원_모든_상품조회() throws Exception {
     // when & then
-    mvc.perform(get("/api/product")
+    mvc.perform(get("/api/product/")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
@@ -169,7 +169,7 @@ public class ProductApiControllerTest {
   @Test
   void 회원_모든_상품조회() throws Exception {
     // when & then
-    mvc.perform(get("/api/product")
+    mvc.perform(get("/api/product/")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
@@ -222,7 +222,7 @@ public class ProductApiControllerTest {
   }
 
   private CreateProductRequest getCreateProductRequest() {
-    Long categoryId = 2L;
+    Long categoryId = 1L;
     String title = "Product Title";
     String content = "Product Content";
     int price = 20_000;
