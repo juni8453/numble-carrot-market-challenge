@@ -55,7 +55,7 @@ public class ProductApiController {
         .build();
   }
 
-  @ResponseStatus(value = HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public GlobalResponseDto save(@Valid @RequestBody CreateProductRequest productRequest,
       @AuthenticationPrincipal MemberContext member) {
