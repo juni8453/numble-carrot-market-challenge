@@ -1,6 +1,7 @@
 package com.market.carrot.product.controller;
 
 import com.market.carrot.global.GlobalResponseDto;
+import com.market.carrot.global.GlobalResponseMessage;
 import com.market.carrot.product.dto.request.UpdateProductImageRequest;
 import com.market.carrot.product.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class ProductImageApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message("이미지 수정 성공")
+        .message(GlobalResponseMessage.SUCCESS_POST_UPDATE_IMAGE.getSuccessMessage())
         .build();
   }
 
@@ -44,7 +45,7 @@ public class ProductImageApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message("이미지 삭제 성공")
+        .message(GlobalResponseMessage.SUCCESS_DELETE_IMAGE.getSuccessMessage())
         .build();
   }
 }

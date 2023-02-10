@@ -1,6 +1,7 @@
 package com.market.carrot.likes.controller;
 
 import com.market.carrot.global.GlobalResponseDto;
+import com.market.carrot.global.GlobalResponseMessage;
 import com.market.carrot.likes.service.LikesService;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class LikesController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.CREATED)
-        .message(id + "번 제품 좋아요 API 호출 성공")
+        .message(GlobalResponseMessage.SUCCESS_PRODUCT_LIKE.getSuccessMessage())
         .build();
   }
 }

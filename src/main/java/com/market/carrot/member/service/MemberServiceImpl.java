@@ -3,6 +3,7 @@ package com.market.carrot.member.service;
 import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.Exception.NotFoundEntityException;
 import com.market.carrot.global.GlobalResponseDto;
+import com.market.carrot.global.GlobalResponseMessage;
 import com.market.carrot.login.domain.Member;
 import com.market.carrot.member.domain.MemberRepository;
 import com.market.carrot.member.domain.ResponseMemberDetail;
@@ -26,7 +27,7 @@ public class MemberServiceImpl implements MemberService {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message("멤버 단건조회 성공")
+        .message(GlobalResponseMessage.SUCCESS_GET_MEMBER.getSuccessMessage())
         .body(ResponseMemberDetail.of(findMember))
         .build();
   }
@@ -42,7 +43,7 @@ public class MemberServiceImpl implements MemberService {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message("멤버 탈퇴 성공")
+        .message(GlobalResponseMessage.SUCCESS_DELETE_MEMBER.getSuccessMessage())
         .build();
   }
 }
