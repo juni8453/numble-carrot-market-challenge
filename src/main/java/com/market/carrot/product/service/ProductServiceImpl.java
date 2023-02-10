@@ -152,11 +152,11 @@ public class ProductServiceImpl implements ProductService {
     Member findMember = memberRepository.findById(member.getMember().getId())
         .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
 
-    if (findProduct.checkUser(findMember)) {
-      productRepository.delete(findProduct);
+    if (!findProduct.checkUser(findMember)) {
+      throw new IsNotWriterException(ExceptionMessage.IS_NOT_WRITER_BY_DELETE, HttpStatus.BAD_REQUEST);
     }
 
-    throw new IsNotWriterException(ExceptionMessage.IS_NOT_WRITER_BY_DELETE, HttpStatus.BAD_REQUEST);
+    productRepository.delete(findProduct);
   }
 
   /**
