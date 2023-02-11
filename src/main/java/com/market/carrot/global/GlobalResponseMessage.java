@@ -9,9 +9,9 @@ public enum GlobalResponseMessage {
 
   SUCCESS_PRODUCT_LIKE("제품 좋아요 성공"),
 
-  SUCCESS_GET_MEMBER("단건 회원 조회 성공"),
+  SUCCESS_GET_MEMBER("프로필 조회 성공"),
 
-  SUCCESS_DELETE_MEMBER("단건 회원 삭제 성공"),
+  SUCCESS_DELETE_MEMBER("프로필 삭제 성공"),
 
   SUCCESS_GET_PRODUCTS("모든 상품 조회 성공"),
 
