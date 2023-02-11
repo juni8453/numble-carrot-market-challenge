@@ -19,9 +19,11 @@ public enum ExceptionMessage {
 
   USER_DUPLICATED("중복되는 회원 아이디입니다."),
 
-  IS_NOT_WRITER_BY_UPDATE("수정 가능한 회원이 아닙니다."),
+  IS_NOT_MY_PROFILE("조회할 수 있는 프로필이 아닙니다."),
 
-  IS_NOT_WRITER_BY_DELETE("삭제 가능한 회원이 아닙니다.");
+  IS_NOT_MY_PROFILE_BY_DELETE("삭제할 수 있는 프로필이 아닙니다."),
+
+  IS_NOT_WRITER("상품을 작성한 회원이 아닙니다.");
 
   private final String errorMessage;
 }

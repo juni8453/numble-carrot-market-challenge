@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public class IsNotWriterException extends RuntimeException {
+public class AnotherMemberException extends RuntimeException {
 
   private final ExceptionMessage errorMessage;
   private final HttpStatus httpStatus;

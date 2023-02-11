@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(IsNotWriterException.class)
-  public GlobalResponseDto isNotWriter(IsNotWriterException isNotWriterException) {
-    log.error("isNotWriterException 발생: {}", isNotWriterException.getMessage());
+  @ExceptionHandler(AnotherMemberException.class)
+  public GlobalResponseDto isNotMyProfile(AnotherMemberException anotherMemberException) {
+    log.error("isNotMyProfileException 발생: {}", anotherMemberException.getMessage());
 
     return GlobalResponseDto.builder()
         .code(-1)
         .httpStatus(HttpStatus.BAD_REQUEST)
-        .message(isNotWriterException.getMessage())
+        .message(anotherMemberException.getMessage())
         .build();
   }
 

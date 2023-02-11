@@ -28,9 +28,7 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,7 +38,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 
-@TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
 @SpringBootTest
 public class ProductApiControllerTest {
@@ -104,7 +101,8 @@ public class ProductApiControllerTest {
 
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.CREATED.name()))
-        .andExpect(jsonPath("message").value(GlobalResponseMessage.SUCCESS_POST_INSERT_PRODUCT.getSuccessMessage()));
+        .andExpect(jsonPath("message").value(
+            GlobalResponseMessage.SUCCESS_POST_INSERT_PRODUCT.getSuccessMessage()));
   }
 
   @DisplayName("비회원인 경우 단일 상품을 조회했을 때 self link 만 응답에 포함되어야한다.")
@@ -121,7 +119,8 @@ public class ProductApiControllerTest {
 
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
-        .andExpect(jsonPath("message").value(GlobalResponseMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
+        .andExpect(jsonPath("message").value(
+            GlobalResponseMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
 
         .andExpect(jsonPath("body.links[0].rel").value("self"))
         .andExpect(jsonPath("body.links[0].rel").value("self"))
@@ -143,7 +142,8 @@ public class ProductApiControllerTest {
 
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
-        .andExpect(jsonPath("message").value(GlobalResponseMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
+        .andExpect(jsonPath("message").value(
+            GlobalResponseMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
 
         .andExpect(jsonPath("body.links[0].rel").exists())
         .andExpect(jsonPath("body.links[0].rel").value("self"));
@@ -163,7 +163,8 @@ public class ProductApiControllerTest {
 
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
-        .andExpect(jsonPath("message").value(GlobalResponseMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
+        .andExpect(jsonPath("message").value(
+            GlobalResponseMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
 
         .andExpect(jsonPath("body.links[0].rel").exists())
         .andExpect(jsonPath("body.links[0].rel").value("self"))
@@ -187,7 +188,8 @@ public class ProductApiControllerTest {
 
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
-        .andExpect(jsonPath("message").value(GlobalResponseMessage.SUCCESS_GET_PRODUCTS.getSuccessMessage()))
+        .andExpect(jsonPath("message").value(
+            GlobalResponseMessage.SUCCESS_GET_PRODUCTS.getSuccessMessage()))
 
         .andExpect(jsonPath("body.content[0].links[0].rel").exists())
         .andExpect(jsonPath("body.content[0].links[0].rel").value("self"))
@@ -208,7 +210,8 @@ public class ProductApiControllerTest {
 
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
-        .andExpect(jsonPath("message").value(GlobalResponseMessage.SUCCESS_GET_PRODUCTS.getSuccessMessage()))
+        .andExpect(jsonPath("message").value(
+            GlobalResponseMessage.SUCCESS_GET_PRODUCTS.getSuccessMessage()))
 
         .andExpect(jsonPath("body.content[0].links[0].rel").value("self"))
         .andExpect(jsonPath("body.links[0].rel").exists())
@@ -246,7 +249,8 @@ public class ProductApiControllerTest {
 
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
-        .andExpect(jsonPath("message").value(GlobalResponseMessage.SUCCESS_POST_UPDATE_PRODUCT.getSuccessMessage()));
+        .andExpect(jsonPath("message").value(
+            GlobalResponseMessage.SUCCESS_POST_UPDATE_PRODUCT.getSuccessMessage()));
   }
 
   @DisplayName("회원이지만 자신이 등록한 상품이 아닌 경우 수정 호출 시 400 예외가 발생한다.")
@@ -273,7 +277,7 @@ public class ProductApiControllerTest {
 
         .andExpect(jsonPath("code").value(-1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
-        .andExpect(jsonPath("message").value(ExceptionMessage.IS_NOT_WRITER_BY_UPDATE.getErrorMessage()));
+        .andExpect(jsonPath("message").value(ExceptionMessage.IS_NOT_WRITER.getErrorMessage()));
   }
 
   @DisplayName("비회원인 경우 삭제 API 를 호출하면 로그인 페이지로 Redirect 된다.")
@@ -303,7 +307,8 @@ public class ProductApiControllerTest {
 
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
-        .andExpect(jsonPath("message").value(GlobalResponseMessage.SUCCESS_DELETE_PRODUCT.getSuccessMessage()));
+        .andExpect(jsonPath("message").value(
+            GlobalResponseMessage.SUCCESS_DELETE_PRODUCT.getSuccessMessage()));
   }
 
   @DisplayName("회원이지만 자신이 등록한 상품이 아닌 경우 삭제 호출 시 400 예외가 발생한다.")
@@ -327,7 +332,7 @@ public class ProductApiControllerTest {
 
         .andExpect(jsonPath("code").value(-1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
-        .andExpect(jsonPath("message").value(ExceptionMessage.IS_NOT_WRITER_BY_DELETE.getErrorMessage()));
+        .andExpect(jsonPath("message").value(ExceptionMessage.IS_NOT_WRITER.getErrorMessage()));
   }
 
   /**

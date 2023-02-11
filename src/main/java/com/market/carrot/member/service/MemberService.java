@@ -1,10 +1,11 @@
 package com.market.carrot.member.service;
 
-import com.market.carrot.global.GlobalResponseDto;
+import com.market.carrot.login.config.customAuthentication.common.MemberContext;
+import com.market.carrot.member.hateoas.MemberModel;
 
 public interface MemberService {
 
-  GlobalResponseDto detail(Long id);
+  MemberModel readMyProfile(Long id, MemberContext memberContext);
 
-  GlobalResponseDto delete(Long id);
+  void delete(Long id, MemberContext memberContext);
 }

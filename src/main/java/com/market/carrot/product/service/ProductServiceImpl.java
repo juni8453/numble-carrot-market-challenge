@@ -4,8 +4,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 import com.market.carrot.category.domain.Category;
 import com.market.carrot.category.domain.CategoryRepository;
+import com.market.carrot.global.Exception.AnotherMemberException;
 import com.market.carrot.global.Exception.ExceptionMessage;
-import com.market.carrot.global.Exception.IsNotWriterException;
 import com.market.carrot.global.Exception.NotFoundEntityException;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.login.domain.Member;
@@ -153,7 +153,7 @@ public class ProductServiceImpl implements ProductService {
         .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
 
     if (!findProduct.checkUser(findMember)) {
-      throw new IsNotWriterException(ExceptionMessage.IS_NOT_WRITER_BY_DELETE, HttpStatus.BAD_REQUEST);
+      throw new AnotherMemberException(ExceptionMessage.IS_NOT_WRITER, HttpStatus.BAD_REQUEST);
     }
 
     productRepository.delete(findProduct);

@@ -1,10 +1,12 @@
 package com.market.carrot.member.controller;
 
 import com.market.carrot.global.GlobalResponseDto;
+import com.market.carrot.global.GlobalResponseMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
+import com.market.carrot.member.hateoas.MemberModel;
 import com.market.carrot.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,29 +16,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/")
+@RequestMapping(value = "/api/user/", produces = MediaTypes.HAL_JSON_VALUE)
 @RestController
 public class MemberApiController {
 
   private final MemberService memberService;
 
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping("user/{id}")
-  public GlobalResponseDto detail(@PathVariable Long id,
-      @AuthenticationPrincipal MemberContext memberContext) {
+  @GetMapping("{id}")
+  public GlobalResponseDto readMyProfile(@PathVariable Long id, @AuthenticationPrincipal
+      MemberContext member) {
+    MemberModel memberModel = memberService.readMyProfile(id, member);
 
-    log.info("ROLE_{}", memberContext.getMember().getRole());
-    return memberService.detail(id);
+    return GlobalResponseDto.builder()
+        .code(1)
+        .httpStatus(HttpStatus.OK)
+        .message(GlobalResponseMessage.SUCCESS_GET_MEMBER.getSuccessMessage())
+        .body(memberModel)
+        .build();
   }
 
   @ResponseStatus(HttpStatus.OK)
-  @DeleteMapping("user/{id}")
+  @DeleteMapping("{id}")
   public GlobalResponseDto delete(@PathVariable Long id,
       @AuthenticationPrincipal MemberContext memberContext) {
+    memberService.delete(id, memberContext);
 
-    log.info("ROLE_{}", memberContext.getMember().getRole());
-    return memberService.delete(id);
+    return GlobalResponseDto.builder()
+        .code(1)
+        .httpStatus(HttpStatus.OK)
+        .message(GlobalResponseMessage.SUCCESS_DELETE_MEMBER.getSuccessMessage())
+        .build();
   }
 }
