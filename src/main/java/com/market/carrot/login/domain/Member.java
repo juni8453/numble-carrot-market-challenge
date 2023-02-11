@@ -1,6 +1,7 @@
 package com.market.carrot.login.domain;
 
 import com.market.carrot.BaseTime;
+import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -55,5 +56,13 @@ public class Member extends BaseTime implements Serializable {
   public static Member testConstructor(Long id, String username, String password, String email,
       Role role) {
     return new Member(id, username, password, email, role);
+  }
+
+  public boolean checkUser(MemberContext memberContext) {
+    if (this.id.equals(memberContext.getMember().getId())) {
+      return true;
+    }
+
+    return false;
   }
 }
