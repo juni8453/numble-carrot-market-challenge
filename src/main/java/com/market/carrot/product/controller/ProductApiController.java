@@ -31,8 +31,8 @@ public class ProductApiController {
 
   @ResponseStatus(HttpStatus.OK)
   @GetMapping
-  public GlobalResponseDto read(@AuthenticationPrincipal MemberContext member) {
-    CollectionModel<ProductModel> productResponses = productService.readAll(member);
+  public GlobalResponseDto read(@AuthenticationPrincipal MemberContext memberContext) {
+    CollectionModel<ProductModel> productResponses = productService.readAll(memberContext);
 
     return GlobalResponseDto.builder()
         .code(1)
@@ -45,8 +45,8 @@ public class ProductApiController {
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("{id}")
   public GlobalResponseDto detail(@PathVariable Long id,
-      @AuthenticationPrincipal MemberContext member) {
-    ProductModel productResponse = productService.detail(id, member);
+      @AuthenticationPrincipal MemberContext memberContext) {
+    ProductModel productResponse = productService.detail(id, memberContext);
 
     return GlobalResponseDto.builder()
         .code(1)
@@ -59,8 +59,8 @@ public class ProductApiController {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public GlobalResponseDto save(@Valid @RequestBody CreateProductRequest productRequest,
-      @AuthenticationPrincipal MemberContext member) {
-    productService.save(productRequest, member);
+      @AuthenticationPrincipal MemberContext memberContext) {
+    productService.save(productRequest, memberContext);
 
     return GlobalResponseDto.builder()
         .code(1)
@@ -72,9 +72,9 @@ public class ProductApiController {
   @ResponseStatus(HttpStatus.OK)
   @PostMapping("{id}")
   public GlobalResponseDto update(@PathVariable Long id,
-      @AuthenticationPrincipal MemberContext member,
+      @AuthenticationPrincipal MemberContext memberContext,
       @Valid @RequestBody UpdateProductRequest productRequest) {
-    productService.update(id, productRequest, member);
+    productService.update(id, productRequest, memberContext);
 
     return GlobalResponseDto.builder()
         .code(1)
@@ -86,8 +86,8 @@ public class ProductApiController {
   @ResponseStatus(HttpStatus.OK)
   @DeleteMapping("{id}")
   public GlobalResponseDto delete(@PathVariable Long id,
-      @AuthenticationPrincipal MemberContext member) {
-    productService.delete(id, member);
+      @AuthenticationPrincipal MemberContext memberContext) {
+    productService.delete(id, memberContext);
 
     return GlobalResponseDto.builder()
         .code(1)

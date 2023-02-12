@@ -68,14 +68,14 @@ public class ProductApiControllerTest {
   void saveProduct() {
     Member createMember = Member.testConstructor(
         1L, "username", "password", "email", Role.USER);
-    MemberContext member = new MemberContext(createMember);
+    MemberContext memberContext = new MemberContext(createMember);
 
     CreateProductRequest productRequest = getInitProduct();
     CreateCategoryRequest categoryRequest = getInitCategory();
 
-    loginService.save(member.getMember());
+    loginService.save(memberContext.getMember());
     categoryService.save(categoryRequest);
-    productService.save(productRequest, member);
+    productService.save(productRequest, memberContext);
   }
 
   @AfterEach
@@ -83,10 +83,10 @@ public class ProductApiControllerTest {
     databaseCleanup.execute();
   }
 
-  @DisplayName("CreateProductRequest, Member 를 받아 상품을 생성할 수 있다.")
+  @DisplayName("CreateProductRequest 를 받아 상품을 등록할 수 있다.")
   @WithMockCustomUser(userId = 1, username = "username")
   @Test
-  void 상품_생성() throws Exception {
+  void 상품_등록() throws Exception {
     CreateProductRequest createProductRequest = getCreateProductRequest();
 
     // when & then
@@ -105,13 +105,35 @@ public class ProductApiControllerTest {
             GlobalResponseMessage.SUCCESS_POST_INSERT_PRODUCT.getSuccessMessage()));
   }
 
+  @DisplayName("상품 등록 시 CreateProductRequest 에 이미지가 없다면 400 예외가 발생한다.")
+  @WithMockCustomUser(userId = 1, username = "username")
+  @Test
+  void 이미지없이_상품_등록() throws Exception {
+    // given
+    CreateProductRequest notIncludedProductRequest = getNotIncludedProductRequest();
+
+    // when & then
+    mvc.perform(post("/api/product/")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(accept)
+            .content(mapper.writeValueAsString(notIncludedProductRequest)))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+
+        .andExpect(jsonPath("code").value(-1))
+        .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
+        .andExpect(jsonPath("message").value(
+            ExceptionMessage.IS_NOT_INCLUDED_IMAGE.getErrorMessage()));
+  }
+
+
   @DisplayName("비회원인 경우 단일 상품을 조회했을 때 self link 만 응답에 포함되어야한다.")
   @Test
   void 비회원_단일_상품조회() throws Exception {
     // when & then
     mvc.perform(get("/api/product/1")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().isOk())
@@ -135,7 +157,6 @@ public class ProductApiControllerTest {
     // when & then
     mvc.perform(get("/api/product/1")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().isOk())
@@ -156,7 +177,6 @@ public class ProductApiControllerTest {
     // when & then
     mvc.perform(get("/api/product/1")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().isOk())
@@ -181,7 +201,6 @@ public class ProductApiControllerTest {
     // when & then
     mvc.perform(get("/api/product/")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().isOk())
@@ -203,7 +222,6 @@ public class ProductApiControllerTest {
     // when & then
     mvc.perform(get("/api/product/")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().isOk())
@@ -286,7 +304,6 @@ public class ProductApiControllerTest {
     // when & then
     mvc.perform(delete("/api/product/1")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().is3xxRedirection())
@@ -300,7 +317,6 @@ public class ProductApiControllerTest {
     // when & then
     mvc.perform(delete("/api/product/1")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().isOk())
@@ -325,7 +341,6 @@ public class ProductApiControllerTest {
     // when & then
     mvc.perform(delete("/api/product/1")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().isBadRequest())
@@ -370,6 +385,15 @@ public class ProductApiControllerTest {
     );
 
     return CreateProductRequest.testConstructor(categoryId, title, content, price, imagesUrl);
+  }
+
+  private CreateProductRequest getNotIncludedProductRequest() {
+    Long categoryId = 1L;
+    String title = "Product Title";
+    String content = "Product Content";
+    int price = 20_000;
+
+    return CreateProductRequest.testConstructor(categoryId, title, content, price, null);
   }
 
   private UpdateProductRequest getUpdateProductRequest() {

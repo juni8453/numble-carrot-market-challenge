@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Transactional(readOnly = true)
   @Override
-  public CollectionModel<ProductModel> readAll(MemberContext member) {
+  public CollectionModel<ProductModel> readAll(MemberContext memberContext) {
     List<Product> products = productRepository.readAll();
     List<ProductResponse> productResponses = products.stream()
         .map(product -> ProductResponse.builder()
@@ -67,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
 
     // 회원이라면 상품 등록 API 호출 + 단일 상품 조회 APi 호출이 가능해야 한다.
     // 비회원이라면 단일 상품 조회 API 호출만 가능해야한다. (위 로직에서 이미 적용 완료)
-    if (member != null) {
+    if (memberContext != null) {
       productModels.add(linkTo(ProductApiController.class).withRel("product-save"));
     }
 
@@ -76,9 +76,10 @@ public class ProductServiceImpl implements ProductService {
 
   @Transactional(readOnly = true)
   @Override
-  public ProductModel detail(Long id, MemberContext member) {
+  public ProductModel detail(Long id, MemberContext memberContext) {
     Product findProduct = productRepository.findById(id).orElseThrow(
-        () -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT, HttpStatus.BAD_REQUEST));
+        () -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT,
+            HttpStatus.BAD_REQUEST));
 
     ProductResponse productResponse = ProductResponse.builder()
         .id(findProduct.getId())
@@ -93,12 +94,12 @@ public class ProductServiceImpl implements ProductService {
         .images(ImagesResponse.from(findProduct))
         .build();
 
-    return getResponseByProductDetail(member, productResponse);
+    return getResponseByProductDetail(memberContext, productResponse);
   }
 
   @Transactional
   @Override
-  public void save(CreateProductRequest productRequest, MemberContext member) {
+  public void save(CreateProductRequest productRequest, MemberContext memberContext) {
     String title = productRequest.getTitle();
     String content = productRequest.getContent();
     int price = productRequest.getPrice();
@@ -107,15 +108,22 @@ public class ProductServiceImpl implements ProductService {
 
     Product saveProduct = Product.createProduct(title, content, price);
 
-    Member findMember = memberRepository.findById(member.getMember().getId())
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
+    Member findMember = memberRepository.findById(memberContext.getMember().getId())
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER,
+            HttpStatus.BAD_REQUEST));
 
     Category findCategory = categoryRepository.findById(categoryId)
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_CATEGORY, HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_CATEGORY,
+            HttpStatus.BAD_REQUEST));
 
     // 연관관계에 의한 Member, Category, Image 값 셋팅
     saveProduct.addMember(findMember);
     saveProduct.addCategory(findCategory);
+
+    if (imagesUrl == null || imagesUrl.isEmpty()) {
+      throw new NotFoundEntityException(ExceptionMessage.IS_NOT_INCLUDED_IMAGE,
+          HttpStatus.BAD_REQUEST);
+    }
 
     List<ProductImage> imageUrls = imagesUrl.stream()
         .map(imageUrl -> ProductImage.createConstructor(imageUrl.getImageUrl()))
@@ -133,24 +141,28 @@ public class ProductServiceImpl implements ProductService {
 
   @Transactional
   @Override
-  public void update(Long id, UpdateProductRequest productRequest, MemberContext member) {
+  public void update(Long id, UpdateProductRequest productRequest, MemberContext memberContext) {
     Product findProduct = productRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT, HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT,
+            HttpStatus.BAD_REQUEST));
 
-    Member findMember = memberRepository.findById(member.getMember().getId())
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
+    Member findMember = memberRepository.findById(memberContext.getMember().getId())
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER,
+            HttpStatus.BAD_REQUEST));
 
     findProduct.updateProduct(productRequest, findMember);
   }
 
   @Transactional
   @Override
-  public void delete(Long id, MemberContext member) {
+  public void delete(Long id, MemberContext memberContext) {
     Product findProduct = productRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT, HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT,
+            HttpStatus.BAD_REQUEST));
 
-    Member findMember = memberRepository.findById(member.getMember().getId())
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
+    Member findMember = memberRepository.findById(memberContext.getMember().getId())
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER,
+            HttpStatus.BAD_REQUEST));
 
     if (!findProduct.checkUser(findMember)) {
       throw new AnotherMemberException(ExceptionMessage.IS_NOT_WRITER, HttpStatus.BAD_REQUEST);
@@ -166,7 +178,7 @@ public class ProductServiceImpl implements ProductService {
   /**
    * detail() 관련 Private Method
    */
-  private ProductModel getResponseByProductDetail(MemberContext member,
+  private ProductModel getResponseByProductDetail(MemberContext memberContext,
       ProductResponse productResponse) {
     Long productId = productResponse.getId();
     String memberOfProductName = productResponse.getMember().getUsername();
@@ -175,7 +187,8 @@ public class ProductServiceImpl implements ProductService {
     addHateoasLink(entityModelByProductResponse, productId);
 
     // 자신이 작성한 상품인 경우 삭제 및 수정 API 호출이 가능하다.
-    if (member != null && member.getMember().getUsername().equals(memberOfProductName)) {
+    if (memberContext != null && memberContext.getMember().getUsername()
+        .equals(memberOfProductName)) {
       addHateoasLink(entityModelByProductResponse, productId, "product-delete");
       addHateoasLink(entityModelByProductResponse, productId, "product-update");
     }

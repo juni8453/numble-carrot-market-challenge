@@ -22,9 +22,9 @@ public class LikesController {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("likes/{id}")
-  GlobalResponseDto like(@PathVariable Long id, @AuthenticationPrincipal MemberContext member) {
+  GlobalResponseDto like(@PathVariable Long id, @AuthenticationPrincipal MemberContext memberContext) {
 
-    likesService.like(id, member);
+    likesService.like(id, memberContext);
 
     return GlobalResponseDto.builder()
         .code(1)
