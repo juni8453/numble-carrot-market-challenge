@@ -68,14 +68,14 @@ public class ProductApiControllerTest {
   void saveProduct() {
     Member createMember = Member.testConstructor(
         1L, "username", "password", "email", Role.USER);
-    MemberContext member = new MemberContext(createMember);
+    MemberContext memberContext = new MemberContext(createMember);
 
     CreateProductRequest productRequest = getInitProduct();
     CreateCategoryRequest categoryRequest = getInitCategory();
 
-    loginService.save(member.getMember());
+    loginService.save(memberContext.getMember());
     categoryService.save(categoryRequest);
-    productService.save(productRequest, member);
+    productService.save(productRequest, memberContext);
   }
 
   @AfterEach

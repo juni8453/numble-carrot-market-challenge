@@ -8,13 +8,13 @@ import org.springframework.hateoas.CollectionModel;
 
 public interface ProductService {
 
-  CollectionModel<ProductModel> readAll(MemberContext member);
+  CollectionModel<ProductModel> readAll(MemberContext memberContext);
 
-  ProductModel detail(Long id, MemberContext member);
+  ProductModel detail(Long id, MemberContext memberContext);
 
-  void save(CreateProductRequest productRequest, MemberContext member);
+  void save(CreateProductRequest productRequest, MemberContext memberContext);
 
-  void update(Long id, UpdateProductRequest productRequest, MemberContext member);
+  void update(Long id, UpdateProductRequest productRequest, MemberContext memberContext);
 
-  void delete(Long id, MemberContext member);
+  void delete(Long id, MemberContext memberContext);
 }

@@ -50,9 +50,9 @@ public class MemberApiControllerTest {
   void saveMember() {
     Member createMember = Member.testConstructor(
         1L, "username", "password", "email", Role.USER);
-    MemberContext member = new MemberContext(createMember);
+    MemberContext memberContext = new MemberContext(createMember);
 
-    loginService.save(member.getMember());
+    loginService.save(memberContext.getMember());
   }
 
   @AfterEach

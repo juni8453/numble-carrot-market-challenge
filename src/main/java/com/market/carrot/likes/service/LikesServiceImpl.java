@@ -24,11 +24,11 @@ public class LikesServiceImpl implements LikesService {
 
   @Transactional
   @Override
-  public void like(Long id, MemberContext member) {
+  public void like(Long id, MemberContext memberContext) {
     Product findProduct = productRepository.findById(id)
         .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT, HttpStatus.BAD_REQUEST));
 
-    Member findMember = memberRepository.findById(member.getMember().getId())
+    Member findMember = memberRepository.findById(memberContext.getMember().getId())
         .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
 
     Likes findLikes = likesRepository.findByUsernameAndProductId(findMember.getUsername(), id);
