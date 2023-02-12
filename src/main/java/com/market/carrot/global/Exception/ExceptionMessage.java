@@ -23,6 +23,8 @@ public enum ExceptionMessage {
 
   IS_NOT_MY_PROFILE_BY_DELETE("삭제할 수 있는 프로필이 아닙니다."),
 
+  IS_NOT_INCLUDED_IMAGE("이미지를 하나 이상 등록해야합니다."),
+
   IS_NOT_WRITER("상품을 작성한 회원이 아닙니다.");
 
   private final String errorMessage;
