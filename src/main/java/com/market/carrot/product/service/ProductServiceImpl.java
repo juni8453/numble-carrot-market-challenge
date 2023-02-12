@@ -78,7 +78,8 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public ProductModel detail(Long id, MemberContext memberContext) {
     Product findProduct = productRepository.findById(id).orElseThrow(
-        () -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT, HttpStatus.BAD_REQUEST));
+        () -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT,
+            HttpStatus.BAD_REQUEST));
 
     ProductResponse productResponse = ProductResponse.builder()
         .id(findProduct.getId())
@@ -108,14 +109,21 @@ public class ProductServiceImpl implements ProductService {
     Product saveProduct = Product.createProduct(title, content, price);
 
     Member findMember = memberRepository.findById(memberContext.getMember().getId())
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER,
+            HttpStatus.BAD_REQUEST));
 
     Category findCategory = categoryRepository.findById(categoryId)
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_CATEGORY, HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_CATEGORY,
+            HttpStatus.BAD_REQUEST));
 
     // 연관관계에 의한 Member, Category, Image 값 셋팅
     saveProduct.addMember(findMember);
     saveProduct.addCategory(findCategory);
+
+    if (imagesUrl == null || imagesUrl.isEmpty()) {
+      throw new NotFoundEntityException(ExceptionMessage.IS_NOT_INCLUDED_IMAGE,
+          HttpStatus.BAD_REQUEST);
+    }
 
     List<ProductImage> imageUrls = imagesUrl.stream()
         .map(imageUrl -> ProductImage.createConstructor(imageUrl.getImageUrl()))
@@ -135,10 +143,12 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public void update(Long id, UpdateProductRequest productRequest, MemberContext memberContext) {
     Product findProduct = productRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT, HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT,
+            HttpStatus.BAD_REQUEST));
 
     Member findMember = memberRepository.findById(memberContext.getMember().getId())
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER,
+            HttpStatus.BAD_REQUEST));
 
     findProduct.updateProduct(productRequest, findMember);
   }
@@ -147,10 +157,12 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public void delete(Long id, MemberContext memberContext) {
     Product findProduct = productRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT, HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT,
+            HttpStatus.BAD_REQUEST));
 
     Member findMember = memberRepository.findById(memberContext.getMember().getId())
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
+        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER,
+            HttpStatus.BAD_REQUEST));
 
     if (!findProduct.checkUser(findMember)) {
       throw new AnotherMemberException(ExceptionMessage.IS_NOT_WRITER, HttpStatus.BAD_REQUEST);
@@ -175,7 +187,8 @@ public class ProductServiceImpl implements ProductService {
     addHateoasLink(entityModelByProductResponse, productId);
 
     // 자신이 작성한 상품인 경우 삭제 및 수정 API 호출이 가능하다.
-    if (memberContext != null && memberContext.getMember().getUsername().equals(memberOfProductName)) {
+    if (memberContext != null && memberContext.getMember().getUsername()
+        .equals(memberOfProductName)) {
       addHateoasLink(entityModelByProductResponse, productId, "product-delete");
       addHateoasLink(entityModelByProductResponse, productId, "product-update");
     }
