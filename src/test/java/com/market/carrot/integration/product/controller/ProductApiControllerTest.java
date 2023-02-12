@@ -111,7 +111,6 @@ public class ProductApiControllerTest {
     // when & then
     mvc.perform(get("/api/product/1")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().isOk())
@@ -135,7 +134,6 @@ public class ProductApiControllerTest {
     // when & then
     mvc.perform(get("/api/product/1")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().isOk())
@@ -156,7 +154,6 @@ public class ProductApiControllerTest {
     // when & then
     mvc.perform(get("/api/product/1")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().isOk())
@@ -181,7 +178,6 @@ public class ProductApiControllerTest {
     // when & then
     mvc.perform(get("/api/product/")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().isOk())
@@ -203,7 +199,6 @@ public class ProductApiControllerTest {
     // when & then
     mvc.perform(get("/api/product/")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().isOk())
@@ -286,7 +281,6 @@ public class ProductApiControllerTest {
     // when & then
     mvc.perform(delete("/api/product/1")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().is3xxRedirection())
@@ -300,7 +294,6 @@ public class ProductApiControllerTest {
     // when & then
     mvc.perform(delete("/api/product/1")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().isOk())
@@ -325,7 +318,6 @@ public class ProductApiControllerTest {
     // when & then
     mvc.perform(delete("/api/product/1")
             .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(accept))
         .andDo(print())
         .andExpect(status().isBadRequest())
