@@ -108,16 +108,12 @@ public class ProductServiceImpl implements ProductService {
 
     Product saveProduct = Product.createProduct(title, content, price);
 
-    Member findMember = memberRepository.findById(memberContext.getMember().getId())
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER,
-            HttpStatus.BAD_REQUEST));
-
     Category findCategory = categoryRepository.findById(categoryId)
         .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_CATEGORY,
             HttpStatus.BAD_REQUEST));
 
     // 연관관계에 의한 Member, Category, Image 값 셋팅
-    saveProduct.addMember(findMember);
+    saveProduct.addMember(memberContext.getMember());
     saveProduct.addCategory(findCategory);
 
     if (imagesUrl == null || imagesUrl.isEmpty()) {
@@ -146,11 +142,7 @@ public class ProductServiceImpl implements ProductService {
         .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT,
             HttpStatus.BAD_REQUEST));
 
-    Member findMember = memberRepository.findById(memberContext.getMember().getId())
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER,
-            HttpStatus.BAD_REQUEST));
-
-    findProduct.updateProduct(productRequest, findMember);
+    findProduct.updateProduct(productRequest, memberContext.getMember());
   }
 
   @Transactional
@@ -160,11 +152,7 @@ public class ProductServiceImpl implements ProductService {
         .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT,
             HttpStatus.BAD_REQUEST));
 
-    Member findMember = memberRepository.findById(memberContext.getMember().getId())
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER,
-            HttpStatus.BAD_REQUEST));
-
-    if (!findProduct.checkUser(findMember)) {
+    if (!findProduct.checkUser(memberContext.getMember())) {
       throw new AnotherMemberException(ExceptionMessage.IS_NOT_WRITER, HttpStatus.BAD_REQUEST);
     }
 
