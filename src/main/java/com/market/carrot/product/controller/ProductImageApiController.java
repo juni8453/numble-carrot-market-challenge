@@ -2,11 +2,13 @@ package com.market.carrot.product.controller;
 
 import com.market.carrot.global.GlobalResponseDto;
 import com.market.carrot.global.GlobalResponseMessage;
+import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.product.dto.request.UpdateProductImageRequest;
 import com.market.carrot.product.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,9 +27,11 @@ public class ProductImageApiController {
   @ResponseStatus(HttpStatus.OK)
   @PostMapping("{id}")
   public GlobalResponseDto updateProductImage(
-      @PathVariable Long id, @RequestBody UpdateProductImageRequest imageRequest) {
+      @PathVariable Long id, @RequestBody UpdateProductImageRequest imageRequest,
+      @AuthenticationPrincipal
+          MemberContext memberContext) {
 
-    productImageService.updateImage(id, imageRequest);
+    productImageService.updateImage(id, imageRequest, memberContext);
 
     return GlobalResponseDto.builder()
         .code(1)
@@ -38,9 +42,10 @@ public class ProductImageApiController {
 
   @ResponseStatus(HttpStatus.OK)
   @DeleteMapping("{id}")
-  public GlobalResponseDto deleteProductImage(@PathVariable Long id) {
+  public GlobalResponseDto deleteProductImage(@PathVariable Long id,
+      @AuthenticationPrincipal MemberContext memberContext) {
 
-    productImageService.deleteImage(id);
+    productImageService.deleteImage(id, memberContext);
 
     return GlobalResponseDto.builder()
         .code(1)
