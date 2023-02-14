@@ -22,10 +22,10 @@ public class LikesApiController {
   private final LikesService likesService;
 
   @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping("{id}")
-  GlobalResponseDto like(@PathVariable Long id, @AuthenticationPrincipal MemberContext memberContext) {
+  @PostMapping("{productId}")
+  GlobalResponseDto like(@PathVariable Long productId, @AuthenticationPrincipal MemberContext memberContext) {
 
-    likesService.like(id, memberContext);
+    likesService.like(productId, memberContext);
 
     return GlobalResponseDto.builder()
         .code(1)
