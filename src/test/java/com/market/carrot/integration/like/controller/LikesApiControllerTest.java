@@ -67,14 +67,14 @@ public class LikesApiControllerTest {
   @BeforeEach
   void saveProduct() {
     Member createMember = Member.testConstructor(
-        1L, "username", "password", "email", Role.USER);
+        1L, "username", "password", "email", Role.ADMIN);
     MemberContext memberContext = new MemberContext(createMember);
 
     CreateProductRequest productRequest = getInitProduct();
     CreateCategoryRequest categoryRequest = getInitCategory();
 
     loginService.save(memberContext.getMember());
-    categoryService.save(categoryRequest);
+    categoryService.save(categoryRequest, memberContext);
     productService.save(productRequest, memberContext);
   }
 
@@ -96,7 +96,7 @@ public class LikesApiControllerTest {
   }
 
   @DisplayName("존재하지 않는 상품 좋아요 API 호출 시 400 예외가 발생한다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 존재하지_않는_상품_좋아요() throws Exception {
     // when & then
@@ -113,7 +113,7 @@ public class LikesApiControllerTest {
   }
 
   @DisplayName("회원인 경우, 좋아요를 누르지 않은 상품에 대해 좋아요 API 호출 시 해당 상품에 대한 좋아요가 생성된다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 회원_좋아요_눌리지_않은_상품_좋아요() throws Exception {
     // when & then
@@ -126,11 +126,11 @@ public class LikesApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.CREATED.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_PRODUCT_LIKE.getSuccessMessage()));
+            GlobalResponseMessage.SUCCESS_POST_PRODUCT_LIKE.getSuccessMessage()));
   }
 
   @DisplayName("회원인 경우, 좋아요를 이미 누른 상품에 대해 좋아요 API 호출 시 또한 성공적으로 호출된다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 회원_이미_좋아요_눌린_상품_좋아요() throws Exception {
     // given

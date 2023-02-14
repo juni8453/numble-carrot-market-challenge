@@ -75,7 +75,7 @@ public class MemberApiControllerTest {
   }
 
   @DisplayName("회원이면서 자신의 프로필을 조회한다면 self, update, delete link 모두 응답에 포함되어야한다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 회원_내_프로필_조회() throws Exception {
     // when & then
@@ -92,7 +92,7 @@ public class MemberApiControllerTest {
   }
 
   @DisplayName("회원이지만 자신의 프로필을 조회하는게 아닌 경우 조회 호출 시 400 예외가 발생한다.")
-  @WithMockCustomUser(userId = 2, username = "anotherUser")
+  @WithMockCustomUser(userId = 2, username = "anotherUser", role = Role.USER)
   @Test
   void 회원_다른_회원의_프로필_조회() throws Exception {
     // when & then
@@ -104,7 +104,7 @@ public class MemberApiControllerTest {
   }
 
   @DisplayName("회원이라면 자신의 프로필을 삭제할 수 있다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 회원_내_프로필_삭제() throws Exception {
     // when & then
@@ -121,7 +121,7 @@ public class MemberApiControllerTest {
   }
 
   @DisplayName("회원이지만 자신의 프로필을 삭제하는게 아닌 경우 삭제 호출 시 400 예외가 발생한다.")
-  @WithMockCustomUser(userId = 2, username = "anotherUser")
+  @WithMockCustomUser(userId = 2, username = "anotherUser", role = Role.USER)
   @Test
   void 회원_다른_회원_프로필_삭제() throws Exception {
     // when & then

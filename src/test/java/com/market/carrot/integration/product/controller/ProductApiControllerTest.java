@@ -66,14 +66,14 @@ public class ProductApiControllerTest {
   @BeforeEach
   void saveProduct() {
     Member createMember = Member.testConstructor(
-        1L, "username", "password", "email", Role.USER);
+        1L, "username", "password", "email", Role.ADMIN);
     MemberContext memberContext = new MemberContext(createMember);
 
     CreateProductRequest productRequest = getInitProduct();
     CreateCategoryRequest categoryRequest = getInitCategory();
 
     loginService.save(memberContext.getMember());
-    categoryService.save(categoryRequest);
+    categoryService.save(categoryRequest, memberContext);
     productService.save(productRequest, memberContext);
   }
 
@@ -100,7 +100,7 @@ public class ProductApiControllerTest {
   }
 
   @DisplayName("CreateProductRequest 를 받아 상품을 등록할 수 있다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 회원_상품_등록() throws Exception {
     CreateProductRequest createProductRequest = getCreateProductRequest();
@@ -122,7 +122,7 @@ public class ProductApiControllerTest {
   }
 
   @DisplayName("상품 등록 시 CreateProductRequest 에 이미지가 없다면 400 예외가 발생한다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 이미지_없이_상품_등록() throws Exception {
     // given
@@ -167,7 +167,7 @@ public class ProductApiControllerTest {
   }
 
   @DisplayName("회원이지만 자신이 등록한 상품이 아닌 경우 self link 만 응답에 포함되어야한다.")
-  @WithMockCustomUser(userId = 2, username = "anotherUser")
+  @WithMockCustomUser(userId = 2, username = "anotherUser", role = Role.USER)
   @Test
   void 자신이_등록한_상품이_이닌경우_상품조회() throws Exception {
     // when & then
@@ -187,7 +187,7 @@ public class ProductApiControllerTest {
   }
 
   @DisplayName("회원이면서 자신이 등록한 상품인 경우 self, update, delete link 모두 응답에 포함되어야한다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 자신이_등록한_상품조회() throws Exception {
     // when & then
@@ -232,7 +232,7 @@ public class ProductApiControllerTest {
   }
 
   @DisplayName("회원일 경우 content 내부 각 상품의 단일 상품 조회 link, 바깥쪽 links[] 에 상품 등록 link 가 응답에 포함되어야한다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 회원_모든_상품조회() throws Exception {
     // when & then
@@ -266,7 +266,7 @@ public class ProductApiControllerTest {
   }
 
   @DisplayName("회원일 경우 자신이 등록한 상품을 수정할 수 있다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 회원_상품_수정() throws Exception {
     // given
@@ -288,7 +288,7 @@ public class ProductApiControllerTest {
   }
 
   @DisplayName("회원이지만 자신이 등록한 상품이 아닌 경우 수정 호출 시 400 예외가 발생한다.")
-  @WithMockCustomUser(userId = 2, username = "anotherUser")
+  @WithMockCustomUser(userId = 2, username = "anotherUser", role = Role.USER)
   @Test
   void 자신이_등록한_상품이_아닌경우_상품수정_400() throws Exception {
     // given
@@ -321,7 +321,7 @@ public class ProductApiControllerTest {
   }
 
   @DisplayName("회원일 경우 자신이 등록한 상품을 삭제할 수 있다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 회원_상품_삭제() throws Exception {
     // when & then
@@ -338,7 +338,7 @@ public class ProductApiControllerTest {
   }
 
   @DisplayName("회원이지만 자신이 등록한 상품이 아닌 경우 삭제 호출 시 400 예외가 발생한다.")
-  @WithMockCustomUser(userId = 2, username = "anotherUser")
+  @WithMockCustomUser(userId = 2, username = "anotherUser", role = Role.USER)
   @Test
   void 자신이_등록한_상품이_아닌경우_상품삭제_400() throws Exception {
     // when & then
@@ -354,7 +354,7 @@ public class ProductApiControllerTest {
   }
 
   @DisplayName("존재하지 않는 상품 조회 시 400 예외가 발생한다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 존재하지_않는_상품_단일_조회() throws Exception {
     // when & then
@@ -370,7 +370,7 @@ public class ProductApiControllerTest {
   }
 
   @DisplayName("존재하지 않는 상품 수정 시 400 예외가 발생한다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 존재하지_않는_상품_수정() throws Exception {
     // given
@@ -391,7 +391,7 @@ public class ProductApiControllerTest {
   }
 
   @DisplayName("존재하지 않는 상품 삭제 시 400 예외가 발생한다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 존재하지_않는_상품_삭제() throws Exception {
     // when & then

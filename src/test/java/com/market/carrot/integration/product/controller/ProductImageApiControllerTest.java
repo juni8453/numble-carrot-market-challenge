@@ -65,14 +65,14 @@ public class ProductImageApiControllerTest {
   @BeforeEach
   void saveProduct() {
     Member createMember = Member.testConstructor(
-        1L, "username", "password", "email", Role.USER);
+        1L, "username", "password", "email", Role.ADMIN);
     MemberContext memberContext = new MemberContext(createMember);
 
     CreateProductRequest productRequest = getInitProduct();
     CreateCategoryRequest categoryRequest = getInitCategory();
 
     loginService.save(memberContext.getMember());
-    categoryService.save(categoryRequest);
+    categoryService.save(categoryRequest, memberContext);
     productService.save(productRequest, memberContext);
   }
 
@@ -100,7 +100,7 @@ public class ProductImageApiControllerTest {
   }
 
   @DisplayName("회원이면서 자신이 등록한 상품인경우 이미지를 수정할 수 있다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 회원_자신이_등록한_상품_이미지_수정() throws Exception {
     // given
@@ -123,7 +123,7 @@ public class ProductImageApiControllerTest {
   }
 
   @DisplayName("회원이지만 자신이 등록한 상품이 아닌경우 수정 호출 시 400 예외가 발생한다.")
-  @WithMockCustomUser(userId = 2, username = "anotherUser")
+  @WithMockCustomUser(userId = 2, username = "anotherUser", role = Role.USER)
   @Test
   void 회원_자신이_등록하지_않은_상품_이미지_수정() throws Exception {
     // given
@@ -158,7 +158,7 @@ public class ProductImageApiControllerTest {
   }
 
   @DisplayName("회원이면서 자신이 등록한 상품인경우 이미지를 삭제할 수 있다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 회원_자신이_등록한_상품_이미지_삭제() throws Exception {
     // when & then
@@ -175,7 +175,7 @@ public class ProductImageApiControllerTest {
   }
 
   @DisplayName("회원이지만 자신이 등록한 상품이 아닌경우 삭제 호출 시 400 예외가 발생한다.")
-  @WithMockCustomUser(userId = 2, username = "anotherUser")
+  @WithMockCustomUser(userId = 2, username = "anotherUser", role = Role.USER)
   @Test
   void 회원_자신이_등록하지_않은_상품_이미지_삭제() throws Exception {
     // when & then
@@ -191,7 +191,7 @@ public class ProductImageApiControllerTest {
   }
 
   @DisplayName("존재하지 않는 이미지 수정 시 400 예외가 발생한다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 존재하지_않는_상품_이미지_수정() throws Exception {
     // given
@@ -213,7 +213,7 @@ public class ProductImageApiControllerTest {
   }
 
   @DisplayName("존재하지 않는 이미지 삭제 시 400 예외가 발생한다.")
-  @WithMockCustomUser(userId = 1, username = "username")
+  @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 존재하지_않는_상품_이미지_삭제() throws Exception {
     // when & then
