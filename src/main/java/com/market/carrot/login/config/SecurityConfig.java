@@ -48,6 +48,9 @@ public class SecurityConfig {
         .antMatchers(HttpMethod.POST, "/api/product/**").hasAnyRole("USER", "ADMIN")
         .antMatchers(HttpMethod.DELETE, "/api/product/**").hasAnyRole("USER", "ADMIN")
 
+        .antMatchers(HttpMethod.POST, "/api/image/**").hasAnyRole("USER", "ADMIN")
+        .antMatchers(HttpMethod.DELETE, "/api/image/**").hasAnyRole("USER", "ADMIN")
+
         .antMatchers("/api/likes/**").hasAnyRole("USER", "ADMIN")
         .anyRequest().permitAll();
 
