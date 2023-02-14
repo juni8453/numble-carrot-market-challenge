@@ -21,7 +21,7 @@ public class WithMockCustomUserSecurityContextFactory implements WithSecurityCon
     roles.add(new SimpleGrantedAuthority("USER"));
 
     Member member = Member.testConstructor(
-        annotation.userId(), annotation.username(), "password", null, Role.USER
+        annotation.userId(), annotation.username(), "password", null, annotation.role()
     );
 
     MemberContext memberContext = new MemberContext(member);
