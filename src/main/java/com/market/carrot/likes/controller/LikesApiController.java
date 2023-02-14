@@ -5,6 +5,7 @@ import com.market.carrot.global.GlobalResponseMessage;
 import com.market.carrot.likes.service.LikesService;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,14 +15,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/")
+@RequestMapping(value = "/api/likes/", produces = MediaTypes.HAL_JSON_VALUE)
 @RestController
-public class LikesController {
+public class LikesApiController {
 
   private final LikesService likesService;
 
   @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping("likes/{id}")
+  @PostMapping("{id}")
   GlobalResponseDto like(@PathVariable Long id, @AuthenticationPrincipal MemberContext memberContext) {
 
     likesService.like(id, memberContext);
