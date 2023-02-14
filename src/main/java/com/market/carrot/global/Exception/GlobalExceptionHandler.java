@@ -16,6 +16,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  @ExceptionHandler(RoleException.class)
+  public GlobalResponseDto incorrectRole(RoleException roleException) {
+    log.error("roleException 발생: {}", roleException.getMessage());
+
+    return GlobalResponseDto.builder()
+        .code(-1)
+        .httpStatus(HttpStatus.UNAUTHORIZED)
+        .message(roleException.getMessage())
+        .build();
+  }
+
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(AnotherMemberException.class)
   public GlobalResponseDto isNotMyProfile(AnotherMemberException anotherMemberException) {
@@ -64,7 +76,8 @@ public class GlobalExceptionHandler {
           .fieldMessage(fieldError.getDefaultMessage())
           .build();
 
-      ValidationExceptionFieldResponse response = new ValidationExceptionFieldResponse(validationExceptionField);
+      ValidationExceptionFieldResponse response = new ValidationExceptionFieldResponse(
+          validationExceptionField);
       responses.add(response);
     }
 
