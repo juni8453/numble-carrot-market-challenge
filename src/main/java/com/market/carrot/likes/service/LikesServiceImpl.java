@@ -28,10 +28,7 @@ public class LikesServiceImpl implements LikesService {
     Product findProduct = productRepository.findById(id)
         .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT, HttpStatus.BAD_REQUEST));
 
-    Member findMember = memberRepository.findById(memberContext.getMember().getId())
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER, HttpStatus.BAD_REQUEST));
-
-    Likes findLikes = likesRepository.findByUsernameAndProductId(findMember.getUsername(), id);
+    Likes findLikes = likesRepository.findByUsernameAndProductId(memberContext.getUsername(), id);
 
     // 자신이 좋아요를 이미 누른 제품인 경우 heartCount 를 하나 줄이고 Entity 를 DB 에서 삭제한다.
     if (findLikes != null) {
@@ -43,7 +40,7 @@ public class LikesServiceImpl implements LikesService {
     // 자신이 좋아요를 누르지 않은 제품인 경우 heartCount 를 하나 올려준다.
     Likes saveLikes = Likes.createLikes();
     saveLikes.addProduct(findProduct);
-    saveLikes.addMember(findMember);
+    saveLikes.addMember(memberContext.getMember());
 
     likesRepository.save(saveLikes);
     findProduct.plusHeartCount();
