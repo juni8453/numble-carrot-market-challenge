@@ -24,11 +24,11 @@ public class LikesServiceImpl implements LikesService {
 
   @Transactional
   @Override
-  public void like(Long id, MemberContext memberContext) {
-    Product findProduct = productRepository.findById(id)
+  public void like(Long productId, MemberContext memberContext) {
+    Product findProduct = productRepository.findById(productId)
         .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT, HttpStatus.BAD_REQUEST));
 
-    Likes findLikes = likesRepository.findByUsernameAndProductId(memberContext.getUsername(), id);
+    Likes findLikes = likesRepository.findByUsernameAndProductId(memberContext.getUsername(), productId);
 
     // 자신이 좋아요를 이미 누른 제품인 경우 heartCount 를 하나 줄이고 Entity 를 DB 에서 삭제한다.
     if (findLikes != null) {

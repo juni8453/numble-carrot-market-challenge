@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum GlobalResponseMessage {
 
-  SUCCESS_PRODUCT_LIKE("제품 좋아요 성공"),
+  SUCCESS_POST_CATEGORY("카테고리 등록 성공"),
+
+  SUCCESS_POST_PRODUCT_LIKE("제품 좋아요 성공"),
 
   SUCCESS_GET_MEMBER("프로필 조회 성공"),
 
