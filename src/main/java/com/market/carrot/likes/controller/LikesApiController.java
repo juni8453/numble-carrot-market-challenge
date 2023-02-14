@@ -30,7 +30,7 @@ public class LikesApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.CREATED)
-        .message(GlobalResponseMessage.SUCCESS_PRODUCT_LIKE.getSuccessMessage())
+        .message(GlobalResponseMessage.SUCCESS_POST_PRODUCT_LIKE.getSuccessMessage())
         .build();
   }
 }
