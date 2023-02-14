@@ -35,7 +35,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
@@ -83,10 +82,27 @@ public class ProductApiControllerTest {
     databaseCleanup.execute();
   }
 
+  @DisplayName("비회원인 경우 등록 API 를 호출하면 로그인 페이지로 Redirect 된다.")
+  @Test
+  void 비회원_상품_등록() throws Exception {
+    // given
+    CreateProductRequest createProductRequest = getCreateProductRequest();
+
+    // when & then
+    mvc.perform(post("/api/product/")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(accept)
+            .content(mapper.writeValueAsString(createProductRequest)))
+        .andDo(print())
+        .andExpect(status().is3xxRedirection())
+        .andExpect(header().exists(HttpHeaders.LOCATION));
+  }
+
   @DisplayName("CreateProductRequest 를 받아 상품을 등록할 수 있다.")
   @WithMockCustomUser(userId = 1, username = "username")
   @Test
-  void 상품_등록() throws Exception {
+  void 회원_상품_등록() throws Exception {
     CreateProductRequest createProductRequest = getCreateProductRequest();
 
     // when & then
@@ -108,7 +124,7 @@ public class ProductApiControllerTest {
   @DisplayName("상품 등록 시 CreateProductRequest 에 이미지가 없다면 400 예외가 발생한다.")
   @WithMockCustomUser(userId = 1, username = "username")
   @Test
-  void 이미지없이_상품_등록() throws Exception {
+  void 이미지_없이_상품_등록() throws Exception {
     // given
     CreateProductRequest notIncludedProductRequest = getNotIncludedProductRequest();
 
@@ -276,12 +292,6 @@ public class ProductApiControllerTest {
   @Test
   void 자신이_등록한_상품이_아닌경우_상품수정_400() throws Exception {
     // given
-    // anotherUser 에 userId = 2를 설정하고 저장해야만 본 로직 부분에서 NOT_FOUND_MEMBER 예외가 발생하지 않는다.
-    MemberContext memberContext = (MemberContext) SecurityContextHolder.getContext()
-        .getAuthentication()
-        .getPrincipal();
-    loginService.save(memberContext.getMember());
-
     UpdateProductRequest updateProductRequest = getUpdateProductRequest();
 
     //when & then
@@ -311,7 +321,7 @@ public class ProductApiControllerTest {
   }
 
   @DisplayName("회원일 경우 자신이 등록한 상품을 삭제할 수 있다.")
-  @WithMockCustomUser
+  @WithMockCustomUser(userId = 1, username = "username")
   @Test
   void 회원_상품_삭제() throws Exception {
     // when & then
@@ -331,13 +341,6 @@ public class ProductApiControllerTest {
   @WithMockCustomUser(userId = 2, username = "anotherUser")
   @Test
   void 자신이_등록한_상품이_아닌경우_상품삭제_400() throws Exception {
-    // given
-    // anotherUser 에 userId = 2를 설정하고 저장해야만 본 로직 부분에서 NOT_FOUND_MEMBER 예외가 발생하지 않는다.
-    MemberContext memberContext = (MemberContext) SecurityContextHolder.getContext()
-        .getAuthentication()
-        .getPrincipal();
-    loginService.save(memberContext.getMember());
-
     // when & then
     mvc.perform(delete("/api/product/1")
             .with(csrf())
@@ -348,6 +351,59 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("code").value(-1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
         .andExpect(jsonPath("message").value(ExceptionMessage.IS_NOT_WRITER.getErrorMessage()));
+  }
+
+  @DisplayName("존재하지 않는 상품 조회 시 400 예외가 발생한다.")
+  @WithMockCustomUser(userId = 1, username = "username")
+  @Test
+  void 존재하지_않는_상품_단일_조회() throws Exception {
+    // when & then
+    mvc.perform(get("/api/product/2")
+            .with(csrf())
+            .accept(accept))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+
+        .andExpect(jsonPath("code").value(-1))
+        .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
+        .andExpect(jsonPath("message").value(ExceptionMessage.NOT_FOUND_PRODUCT.getErrorMessage()));
+  }
+
+  @DisplayName("존재하지 않는 상품 수정 시 400 예외가 발생한다.")
+  @WithMockCustomUser(userId = 1, username = "username")
+  @Test
+  void 존재하지_않는_상품_수정() throws Exception {
+    // given
+    UpdateProductRequest updateProductRequest = getUpdateProductRequest();
+
+    // when & then
+    mvc.perform(post("/api/product/2")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(accept)
+            .content(mapper.writeValueAsString(updateProductRequest)))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+
+        .andExpect(jsonPath("code").value(-1))
+        .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
+        .andExpect(jsonPath("message").value(ExceptionMessage.NOT_FOUND_PRODUCT.getErrorMessage()));
+  }
+
+  @DisplayName("존재하지 않는 상품 삭제 시 400 예외가 발생한다.")
+  @WithMockCustomUser(userId = 1, username = "username")
+  @Test
+  void 존재하지_않는_상품_삭제() throws Exception {
+    // when & then
+    mvc.perform(delete("/api/product/2")
+            .with(csrf())
+            .accept(accept))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+
+        .andExpect(jsonPath("code").value(-1))
+        .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
+        .andExpect(jsonPath("message").value(ExceptionMessage.NOT_FOUND_PRODUCT.getErrorMessage()));
   }
 
   /**
