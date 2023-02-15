@@ -54,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
             .modifiedDate(product.getModifiedDate())
             .member(MemberByProductResponse.from(product))
             .category(CategoryByProductResponse.from(product))
-            .images(ImagesResponse.from(product))
+            .image(ImagesResponse.from(product))
             .build())
         .collect(Collectors.toList());
 
@@ -91,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
         .modifiedDate(findProduct.getModifiedDate())
         .member(MemberByProductResponse.from(findProduct))
         .category(CategoryByProductResponse.from(findProduct))
-        .images(ImagesResponse.from(findProduct))
+        .image(ImagesResponse.from(findProduct))
         .build();
 
     return getResponseByProductDetail(memberContext, productResponse);
