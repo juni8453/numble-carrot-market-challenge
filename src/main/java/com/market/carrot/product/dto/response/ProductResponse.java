@@ -16,14 +16,14 @@ public class ProductResponse {
   private final LocalDateTime modifiedDate;
   private final MemberByProductResponse member;
   private final CategoryByProductResponse category;
-  private final ImagesResponse images;
+  private final ImagesResponse image;
 
   @Builder
   public ProductResponse(Long id, String title, String content, int price, int heartCount,
       LocalDateTime createdDate, LocalDateTime modifiedDate,
       MemberByProductResponse member,
       CategoryByProductResponse category,
-      ImagesResponse images) {
+      ImagesResponse image) {
     this.id = id;
     this.title = title;
     this.content = content;
@@ -33,6 +33,6 @@ public class ProductResponse {
     this.modifiedDate = modifiedDate;
     this.member = member;
     this.category = category;
-    this.images = images;
+    this.image = image;
   }
 }

@@ -1,5 +1,12 @@
 package com.market.carrot.integration.category.controller;
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -9,10 +16,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.market.carrot.category.domain.dto.CreateCategoryRequest;
-import com.market.carrot.category.service.CategoryService;
 import com.market.carrot.config.DatabaseCleanup;
+import com.market.carrot.config.RestDocsConfig;
 import com.market.carrot.config.WithMockCustomUser;
-import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.GlobalResponseMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.login.domain.Member;
@@ -23,13 +29,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+@Import(RestDocsConfig.class)
+@AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @SpringBootTest
 public class CategoryApiControllerTest {
@@ -79,10 +90,20 @@ public class CategoryApiControllerTest {
             .content(mapper.writeValueAsString(createCategoryRequest)))
         .andDo(print())
         .andExpect(status().is3xxRedirection())
-        .andExpect(header().exists(HttpHeaders.LOCATION));
+        .andExpect(header().exists(HttpHeaders.LOCATION))
+
+        .andDo(document("[Category] 비회원의 카테고리 생성 API 호출",
+            requestHeaders(
+                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
+                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseHeaders(
+                headerWithName(HttpHeaders.LOCATION).description("/loginForm")
+            )
+        ));
   }
 
-  @DisplayName("회원이지만 USER 권한인 경우, 카테고리 생성 API 를 호출한다면 401 예외가 발생한다.")
+  @DisplayName("회원이지만 USER 권한인 경우, 카테고리 생성 API 를 호출한다면 403 예외가 발생한다.")
   @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 회원_카테고리_생성() throws Exception {
@@ -97,11 +118,14 @@ public class CategoryApiControllerTest {
             .accept(accept)
             .content(mapper.writeValueAsString(createCategoryRequest)))
         .andDo(print())
-        .andExpect(status().isUnauthorized())
+        .andExpect(status().isForbidden())
 
-        .andExpect(jsonPath("code").value(-1))
-        .andExpect(jsonPath("httpStatus").value(HttpStatus.UNAUTHORIZED.name()))
-        .andExpect(jsonPath("message").value(ExceptionMessage.INCORRECT_ROLE.getErrorMessage()));
+        .andDo(document("[Category] USER 권한 회원의 카테고리 생성 API 호출",
+            requestHeaders(
+                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
+                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
+            )
+        ));
   }
 
   @DisplayName("회원이면서 ADMIN 권한인 경우, 카테고리 생성 API 를 호출하면 카테고리가 하나 생성된다.")
@@ -123,6 +147,26 @@ public class CategoryApiControllerTest {
 
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.CREATED.name()))
-        .andExpect(jsonPath("message").value(GlobalResponseMessage.SUCCESS_POST_CATEGORY.getSuccessMessage()));
+        .andExpect(jsonPath("message").value(
+            GlobalResponseMessage.SUCCESS_POST_CATEGORY.getSuccessMessage()))
+
+        .andDo(document("ADMIN 권한 회원의 카테고리 생성 API 호출",
+            requestHeaders(
+                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
+                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            requestFields(
+                fieldWithPath("name").description("카테고리 이름")
+            ),
+            responseHeaders(
+                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseFields(
+                fieldWithPath("code").description("응답 성공 코드"),
+                fieldWithPath("httpStatus").description(HttpStatus.CREATED),
+                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_POST_CATEGORY),
+                fieldWithPath("body").description("null")
+            )
+        ));
   }
 }

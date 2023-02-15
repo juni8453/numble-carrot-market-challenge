@@ -1,5 +1,11 @@
 package com.market.carrot.integration.member.controller;
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -10,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.market.carrot.config.DatabaseCleanup;
+import com.market.carrot.config.RestDocsConfig;
 import com.market.carrot.config.WithMockCustomUser;
 import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.GlobalResponseMessage;
@@ -22,12 +29,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 
+
+@Import(RestDocsConfig.class)
+@AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @SpringBootTest
 public class MemberApiControllerTest {
@@ -71,7 +84,16 @@ public class MemberApiControllerTest {
             .accept(accept))
         .andDo(print())
         .andExpect(status().is3xxRedirection())
-        .andExpect(header().exists(HttpHeaders.LOCATION));
+        .andExpect(header().exists(HttpHeaders.LOCATION))
+
+        .andDo(document("[Member] 비회원의 프로필 조회 API 호출",
+            requestHeaders(
+                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseHeaders(
+                headerWithName(HttpHeaders.LOCATION).description("/loginForm")
+            )
+        ));
   }
 
   @DisplayName("회원이면서 자신의 프로필을 조회한다면 self, update, delete link 모두 응답에 포함되어야한다.")
@@ -88,7 +110,33 @@ public class MemberApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_GET_MEMBER.getSuccessMessage()));
+            GlobalResponseMessage.SUCCESS_GET_MEMBER.getSuccessMessage()))
+
+        .andDo(document("[Member] 회원의 프로필 조회 API 호출",
+            requestHeaders(
+                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseHeaders(
+                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseFields(
+                fieldWithPath("code").description("응답 성공 코드"),
+                fieldWithPath("httpStatus").description(HttpStatus.OK),
+                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_GET_MEMBER),
+                fieldWithPath("body").description("null"),
+
+                fieldWithPath("body.id").description("회원 아이디"),
+                fieldWithPath("body.username").description("회원 이름"),
+                fieldWithPath("body.email").description("회원 이메일"),
+
+                fieldWithPath("body.links[].rel").description("self"),
+                fieldWithPath("body.links[].href").description("/api/user/{userId}"),
+                fieldWithPath("body.links[].rel").description("member-delete"),
+                fieldWithPath("body.links[].href").description("/api/user/{userId}"),
+                fieldWithPath("body.links[].rel").description("member-update"),
+                fieldWithPath("body.links[].href").description("/api/user/{userId}")
+            ))
+        );
   }
 
   @DisplayName("회원이지만 자신의 프로필을 조회하는게 아닌 경우 조회 호출 시 400 예외가 발생한다.")
@@ -117,7 +165,22 @@ public class MemberApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_DELETE_MEMBER.getSuccessMessage()));
+            GlobalResponseMessage.SUCCESS_DELETE_MEMBER.getSuccessMessage()))
+
+        .andDo(document("[Member] 회원의 프로필 삭제 API 호출",
+            requestHeaders(
+                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseHeaders(
+                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseFields(
+                fieldWithPath("code").description("응답 성공 코드"),
+                fieldWithPath("httpStatus").description(HttpStatus.OK),
+                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_DELETE_MEMBER),
+                fieldWithPath("body").description("null")
+            )
+        ));
   }
 
   @DisplayName("회원이지만 자신의 프로필을 삭제하는게 아닌 경우 삭제 호출 시 400 예외가 발생한다.")
@@ -134,6 +197,21 @@ public class MemberApiControllerTest {
         .andExpect(jsonPath("code").value(-1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
         .andExpect(jsonPath("message").value(
-            ExceptionMessage.IS_NOT_MY_PROFILE_BY_DELETE.getErrorMessage()));
+            ExceptionMessage.IS_NOT_MY_PROFILE_BY_DELETE.getErrorMessage()))
+
+        .andDo(document("[Member] 자신이 아닌 다른 회원의 프로필 삭제 API 호출",
+            requestHeaders(
+                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseHeaders(
+                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseFields(
+                fieldWithPath("code").description("응답 실패 코드"),
+                fieldWithPath("httpStatus").description(HttpStatus.BAD_REQUEST),
+                fieldWithPath("message").description(ExceptionMessage.IS_NOT_MY_PROFILE_BY_DELETE),
+                fieldWithPath("body").description("null")
+            )
+        ));
   }
 }
