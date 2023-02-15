@@ -1,5 +1,11 @@
 package com.market.carrot.integration.like.controller;
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -11,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.market.carrot.category.domain.dto.CreateCategoryRequest;
 import com.market.carrot.category.service.CategoryService;
 import com.market.carrot.config.DatabaseCleanup;
+import com.market.carrot.config.RestDocsConfig;
 import com.market.carrot.config.WithMockCustomUser;
 import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.GlobalResponseMessage;
@@ -28,13 +35,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 
+@Import(RestDocsConfig.class)
+@AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @SpringBootTest
 public class LikesApiControllerTest {
@@ -92,7 +104,16 @@ public class LikesApiControllerTest {
             .accept(accept))
         .andDo(print())
         .andExpect(status().is3xxRedirection())
-        .andExpect(header().exists(HttpHeaders.LOCATION));
+        .andExpect(header().exists(HttpHeaders.LOCATION))
+
+        .andDo(document("[Likes] 비회원의 좋야요 API 호출",
+            requestHeaders(
+                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseHeaders(
+                headerWithName(HttpHeaders.LOCATION).description("/loginForm")
+            )
+        ));
   }
 
   @DisplayName("존재하지 않는 상품 좋아요 API 호출 시 400 예외가 발생한다.")
@@ -109,7 +130,22 @@ public class LikesApiControllerTest {
         .andExpect(jsonPath("code").value(-1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
         .andExpect(jsonPath("message").value(
-            ExceptionMessage.NOT_FOUND_PRODUCT.getErrorMessage()));
+            ExceptionMessage.NOT_FOUND_PRODUCT.getErrorMessage()))
+
+        .andDo(document("[Likes] 존재하지 않는 상품 좋아요 API 호출",
+            requestHeaders(
+                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseHeaders(
+                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseFields(
+                fieldWithPath("code").description("응답 실패 코드"),
+                fieldWithPath("httpStatus").description(HttpStatus.BAD_REQUEST),
+                fieldWithPath("message").description(ExceptionMessage.NOT_FOUND_PRODUCT),
+                fieldWithPath("body").description("null")
+            )
+        ));
   }
 
   @DisplayName("회원인 경우, 좋아요를 누르지 않은 상품에 대해 좋아요 API 호출 시 해당 상품에 대한 좋아요가 생성된다.")
@@ -126,7 +162,22 @@ public class LikesApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.CREATED.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_POST_PRODUCT_LIKE.getSuccessMessage()));
+            GlobalResponseMessage.SUCCESS_POST_PRODUCT_LIKE.getSuccessMessage()))
+
+        .andDo(document("[Likes] 좋아요를 누르지 않은 상품 좋아요 API 호출",
+            requestHeaders(
+                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseHeaders(
+                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseFields(
+                fieldWithPath("code").description("응답 성공 코드"),
+                fieldWithPath("httpStatus").description(HttpStatus.CREATED),
+                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_POST_PRODUCT_LIKE),
+                fieldWithPath("body").description("null")
+            )
+        ));
   }
 
   @DisplayName("회원인 경우, 좋아요를 이미 누른 상품에 대해 좋아요 API 호출 시 또한 성공적으로 호출된다.")
@@ -144,7 +195,22 @@ public class LikesApiControllerTest {
             .with(csrf())
             .accept(accept))
         .andDo(print())
-        .andExpect(status().isCreated());
+        .andExpect(status().isCreated())
+
+        .andDo(document("[Likes] 이미 좋아요를 누른 상품 좋아요 API 호출",
+            requestHeaders(
+                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseHeaders(
+                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseFields(
+                fieldWithPath("code").description("응답 성공 코드"),
+                fieldWithPath("httpStatus").description(HttpStatus.CREATED),
+                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_POST_PRODUCT_LIKE),
+                fieldWithPath("body").description("null")
+            )
+        ));
   }
 
   /**
