@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.6'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
 group = 'com.market'
@@ -37,6 +38,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
 tasks.named('test') {
@@ -51,4 +53,22 @@ bootJar {
 	archivesBaseName = 'app'
 	archiveFileName = 'app.jar'
 	archiveVersion = "0.0.0"
+}
+
+// 생성된 snippet 의 저장 위치 명시
+ext {
+	set('snippetsDir', file("build/generated-snippets"))
+}
+
+// 테스트 Task 의 아웃풋 디렉토리를 스니펫 저장 위치로 설정
+test {
+	outputs.dir snippetsDir
+	useJUnitPlatform()
+}
+
+// 스니펫 저장 위치를 인풋으로 지정.
+// asciidoctor Task 는 테스트 Task 수행 이후에 수행 (테스트 이후 문서가 생성되도록)
+asciidoctor {
+	inputs.dir snippetsDir
+	dependsOn test
 }
