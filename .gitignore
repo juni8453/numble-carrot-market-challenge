@@ -1,6 +1,6 @@
 HELP.md
 .gradle
-application.yml
+src/main/resources/application.yml
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
@@ -185,5 +185,4 @@ Temporary Items
 #yml
 application-dev.yml
 application-local.yml
-application-test.yml
 application.properties
