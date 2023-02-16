@@ -106,7 +106,7 @@ public class LikesApiControllerTest {
         .andExpect(status().is3xxRedirection())
         .andExpect(header().exists(HttpHeaders.LOCATION))
 
-        .andDo(document("[Likes] 비회원의 좋야요 API 호출",
+        .andDo(document("likes/guest/insert-likes-post",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -132,7 +132,7 @@ public class LikesApiControllerTest {
         .andExpect(jsonPath("message").value(
             ExceptionMessage.NOT_FOUND_PRODUCT.getErrorMessage()))
 
-        .andDo(document("[Likes] 존재하지 않는 상품 좋아요 API 호출",
+        .andDo(document("likes/common/insert-non-existent-likes-post",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -164,7 +164,7 @@ public class LikesApiControllerTest {
         .andExpect(jsonPath("message").value(
             GlobalResponseMessage.SUCCESS_POST_PRODUCT_LIKE.getSuccessMessage()))
 
-        .andDo(document("[Likes] 좋아요를 누르지 않은 상품 좋아요 API 호출",
+        .andDo(document("likes/member/insert-first-likes-post",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -174,7 +174,8 @@ public class LikesApiControllerTest {
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.CREATED),
-                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_POST_PRODUCT_LIKE),
+                fieldWithPath("message").description(
+                    GlobalResponseMessage.SUCCESS_POST_PRODUCT_LIKE),
                 fieldWithPath("body").description("null")
             )
         ));
@@ -197,7 +198,7 @@ public class LikesApiControllerTest {
         .andDo(print())
         .andExpect(status().isCreated())
 
-        .andDo(document("[Likes] 이미 좋아요를 누른 상품 좋아요 API 호출",
+        .andDo(document("likes/member/insert-non-first-likes-post",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -207,7 +208,8 @@ public class LikesApiControllerTest {
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.CREATED),
-                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_POST_PRODUCT_LIKE),
+                fieldWithPath("message").description(
+                    GlobalResponseMessage.SUCCESS_POST_PRODUCT_LIKE),
                 fieldWithPath("body").description("null")
             )
         ));

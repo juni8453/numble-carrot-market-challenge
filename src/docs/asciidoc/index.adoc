@@ -1,0 +1,198 @@
+= 당근 마켓 API 명세서
+Lynn<jbj9710@gmail.com>
+1.0.0, 2022/02/16
+:toc: left
+:sectnums:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+|===
+| Method | Content
+
+| `GET`
+| 조회
+
+| `POST`
+| 생성 또는 삭제
+
+| `DELETE`
+| 삭제
+|===
+
+== Product [상품]
+=== **인가된 회원 접속 상태일 때**
+==== [GET] 단일 상품 조회 API
+===== HTTP Request
+include::{snippets}/product/member/select-product/http-request.adoc[]
+===== HTTP Response
+include::{snippets}/product/member/select-product/http-response.adoc[]
+===== Response Field
+include::{snippets}/product/member/select-product/response-fields.adoc[]
+
+
+==== [GET] 전체 상품 조회 API
+===== HTTP Request
+include::{snippets}/product/member/select-products/http-request.adoc[]
+===== HTTP Response
+include::{snippets}/product/member/select-products/http-response.adoc[]
+===== Response Field
+include::{snippets}/product/member/select-products/response-fields.adoc[]
+
+
+==== [POST] 상품 등록 API
+===== HTTP Request
+include::{snippets}/product/member/insert-product/http-request.adoc[]
+===== Request Field
+include::{snippets}/product/member/insert-product/request-fields.adoc[]
+===== HTTP Response
+include::{snippets}/product/member/insert-product/http-response.adoc[]
+===== Response Field
+include::{snippets}/product/member/insert-product/response-fields.adoc[]
+
+
+==== [POST] 상품 수정 API
+===== HTTP Request
+include::{snippets}/product/member/update-product/http-request.adoc[]
+===== Request Field
+include::{snippets}/product/member/update-product/request-fields.adoc[]
+===== HTTP Response
+include::{snippets}/product/member/update-product/http-response.adoc[]
+===== Response Field
+include::{snippets}/product/member/update-product/response-fields.adoc[]
+
+
+==== [DELETE] 상품 삭제 API
+===== HTTP Request
+include::{snippets}/product/member/delete-product/http-request.adoc[]
+===== HTTP Response
+include::{snippets}/product/member/delete-product/http-response.adoc[]
+===== Response Field
+include::{snippets}/product/member/delete-product/response-fields.adoc[]
+
+
+=== **비회원 접속 상태일 때**
+==== [GET] 단일 상품 조회 API
+===== HTTP Request
+include::{snippets}/product/guest/select-product/http-request.adoc[]
+===== HTTP Response
+include::{snippets}/product/guest/select-product/http-response.adoc[]
+===== Response Field
+include::{snippets}/product/guest/select-product/response-fields.adoc[]
+
+==== [GET] 전체 상품 조회 API
+===== HTTP Request
+include::{snippets}/product/guest/select-products/http-request.adoc[]
+===== HTTP Response
+include::{snippets}/product/guest/select-products/http-response.adoc[]
+===== Response Field
+include::{snippets}/product/guest/select-products/response-fields.adoc[]
+
+== Product Image [상품 이미지]
+=== **인가된 회원 접속 상태일 때**
+==== [POST] 상품 이미지 수정 API
+===== HTTP Request
+include::{snippets}/image/member/update-image/http-request.adoc[]
+===== Request Field
+include::{snippets}/image/member/update-image/request-fields.adoc[]
+===== HTTP Response
+include::{snippets}/image/member/update-image/http-response.adoc[]
+===== Response Field
+include::{snippets}/image/member/update-image/response-fields.adoc[]
+
+==== [POST] 자신이 등록한 상품이 아닌 경우 상품 이미지 수정 API
+===== HTTP Request
+include::{snippets}/image/member/update-image-is-not-writer/http-request.adoc[]
+===== HTTP Response
+include::{snippets}/image/member/update-image-is-not-writer/http-response.adoc[]
+===== Response Field
+include::{snippets}/image/member/update-image-is-not-writer/response-fields.adoc[]
+
+==== [DELETE] 상품 이미지 삭제 API
+===== HTTP Request
+include::{snippets}/image/member/delete-image/http-request.adoc[]
+===== HTTP Response
+include::{snippets}/image/member/delete-image/http-response.adoc[]
+===== Response Field
+include::{snippets}/image/member/delete-image/response-fields.adoc[]
+
+==== [POST] 자신이 등록한 상품이 아닌 경우 상품 이미지 삭제 API
+===== HTTP Request
+include::{snippets}/image/member/delete-image-is-not-writer/http-request.adoc[]
+===== HTTP Response
+include::{snippets}/image/member/delete-image-is-not-writer/http-response.adoc[]
+===== Response Field
+include::{snippets}/image/member/delete-image-is-not-writer/response-fields.adoc[]
+
+
+== Member [회원]
+=== **인가된 회원 접속 상태일 때**
+==== [GET] 프로필 조회 API
+===== HTTP Request
+include::{snippets}/member/member/select-member/http-request.adoc[]
+===== HTTP Response
+include::{snippets}/member/member/select-member/http-response.adoc[]
+===== Response Field
+include::{snippets}/member/member/select-member/response-fields.adoc[]
+
+==== [DELETE] 프로필 삭제 API
+===== HTTP Request
+include::{snippets}/member/member/delete-member/http-request.adoc[]
+===== HTTP Response
+include::{snippets}/member/member/delete-member/http-response.adoc[]
+===== Response Field
+include::{snippets}/member/member/delete-member/response-fields.adoc[]
+
+==== [GET] 자신이 아닌 다른 회원의 프로필 조회 API
+===== HTTP Request
+include::{snippets}/member/member/select-member-is-not-mine/http-request.adoc[]
+===== HTTP Response
+include::{snippets}/member/member/select-member-is-not-mine/http-response.adoc[]
+===== Response Field
+include::{snippets}/member/member/select-member-is-not-mine/response-fields.adoc[]
+
+==== [DELETE] 자신이 아닌 다른 회원의 프로필 삭제 API
+===== HTTP Request
+include::{snippets}/member/member/delete-member-is-not-mine/http-request.adoc[]
+===== HTTP Response
+include::{snippets}/member/member/delete-member-is-not-mine/http-response.adoc[]
+===== Response Field
+include::{snippets}/member/member/delete-member-is-not-mine/response-fields.adoc[]
+
+
+== Likes [좋아요]
+=== **인가된 회원 접속 상태일 때**
+==== [POST] 좋아요를 누르지 않은 상품 좋아요 API
+===== HTTP Request
+include::{snippets}/likes/member/insert-first-likes-post/http-request.adoc[]
+===== HTTP Response
+include::{snippets}/likes/member/insert-first-likes-post/http-response.adoc[]
+===== Response Field
+include::{snippets}/likes/member/insert-first-likes-post/response-fields.adoc[]
+
+==== [POST] 이미 좋아요를 누른 상품 좋아요 API
+===== HTTP Request
+include::{snippets}/likes/member/insert-non-first-likes-post/http-request.adoc[]
+===== HTTP Response
+include::{snippets}/likes/member/insert-non-first-likes-post/http-response.adoc[]
+===== Response Field
+include::{snippets}/likes/member/insert-non-first-likes-post/response-fields.adoc[]
+
+
+== Category [카테고리]
+=== **인가된 회원 접속 상태일 때**
+==== [POST] 관리자의 카테고리 생성 API
+===== HTTP Request
+include::{snippets}/category/admin/insert-category/http-request.adoc[]
+===== Request Field
+include::{snippets}/category/admin/insert-category/request-fields.adoc[]
+===== HTTP Response
+include::{snippets}/category/admin/insert-category/http-response.adoc[]
+===== Response Field
+include::{snippets}/category/admin/insert-category/response-fields.adoc[]
+
+==== [POST] 일반 유저의 카테고리 생성 API
+===== HTTP Request
+include::{snippets}/category/member/insert-category/http-request.adoc[]
+===== HTTP Response
+include::{snippets}/category/member/insert-category/http-response.adoc[]

@@ -111,7 +111,7 @@ public class ProductImageApiControllerTest {
         .andExpect(status().is3xxRedirection())
         .andExpect(header().exists(HttpHeaders.LOCATION))
 
-        .andDo(document("[Product Image] 비회원의 상품 이미지 수정 API 호출",
+        .andDo(document("image/guest/update-image",
             requestHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
@@ -144,7 +144,7 @@ public class ProductImageApiControllerTest {
         .andExpect(jsonPath("message").value(
             GlobalResponseMessage.SUCCESS_POST_UPDATE_IMAGE.getSuccessMessage()))
 
-        .andDo(document("[Product Image] 자신이 등록한 상품인 경우 이미지 수정 API 호출",
+        .andDo(document("image/member/update-image",
             requestHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
@@ -185,7 +185,7 @@ public class ProductImageApiControllerTest {
         .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
         .andExpect(jsonPath("message").value(ExceptionMessage.IS_NOT_WRITER.getErrorMessage()))
 
-        .andDo(document("[Product Image] 자신이 등록한 상품이 아닌 경우 이미지 수정 API 호출",
+        .andDo(document("image/member/update-image-is-not-writer",
             requestHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
@@ -214,7 +214,7 @@ public class ProductImageApiControllerTest {
         .andExpect(status().is3xxRedirection())
         .andExpect(header().exists(HttpHeaders.LOCATION))
 
-        .andDo(document("[Product Image] 비회원의 상품 이미지 삭제 API 호출",
+        .andDo(document("image/guest/delete-image",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -240,7 +240,7 @@ public class ProductImageApiControllerTest {
         .andExpect(jsonPath("message").value(
             GlobalResponseMessage.SUCCESS_DELETE_IMAGE.getSuccessMessage()))
 
-        .andDo(document("[Product Image] 자신이 등록한 상품인 경우 이미지 삭제 API 호출",
+        .andDo(document("image/member/delete-image",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -271,7 +271,7 @@ public class ProductImageApiControllerTest {
         .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
         .andExpect(jsonPath("message").value(ExceptionMessage.IS_NOT_WRITER.getErrorMessage()))
 
-        .andDo(document("[Product Image] 자신이 등록한 상품이 아닌 경우 이미지 삭제 API 호출",
+        .andDo(document("image/member/delete-image-is-not-writer",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -308,7 +308,7 @@ public class ProductImageApiControllerTest {
         .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
         .andExpect(jsonPath("message").value(ExceptionMessage.NOT_FOUND_IMAGE.getErrorMessage()))
 
-        .andDo(document("[Product Image] 존재하지 않는 이미지 수정 API 호출",
+        .andDo(document("image/common/update-image",
             requestHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
@@ -340,7 +340,7 @@ public class ProductImageApiControllerTest {
         .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
         .andExpect(jsonPath("message").value(ExceptionMessage.NOT_FOUND_IMAGE.getErrorMessage()))
 
-        .andDo(document("[Product Image] 존재하지 않는 이미지 삭제 API 호출",
+        .andDo(document("image/common/delete-image",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
