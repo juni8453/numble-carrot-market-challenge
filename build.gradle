@@ -9,16 +9,6 @@ group = 'com.market'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
-repositories {
-	mavenCentral()
-}
-
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -41,12 +31,19 @@ dependencies {
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
-}
-
 jar {
 	enabled = false
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	asciidoctorExt
+}
+
+repositories {
+	mavenCentral()
 }
 
 bootJar {
@@ -79,5 +76,6 @@ test {
 // asciidoctor Task 는 테스트 Task 수행 이후에 수행 (테스트 이후 문서가 생성되도록)
 asciidoctor {
 	inputs.dir snippetsDir
+	configurations 'asciidoctorExt'
 	dependsOn test
 }
