@@ -86,7 +86,7 @@ public class MemberApiControllerTest {
         .andExpect(status().is3xxRedirection())
         .andExpect(header().exists(HttpHeaders.LOCATION))
 
-        .andDo(document("[Member] 비회원의 프로필 조회 API 호출",
+        .andDo(document("member/guest/select-member",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -112,7 +112,7 @@ public class MemberApiControllerTest {
         .andExpect(jsonPath("message").value(
             GlobalResponseMessage.SUCCESS_GET_MEMBER.getSuccessMessage()))
 
-        .andDo(document("[Member] 회원의 프로필 조회 API 호출",
+        .andDo(document("member/member/select-member",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -148,7 +148,22 @@ public class MemberApiControllerTest {
             .with(csrf())
             .accept(accept))
         .andDo(print())
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest())
+
+        .andDo(document("member/member/select-member-is-not-mine",
+            requestHeaders(
+                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseHeaders(
+                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
+            ),
+            responseFields(
+                fieldWithPath("code").description("응답 실패 코드"),
+                fieldWithPath("httpStatus").description(HttpStatus.BAD_REQUEST),
+                fieldWithPath("message").description(ExceptionMessage.IS_NOT_MY_PROFILE),
+                fieldWithPath("body").description("null")
+            )
+        ));
   }
 
   @DisplayName("회원이라면 자신의 프로필을 삭제할 수 있다.")
@@ -167,7 +182,7 @@ public class MemberApiControllerTest {
         .andExpect(jsonPath("message").value(
             GlobalResponseMessage.SUCCESS_DELETE_MEMBER.getSuccessMessage()))
 
-        .andDo(document("[Member] 회원의 프로필 삭제 API 호출",
+        .andDo(document("member/member/delete-member",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -199,7 +214,7 @@ public class MemberApiControllerTest {
         .andExpect(jsonPath("message").value(
             ExceptionMessage.IS_NOT_MY_PROFILE_BY_DELETE.getErrorMessage()))
 
-        .andDo(document("[Member] 자신이 아닌 다른 회원의 프로필 삭제 API 호출",
+        .andDo(document("member/member/delete-member-is-not-mine",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),

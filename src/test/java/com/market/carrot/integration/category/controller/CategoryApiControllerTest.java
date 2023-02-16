@@ -83,7 +83,7 @@ public class CategoryApiControllerTest {
         "Category Name");
 
     // when & then
-    mvc.perform(post("/api/category")
+    mvc.perform(post("/api/category/")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(accept)
@@ -92,7 +92,7 @@ public class CategoryApiControllerTest {
         .andExpect(status().is3xxRedirection())
         .andExpect(header().exists(HttpHeaders.LOCATION))
 
-        .andDo(document("[Category] 비회원의 카테고리 생성 API 호출",
+        .andDo(document("category/guest/insert-category",
             requestHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
@@ -120,7 +120,7 @@ public class CategoryApiControllerTest {
         .andDo(print())
         .andExpect(status().isForbidden())
 
-        .andDo(document("[Category] USER 권한 회원의 카테고리 생성 API 호출",
+        .andDo(document("category/member/insert-category",
             requestHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
@@ -150,7 +150,7 @@ public class CategoryApiControllerTest {
         .andExpect(jsonPath("message").value(
             GlobalResponseMessage.SUCCESS_POST_CATEGORY.getSuccessMessage()))
 
-        .andDo(document("ADMIN 권한 회원의 카테고리 생성 API 호출",
+        .andDo(document("category/admin/insert-category",
             requestHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)

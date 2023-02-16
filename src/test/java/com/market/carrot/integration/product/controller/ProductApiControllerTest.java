@@ -111,7 +111,7 @@ public class ProductApiControllerTest {
         .andExpect(status().is3xxRedirection())
         .andExpect(header().exists(HttpHeaders.LOCATION))
 
-        .andDo(document("[Product] 비회원의 상품 등록 API 호출",
+        .andDo(document("product/guest/insert-product",
             requestHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
@@ -143,7 +143,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("message").value(
             GlobalResponseMessage.SUCCESS_POST_INSERT_PRODUCT.getSuccessMessage()))
 
-        .andDo(document("[Product] 회원의 상품 등록 API 호출",
+        .andDo(document("product/member/insert-product",
             requestHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
@@ -189,7 +189,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("message").value(
             ExceptionMessage.IS_NOT_INCLUDED_IMAGE.getErrorMessage()))
 
-        .andDo(document("[Product] Request 에 이미지 없이 상품 등록 API 호출",
+        .andDo(document("product/member/insert-product-non-existent-image",
             requestHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
@@ -228,7 +228,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("body.links[1].rel").doesNotExist())
         .andExpect(jsonPath("body.links[2].rel").doesNotExist())
 
-        .andDo(document("[Product] 비회원의 단일 상품 조회 API 호출",
+        .andDo(document("product/guest/select-product",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -279,7 +279,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("body.links[0].rel").exists())
         .andExpect(jsonPath("body.links[0].rel").value("self"))
 
-        .andDo(document("[Product] 자신이 등록한 상품이 아닌경우 단일 상품 조회 API 호출",
+        .andDo(document("product/member/select-product-is-not-writer",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -334,7 +334,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("body.links[2].rel").exists())
         .andExpect(jsonPath("body.links[2].rel").value("product-update"))
 
-        .andDo(document("[Product] 자신이 등록한 상품인 경우 단일 상품 조회 API 호출",
+        .andDo(document("product/member/select-product",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -390,7 +390,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("body.content[0].links[0].rel").value("self"))
         .andExpect(jsonPath("body.links[0]").doesNotExist())
 
-        .andDo(document("[Product] 비회원의 모든 상품 조회 API 호출",
+        .andDo(document("product/guest/select-products",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -449,7 +449,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("body.links[0].rel").exists())
         .andExpect(jsonPath("body.links[0].rel").value("product-save"))
 
-        .andDo(document("[Product] 회원의 모든 상품 조회 API 호출",
+        .andDo(document("product/member/select-products",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(accept)
             ),
@@ -501,7 +501,7 @@ public class ProductApiControllerTest {
         .andExpect(status().is3xxRedirection())
         .andExpect(header().exists(HttpHeaders.LOCATION))
 
-        .andDo(document("[Product] 비회원의 상품 수정 호출 API",
+        .andDo(document("product/guest/update-product",
             requestHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
@@ -533,7 +533,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("message").value(
             GlobalResponseMessage.SUCCESS_POST_UPDATE_PRODUCT.getSuccessMessage()))
 
-        .andDo(document("[Product] 자신이 등록한 상품인 경우 상품 수정 API 호출",
+        .andDo(document("product/member/update-product",
             requestHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
@@ -576,7 +576,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
         .andExpect(jsonPath("message").value(ExceptionMessage.IS_NOT_WRITER.getErrorMessage()))
 
-        .andDo(document("[Product] 자신이 등록한 상품이 아닌경우 상품 수정 API 호출",
+        .andDo(document("product/member/update-product-is-not-writer",
             requestHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
@@ -604,7 +604,7 @@ public class ProductApiControllerTest {
         .andExpect(status().is3xxRedirection())
         .andExpect(header().exists(HttpHeaders.LOCATION))
 
-        .andDo(document("[Product] 비회원의 상품 삭제 API 호출",
+        .andDo(document("product/guest/delete-prodcut",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -631,7 +631,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("message").value(
             GlobalResponseMessage.SUCCESS_DELETE_PRODUCT.getSuccessMessage()))
 
-        .andDo(document("[Product] 자신이 등록한 상품인 경우 상품 삭제 API 호출",
+        .andDo(document("product/member/delete-product",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -662,7 +662,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
         .andExpect(jsonPath("message").value(ExceptionMessage.IS_NOT_WRITER.getErrorMessage()))
 
-        .andDo(document("[Product] 자신이 등록한 상품이 아닌경우 상품 삭제 API 호출",
+        .andDo(document("product/member/delete-product-is-not-writer",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -693,7 +693,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
         .andExpect(jsonPath("message").value(ExceptionMessage.NOT_FOUND_PRODUCT.getErrorMessage()))
 
-        .andDo(document("[Product] 존재하지 않는 상품 조회 API 호출",
+        .andDo(document("product/common/select-product",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
@@ -729,7 +729,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
         .andExpect(jsonPath("message").value(ExceptionMessage.NOT_FOUND_PRODUCT.getErrorMessage()))
 
-        .andDo(document("[Product] 존재하지 않는 상품 수정 API 호출",
+        .andDo(document("product/common/update-product",
             requestHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
@@ -761,7 +761,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("httpStatus").value(HttpStatus.BAD_REQUEST.name()))
         .andExpect(jsonPath("message").value(ExceptionMessage.NOT_FOUND_PRODUCT.getErrorMessage()))
 
-        .andDo(document("[Product] 존재하지 않는 상품 삭제 API 호출",
+        .andDo(document("product/common/delete-product",
             requestHeaders(
                 headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
             ),
