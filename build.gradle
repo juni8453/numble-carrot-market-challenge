@@ -53,11 +53,20 @@ bootJar {
 	archivesBaseName = 'app'
 	archiveFileName = 'app.jar'
 	archiveVersion = "0.0.0"
+
+	dependsOn asciidoctor
+	from("${asciidoctor.outputDir}/html5") {
+		into 'static/docs'
+	}
+	copy {
+		from asciidoctor.outputDir
+		into "src/main/resources/static/docs"
+	}
 }
 
 // 생성된 snippet 의 저장 위치 명시
 ext {
-	set('snippetsDir', file("build/generated-snippets"))
+	snippetsDir = file('build/generated-snippets')
 }
 
 // 테스트 Task 의 아웃풋 디렉토리를 스니펫 저장 위치로 설정
