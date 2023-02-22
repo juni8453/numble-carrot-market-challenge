@@ -23,18 +23,22 @@
 - Master 브랜치에 Pull-Request 및 Push 요청이 오면 자동으로 빌드 및 배포를 하기 위해 GitHub Actions 를 사용해 스크립트를 작성했습니다.  
 <br>
 
-> 3.Spring Data JPA 활용
+> 3.Spring Rest Docs 적용해 API 명세서 작성
+- Swagger 가 아닌 Spring Rest Docs 를 활용해 API 명세서를 작성했습니다.
+<br>
+
+> 4.HTTP API 가 아닌 REST API 구현
+- REST API 를 위한 Uniform Interface 제약 조건을 지키기 위해 Spring Hateoas 를 학습 후 활용했습니다.
+- Spring Rest Docs 로 작성한 명세서 링크와 이후 호출 가능한 API 링크를 Response Message 에 담아 수신하도록 구현했습니다.     
+<br>
+
+> 5.Spring Data JPA 활용
 - JPA 를 사용하면서 꼭 겪을 수 있는 N + 1 문제가 발생하지 않도록 Fetch Join 과 Betch Size 설정을 적절하게 활용하였습니다. 어느정도 개발이 더 진행되면
     많은 양의 Mock 데이터를 추가하고 성능 테스트를 해볼 예정입니다.
 <br>
 
-> 4.DB 모델링
-- DB 모델링을 위해 생활코딩 이고잉님의 개념적 모델링, 논리적 모델링을 학습하고 ERD 다이어그램을 작성했습니다.
-<br>
-
-> 5.확실하게 기록하기
+> 6.확실하게 기록하기
 - 모든 작업 내용을 착실하게 Notion, Bear 등 에디터에 적절하게 기록하고 다음 프로젝트를 위한 초석으로 삼으려고 합니다. 현재 Notion 에 섹터별로 나눠 작성 중입니다.
-<br>
 <br>
 
   
@@ -48,7 +52,10 @@
    - Spring Boot 2.7.0
    - Spring Data JPA
    - Spring Security
+   - Spring Rest Docs
+   - Spring Hateoas
    - Junit5
+   
 #### 2. `Devops`
    - AWS EC2, VPC
    - GitHub Actions
@@ -72,10 +79,6 @@
 - 유저와 찜 (1 : N)
 - 상품과 찜 (1 : N)
 
-<img width="500" alt="개념적 모델링 1 이미지" src="https://user-images.githubusercontent.com/79444040/214768210-1d639ebd-585d-4417-8862-3464163f3a6c.png">
-<img width="500" alt="개념적 모델링 2 이미지" src="https://user-images.githubusercontent.com/79444040/214768258-eb9a1d5f-cf7f-4887-80d4-116d9a10649c.png">
-<br>
-
 #### 2. `논리적 데이터베이스 모델링`
 ![당근마켓 논리 ERD](https://user-images.githubusercontent.com/79444040/214768331-918860b5-4075-4f6e-b1c5-b1ca4dfd506f.png)
 <br>
@@ -94,19 +97,21 @@
 | 로그인 폼     | GET    | /loginForm             |
 | 로그인       | POST   | /login                 |
 |           |        |                        |
-| 상품 페이지 조회 | GET    | /api/product           |
-| 상품 등록     | POST   | /api/product           |
+| 카테고리 생성       | POST   | /api/category/                 
+|           |        |                        |
+| 상품 페이지 조회 | GET    | /api/product/           |
+| 상품 등록     | POST   | /api/product/           |
 | 단일 상품 조회  | GET    | /api/product/{id}      |
-| 상품 수정     | POST   | /api/product/{id}      |
+| 상품 수정     | PUT   | /api/product/{id}      |
 | 상품 삭제     | DELETE | /api/product/{id}      |
 |           |        |                        |
-| 상품 이미지 수정 | POST   | /api/image/{id}        |
+| 상품 이미지 수정 | PUT   | /api/image/{id}        |
 | 상품 이미지 삭제 | DELETE | /api/image/{id}        |
 |           |        |                        |
 | 상품 좋아요 증감 | POST   | /api/likes/{id}        |
 |           |        |                        |
-| 내 프로필 조회  | GET    | /api/member/{username} |
-| 내 프로필 수정  | POST   | /api/member/{username} |
+| 내 프로필 조회  | GET    | /api/member/{id} |
+| 내 프로필 수정  | POST   | /api/member/{id} |
 
 <br>
 
