@@ -5,7 +5,6 @@ import com.market.carrot.global.Exception.NotFoundEntityException;
 import com.market.carrot.likes.domain.Likes;
 import com.market.carrot.likes.domain.LikesRepository;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
-import com.market.carrot.login.domain.Member;
 import com.market.carrot.member.domain.MemberRepository;
 import com.market.carrot.product.domain.Product;
 import com.market.carrot.product.domain.ProductRepository;

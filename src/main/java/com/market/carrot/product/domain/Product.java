@@ -4,7 +4,7 @@ import com.market.carrot.BaseTime;
 import com.market.carrot.category.domain.Category;
 import com.market.carrot.global.Exception.AnotherMemberException;
 import com.market.carrot.global.Exception.ExceptionMessage;
-import com.market.carrot.login.domain.Member;
+import com.market.carrot.member.domain.Member;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;

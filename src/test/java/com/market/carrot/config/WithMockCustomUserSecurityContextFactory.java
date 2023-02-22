@@ -1,8 +1,7 @@
 package com.market.carrot.config;
 
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
-import com.market.carrot.login.domain.Member;
-import com.market.carrot.login.domain.Role;
+import com.market.carrot.member.domain.Member;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

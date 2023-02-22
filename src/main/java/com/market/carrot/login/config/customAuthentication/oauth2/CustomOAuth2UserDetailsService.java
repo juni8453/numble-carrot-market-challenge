@@ -5,7 +5,7 @@ import com.market.carrot.login.config.customAuthentication.oauth2.factory.OAuthF
 import com.market.carrot.login.config.customAuthentication.oauth2.providerType.CheckOAuthProvider;
 import com.market.carrot.login.config.customAuthentication.oauth2.userinfo.OAuth2UserInfo;
 import com.market.carrot.login.domain.LoginRepository;
-import com.market.carrot.login.domain.Member;
+import com.market.carrot.member.domain.Member;
 import com.market.carrot.login.domain.Role;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
