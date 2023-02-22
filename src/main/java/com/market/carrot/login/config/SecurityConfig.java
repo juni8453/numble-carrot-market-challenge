@@ -41,16 +41,18 @@ public class SecurityConfig {
         .antMatchers("/user/**").authenticated()
         .antMatchers("/admin/**").hasRole("ADMIN")
 
-        .antMatchers(HttpMethod.GET, "/api/user/**").hasAnyRole("USER", "ADMIN")
-        .antMatchers(HttpMethod.DELETE, "/api/user/**").hasAnyRole("USER", "ADMIN")
+        .antMatchers(HttpMethod.GET, "/api/member/**").hasAnyRole("USER", "ADMIN")
+        .antMatchers(HttpMethod.DELETE, "/api/member/**").hasAnyRole("USER", "ADMIN")
 
         .antMatchers(HttpMethod.POST, "/api/category/**").hasAnyRole("ADMIN")
 
         .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
         .antMatchers(HttpMethod.POST, "/api/product/**").hasAnyRole("USER", "ADMIN")
+        .antMatchers(HttpMethod.PUT, "/api/product/**").hasAnyRole("USER", "ADMIN")
         .antMatchers(HttpMethod.DELETE, "/api/product/**").hasAnyRole("USER", "ADMIN")
 
         .antMatchers(HttpMethod.POST, "/api/image/**").hasAnyRole("USER", "ADMIN")
+        .antMatchers(HttpMethod.PUT, "/api/image/**").hasAnyRole("USER", "ADMIN")
         .antMatchers(HttpMethod.DELETE, "/api/image/**").hasAnyRole("USER", "ADMIN")
 
         .antMatchers(HttpMethod.POST, "/api/likes/**").hasAnyRole("USER", "ADMIN")

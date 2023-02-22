@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/user/", produces = MediaTypes.HAL_JSON_VALUE)
+@RequestMapping(value = "/api/member/", produces = MediaTypes.HAL_JSON_VALUE)
 @RestController
 public class MemberApiController {
 

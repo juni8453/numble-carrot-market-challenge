@@ -79,7 +79,7 @@ public class MemberApiControllerTest {
   @Test
   void 비회원_프로필_조회() throws Exception {
     // when & then
-    mvc.perform(get("/api/user/1")
+    mvc.perform(get("/api/member/1")
             .with(csrf())
             .accept(accept))
         .andDo(print())
@@ -101,7 +101,7 @@ public class MemberApiControllerTest {
   @Test
   void 회원_내_프로필_조회() throws Exception {
     // when & then
-    mvc.perform(get("/api/user/1")
+    mvc.perform(get("/api/member/1")
             .with(csrf())
             .accept(accept))
         .andDo(print())
@@ -144,7 +144,7 @@ public class MemberApiControllerTest {
   @Test
   void 회원_다른_회원의_프로필_조회() throws Exception {
     // when & then
-    mvc.perform(get("/api/user/1")
+    mvc.perform(get("/api/member/1")
             .with(csrf())
             .accept(accept))
         .andDo(print())
@@ -171,7 +171,7 @@ public class MemberApiControllerTest {
   @Test
   void 회원_내_프로필_삭제() throws Exception {
     // when & then
-    mvc.perform(delete("/api/user/1")
+    mvc.perform(delete("/api/member/1")
             .with(csrf())
             .accept(accept))
         .andDo(print())
@@ -203,7 +203,7 @@ public class MemberApiControllerTest {
   @Test
   void 회원_다른_회원_프로필_삭제() throws Exception {
     // when & then
-    mvc.perform(delete("/api/user/1")
+    mvc.perform(delete("/api/member/1")
             .with(csrf())
             .accept(accept))
         .andDo(print())
