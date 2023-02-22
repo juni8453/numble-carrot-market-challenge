@@ -1,6 +1,5 @@
 package com.market.carrot.product.domain;
 
-import com.market.carrot.product.dto.request.UpdateProductImageRequest;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -27,8 +26,8 @@ public class ProductImage {
   @JoinColumn(name = "product_id")
   private Product product;
 
-  public void updateProductImage(UpdateProductImageRequest imageRequest) {
-    this.imageUrl = imageRequest.getImageUrl();
+  public void updateProductImage(String updateImageUrl) {
+    this.imageUrl = updateImageUrl;
   }
 
   public void addProduct(Product product) {

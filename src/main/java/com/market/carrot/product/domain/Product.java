@@ -5,7 +5,6 @@ import com.market.carrot.category.domain.Category;
 import com.market.carrot.global.Exception.AnotherMemberException;
 import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.login.domain.Member;
-import com.market.carrot.product.dto.request.UpdateProductRequest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -71,14 +70,15 @@ public class Product extends BaseTime {
     return new Product(title, content, price);
   }
 
-  public void updateProduct(UpdateProductRequest productRequest, Member member) {
+  public void updateProduct(String updateTitle, String updateContent, int updatePrice,
+      Member member) {
     if (!checkUser(member)) {
       throw new AnotherMemberException(ExceptionMessage.IS_NOT_WRITER, HttpStatus.BAD_REQUEST);
     }
 
-    this.title = productRequest.getTitle();
-    this.content = productRequest.getContent();
-    this.price = productRequest.getPrice();
+    this.title = updateTitle;
+    this.content = updateContent;
+    this.price = updatePrice;
   }
 
   public boolean checkUser(Member member) {

@@ -8,8 +8,6 @@ import com.market.carrot.global.Exception.AnotherMemberException;
 import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.Exception.NotFoundEntityException;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
-import com.market.carrot.login.domain.Member;
-import com.market.carrot.member.domain.MemberRepository;
 import com.market.carrot.product.controller.ProductApiController;
 import com.market.carrot.product.domain.Product;
 import com.market.carrot.product.domain.ProductImage;
@@ -36,7 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductServiceImpl implements ProductService {
 
   private final ProductRepository productRepository;
-  private final MemberRepository memberRepository;
   private final CategoryRepository categoryRepository;
 
   @Transactional(readOnly = true)
@@ -142,7 +139,11 @@ public class ProductServiceImpl implements ProductService {
         .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT,
             HttpStatus.BAD_REQUEST));
 
-    findProduct.updateProduct(productRequest, memberContext.getMember());
+    String updateTitle = productRequest.getTitle();
+    String updateContent = productRequest.getContent();
+    int updatePrice = productRequest.getPrice();
+
+    findProduct.updateProduct(updateTitle, updateContent, updatePrice, memberContext.getMember());
   }
 
   @Transactional

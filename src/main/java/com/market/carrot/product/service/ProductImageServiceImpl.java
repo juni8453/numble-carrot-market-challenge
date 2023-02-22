@@ -33,7 +33,8 @@ public class ProductImageServiceImpl implements ProductImageService {
       throw new AnotherMemberException(ExceptionMessage.IS_NOT_WRITER, HttpStatus.BAD_REQUEST);
     }
 
-    findProductImage.updateProductImage(imageRequest);
+    String updateImageUrl = imageRequest.getImageUrl();
+    findProductImage.updateProductImage(updateImageUrl);
   }
 
   @Transactional
