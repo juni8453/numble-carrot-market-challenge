@@ -16,22 +16,22 @@ spring:
       client:
         registration:
           google:
-            clientId: 943408865745-3a4qtjqq4vsavsrk7am6brghb8lq9j9e.apps.googleusercontent.com
-            clientSecret: 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
+            clientId: oauth_google_clientId
+            clientSecret: oauth_google_clientSecret
             scope:
               - email
               - profile
 
           facebook:
-            clientId: 706402737517308
-            clientSecret: 95e6e48cd37375b02483a64053ab081a
+            clientId: oauth_facebook_clientId
+            clientSecret: oauth_facebook_clientSecret
             scope:
               - email
               - public_profile
 
           github:
-            clientId: 97403f1dc11b9e5f12ab
-            clientSecret: e1ba51deb8f65b007d1e663796c6587158d214aa
+            clientId: oauth_github_clientId
+            clientSecret: oauth_github_clientSecret
             scope:
               - id
               - email
