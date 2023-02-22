@@ -6,10 +6,10 @@ import com.market.carrot.global.Exception.AnotherMemberException;
 import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.Exception.NotFoundEntityException;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
-import com.market.carrot.member.domain.Member;
 import com.market.carrot.member.controller.MemberApiController;
-import com.market.carrot.member.domain.MemberRepository;
 import com.market.carrot.member.controller.dto.response.MemberResponse;
+import com.market.carrot.member.domain.Member;
+import com.market.carrot.member.domain.MemberRepository;
 import com.market.carrot.member.hateoas.MemberModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -41,6 +41,7 @@ public class MemberServiceImpl implements MemberService {
         .build();
 
     MemberModel memberModel = new MemberModel(memberResponse);
+    memberModel.add(linkTo(MemberApiController.class).withRel("API Specification"));
     memberModel.add(linkTo(MemberApiController.class).slash(memberResponse.getId()).withSelfRel());
     memberModel.add(
         linkTo(MemberApiController.class).slash(memberResponse.getId()).withRel("member-delete"));
