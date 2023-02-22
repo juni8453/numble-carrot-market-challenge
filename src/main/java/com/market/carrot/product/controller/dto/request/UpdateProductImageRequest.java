@@ -1,5 +1,6 @@
 package com.market.carrot.product.controller.dto.request;
 
+import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UpdateProductImageRequest {
 
+  @NotBlank(message = "이미지 URL 이 필요합니다.")
   private String imageUrl;
 
   private UpdateProductImageRequest(String imageUrl) {
