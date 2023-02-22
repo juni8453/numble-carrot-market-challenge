@@ -3,8 +3,8 @@ package com.market.carrot.product.controller;
 import com.market.carrot.global.GlobalResponseDto;
 import com.market.carrot.global.GlobalResponseMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
-import com.market.carrot.product.dto.request.CreateProductRequest;
-import com.market.carrot.product.dto.request.UpdateProductRequest;
+import com.market.carrot.product.controller.dto.request.CreateProductRequest;
+import com.market.carrot.product.controller.dto.request.UpdateProductRequest;
 import com.market.carrot.product.hateoas.ProductModel;
 import com.market.carrot.product.service.ProductService;
 import javax.validation.Valid;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -70,7 +71,7 @@ public class ProductApiController {
   }
 
   @ResponseStatus(HttpStatus.OK)
-  @PostMapping("{id}")
+  @PutMapping("{id}")
   public GlobalResponseDto update(@PathVariable Long id,
       @AuthenticationPrincipal MemberContext memberContext,
       @Valid @RequestBody UpdateProductRequest productRequest) {

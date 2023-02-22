@@ -8,19 +8,17 @@ import com.market.carrot.global.Exception.AnotherMemberException;
 import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.Exception.NotFoundEntityException;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
-import com.market.carrot.login.domain.Member;
-import com.market.carrot.member.domain.MemberRepository;
 import com.market.carrot.product.controller.ProductApiController;
 import com.market.carrot.product.domain.Product;
 import com.market.carrot.product.domain.ProductImage;
 import com.market.carrot.product.domain.ProductRepository;
-import com.market.carrot.product.dto.request.CreateProductRequest;
-import com.market.carrot.product.dto.request.ProductImageRequest;
-import com.market.carrot.product.dto.request.UpdateProductRequest;
-import com.market.carrot.product.dto.response.CategoryByProductResponse;
-import com.market.carrot.product.dto.response.ImagesResponse;
-import com.market.carrot.product.dto.response.MemberByProductResponse;
-import com.market.carrot.product.dto.response.ProductResponse;
+import com.market.carrot.product.controller.dto.request.CreateProductRequest;
+import com.market.carrot.product.controller.dto.request.ProductImageRequest;
+import com.market.carrot.product.controller.dto.request.UpdateProductRequest;
+import com.market.carrot.product.controller.dto.response.CategoryByProductResponse;
+import com.market.carrot.product.controller.dto.response.ImagesResponse;
+import com.market.carrot.product.controller.dto.response.MemberByProductResponse;
+import com.market.carrot.product.controller.dto.response.ProductResponse;
 import com.market.carrot.product.hateoas.ProductModel;
 import com.market.carrot.product.hateoas.ProductModelAssembler;
 import java.util.List;
@@ -36,7 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductServiceImpl implements ProductService {
 
   private final ProductRepository productRepository;
-  private final MemberRepository memberRepository;
   private final CategoryRepository categoryRepository;
 
   @Transactional(readOnly = true)
@@ -142,7 +139,11 @@ public class ProductServiceImpl implements ProductService {
         .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT,
             HttpStatus.BAD_REQUEST));
 
-    findProduct.updateProduct(productRequest, memberContext.getMember());
+    String updateTitle = productRequest.getTitle();
+    String updateContent = productRequest.getContent();
+    int updatePrice = productRequest.getPrice();
+
+    findProduct.updateProduct(updateTitle, updateContent, updatePrice, memberContext.getMember());
   }
 
   @Transactional

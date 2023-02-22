@@ -3,7 +3,7 @@ package com.market.carrot.product.controller;
 import com.market.carrot.global.GlobalResponseDto;
 import com.market.carrot.global.GlobalResponseMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
-import com.market.carrot.product.dto.request.UpdateProductImageRequest;
+import com.market.carrot.product.controller.dto.request.UpdateProductImageRequest;
 import com.market.carrot.product.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.MediaTypes;
@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -25,7 +25,8 @@ public class ProductImageApiController {
   private final ProductImageService productImageService;
 
   @ResponseStatus(HttpStatus.OK)
-  @PostMapping("{id}")
+//  @PostMapping("{id}")
+  @PutMapping("{id}")
   public GlobalResponseDto updateProductImage(
       @PathVariable Long id, @RequestBody UpdateProductImageRequest imageRequest,
       @AuthenticationPrincipal

@@ -1,6 +1,6 @@
 package com.market.carrot.category.controller;
 
-import com.market.carrot.category.domain.dto.CreateCategoryRequest;
+import com.market.carrot.category.controller.dto.request.CreateCategoryRequest;
 import com.market.carrot.category.service.CategoryService;
 import com.market.carrot.global.GlobalResponseDto;
 import com.market.carrot.global.GlobalResponseMessage;

@@ -1,5 +1,7 @@
-package com.market.carrot.login.domain;
+package com.market.carrot.member.controller.dto.request;
 
+import com.market.carrot.login.domain.Role;
+import com.market.carrot.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

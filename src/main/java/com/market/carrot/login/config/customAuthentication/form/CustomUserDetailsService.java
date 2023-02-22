@@ -4,7 +4,7 @@ import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.Exception.NotFoundEntityException;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.login.domain.LoginRepository;
-import com.market.carrot.login.domain.Member;
+import com.market.carrot.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;

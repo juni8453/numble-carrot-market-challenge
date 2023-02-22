@@ -1,6 +1,6 @@
 package com.market.carrot.login.config.customAuthentication.common;
 
-import com.market.carrot.login.domain.Member;
+import com.market.carrot.member.domain.Member;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

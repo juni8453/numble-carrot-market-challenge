@@ -7,7 +7,7 @@ import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.product.domain.Product;
 import com.market.carrot.product.domain.ProductImage;
 import com.market.carrot.product.domain.ProductImageRepository;
-import com.market.carrot.product.dto.request.UpdateProductImageRequest;
+import com.market.carrot.product.controller.dto.request.UpdateProductImageRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,8 @@ public class ProductImageServiceImpl implements ProductImageService {
       throw new AnotherMemberException(ExceptionMessage.IS_NOT_WRITER, HttpStatus.BAD_REQUEST);
     }
 
-    findProductImage.updateProductImage(imageRequest);
+    String updateImageUrl = imageRequest.getImageUrl();
+    findProductImage.updateProductImage(updateImageUrl);
   }
 
   @Transactional

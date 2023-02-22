@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.market.carrot.category.domain.dto.CreateCategoryRequest;
+import com.market.carrot.category.controller.dto.request.CreateCategoryRequest;
 import com.market.carrot.category.service.CategoryService;
 import com.market.carrot.config.DatabaseCleanup;
 import com.market.carrot.config.RestDocsConfig;
@@ -23,11 +23,11 @@ import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.GlobalResponseMessage;
 import com.market.carrot.likes.service.LikesService;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
-import com.market.carrot.login.domain.Member;
+import com.market.carrot.member.domain.Member;
 import com.market.carrot.login.domain.Role;
 import com.market.carrot.login.service.LoginService;
-import com.market.carrot.product.dto.request.CreateProductRequest;
-import com.market.carrot.product.dto.request.ProductImageRequest;
+import com.market.carrot.product.controller.dto.request.CreateProductRequest;
+import com.market.carrot.product.controller.dto.request.ProductImageRequest;
 import com.market.carrot.product.service.ProductService;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;

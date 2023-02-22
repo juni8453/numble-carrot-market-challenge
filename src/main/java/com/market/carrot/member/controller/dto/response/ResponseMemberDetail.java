@@ -1,7 +1,7 @@
-package com.market.carrot.member.domain;
+package com.market.carrot.member.controller.dto.response;
 
-import com.market.carrot.login.domain.Member;
 import com.market.carrot.login.domain.Role;
+import com.market.carrot.member.domain.Member;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;

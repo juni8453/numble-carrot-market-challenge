@@ -1,5 +1,6 @@
 package com.market.carrot.login.domain;
 
+import com.market.carrot.member.domain.Member;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

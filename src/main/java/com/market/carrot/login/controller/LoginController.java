@@ -1,6 +1,6 @@
 package com.market.carrot.login.controller;
 
-import com.market.carrot.login.domain.MemberCreateDto;
+import com.market.carrot.member.controller.dto.request.MemberCreateDto;
 import com.market.carrot.login.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;

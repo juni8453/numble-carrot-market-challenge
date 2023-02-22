@@ -1,7 +1,8 @@
-package com.market.carrot.login.domain;
+package com.market.carrot.member.domain;
 
 import com.market.carrot.BaseTime;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
+import com.market.carrot.login.domain.Role;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;

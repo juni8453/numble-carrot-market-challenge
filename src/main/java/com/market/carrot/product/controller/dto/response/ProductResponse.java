@@ -1,4 +1,4 @@
-package com.market.carrot.product.dto.response;
+package com.market.carrot.product.controller.dto.response;
 
 import java.time.LocalDateTime;
 import lombok.Builder;

@@ -21,7 +21,7 @@ import com.market.carrot.config.WithMockCustomUser;
 import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.GlobalResponseMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
-import com.market.carrot.login.domain.Member;
+import com.market.carrot.member.domain.Member;
 import com.market.carrot.login.domain.Role;
 import com.market.carrot.login.service.LoginService;
 import org.junit.jupiter.api.AfterEach;

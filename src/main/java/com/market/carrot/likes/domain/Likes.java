@@ -1,6 +1,6 @@
 package com.market.carrot.likes.domain;
 
-import com.market.carrot.login.domain.Member;
+import com.market.carrot.member.domain.Member;
 import com.market.carrot.product.domain.Product;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
