@@ -2,7 +2,7 @@ package com.market.carrot.category.service;
 
 import com.market.carrot.category.domain.Category;
 import com.market.carrot.category.domain.CategoryRepository;
-import com.market.carrot.category.domain.dto.CreateCategoryRequest;
+import com.market.carrot.category.controller.dto.request.CreateCategoryRequest;
 import com.market.carrot.global.Exception.ExceptionMessage;
 import com.market.carrot.global.Exception.RoleException;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
@@ -24,6 +24,7 @@ public class CategoryServiceImpl implements CategoryService {
     String name = categoryRequest.getName();
     Category saveCategory = Category.createCategory(name);
 
+    // TODO : 권한이 맞지 않다면 Security 에 의해 걸러지기 때문에 해당 로직이 필요한가 ?
     Role role = memberContext.getMember().getRole();
     if (role.getKey().equals("ROLE_USER")) {
       throw new RoleException(ExceptionMessage.INCORRECT_ROLE, HttpStatus.UNAUTHORIZED);

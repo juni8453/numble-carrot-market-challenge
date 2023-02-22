@@ -1,4 +1,4 @@
-package com.market.carrot.category.domain.dto;
+package com.market.carrot.category.controller.dto.request;
 
 import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;

@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.market.carrot.category.domain.dto.CreateCategoryRequest;
+import com.market.carrot.category.controller.dto.request.CreateCategoryRequest;
 import com.market.carrot.category.service.CategoryService;
 import com.market.carrot.config.DatabaseCleanup;
 import com.market.carrot.config.RestDocsConfig;
