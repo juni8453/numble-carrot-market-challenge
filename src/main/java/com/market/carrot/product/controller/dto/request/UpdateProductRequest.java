@@ -1,4 +1,4 @@
-package com.market.carrot.product.dto.request;
+package com.market.carrot.product.controller.dto.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

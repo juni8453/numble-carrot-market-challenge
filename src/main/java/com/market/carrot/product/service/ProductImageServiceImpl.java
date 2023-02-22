@@ -7,7 +7,7 @@ import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.product.domain.Product;
 import com.market.carrot.product.domain.ProductImage;
 import com.market.carrot.product.domain.ProductImageRepository;
-import com.market.carrot.product.dto.request.UpdateProductImageRequest;
+import com.market.carrot.product.controller.dto.request.UpdateProductImageRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

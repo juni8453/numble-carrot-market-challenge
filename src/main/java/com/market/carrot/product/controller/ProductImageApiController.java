@@ -3,7 +3,7 @@ package com.market.carrot.product.controller;
 import com.market.carrot.global.GlobalResponseDto;
 import com.market.carrot.global.GlobalResponseMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
-import com.market.carrot.product.dto.request.UpdateProductImageRequest;
+import com.market.carrot.product.controller.dto.request.UpdateProductImageRequest;
 import com.market.carrot.product.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.MediaTypes;

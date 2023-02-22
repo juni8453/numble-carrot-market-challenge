@@ -1,4 +1,4 @@
-package com.market.carrot.product.dto.response;
+package com.market.carrot.product.controller.dto.response;
 
 import com.market.carrot.product.domain.Product;
 import com.market.carrot.product.domain.ProductImage;
