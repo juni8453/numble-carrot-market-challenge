@@ -1,4 +1,4 @@
-package com.market.carrot.member.dto.response;
+package com.market.carrot.member.controller.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
