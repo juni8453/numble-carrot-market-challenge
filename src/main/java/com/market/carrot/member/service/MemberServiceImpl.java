@@ -12,6 +12,7 @@ import com.market.carrot.member.domain.Member;
 import com.market.carrot.member.domain.MemberRepository;
 import com.market.carrot.member.hateoas.MemberModel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +42,7 @@ public class MemberServiceImpl implements MemberService {
         .build();
 
     MemberModel memberModel = new MemberModel(memberResponse);
-    memberModel.add(linkTo(MemberApiController.class).withRel("API Specification"));
+    memberModel.add(Link.of("/docs/index.html").withRel("API Specification"));
     memberModel.add(linkTo(MemberApiController.class).slash(memberResponse.getId()).withSelfRel());
     memberModel.add(
         linkTo(MemberApiController.class).slash(memberResponse.getId()).withRel("member-delete"));

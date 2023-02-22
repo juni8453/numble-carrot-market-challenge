@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,8 +63,11 @@ public class ProductServiceImpl implements ProductService {
     // instantiateModel() 로직에서 실제 selfWithRel() 동작
     CollectionModel<ProductModel> productModels = assembler.toCollectionModel(productResponses);
 
-    // 회원이라면 상품 등록 API 호출 + 단일 상품 조회 APi 호출이 가능해야 한다.
-    // 비회원이라면 단일 상품 조회 API 호출만 가능해야한다. (위 로직에서 이미 적용 완료)
+    // 비회원이든 회원이든 명세 link 필요
+    productModels.add(Link.of("/docs/index.html").withRel("API Specification"));
+
+    // 회원이라면 명세 link, 상품 등록 API 호출 + 단일 상품 조회 APi 호출이 가능해야 한다.
+    // 비회원이라면 명세 link, 단일 상품 조회 API 호출만 가능해야한다. (위 로직에서 이미 적용 완료)
     if (memberContext != null) {
       productModels.add(linkTo(ProductApiController.class).withRel("product-save"));
     }
@@ -186,6 +190,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   private void addHateoasLink(ProductModel productModel, Long productId) {
+    productModel.add(Link.of("/docs/index.html").withRel("API Specification"));
     productModel.add(linkTo(ProductApiController.class).slash(productId).withSelfRel());
   }
 

@@ -129,12 +129,14 @@ public class MemberApiControllerTest {
                 fieldWithPath("body.username").description("회원 이름"),
                 fieldWithPath("body.email").description("회원 이메일"),
 
+                fieldWithPath("body.links[].rel").description("API Specification"),
+                fieldWithPath("body.links[].href").description("/docs/index.html"),
                 fieldWithPath("body.links[].rel").description("self"),
-                fieldWithPath("body.links[].href").description("/api/user/{userId}"),
+                fieldWithPath("body.links[].href").description("/api/member/{userId}"),
                 fieldWithPath("body.links[].rel").description("member-delete"),
-                fieldWithPath("body.links[].href").description("/api/user/{userId}"),
+                fieldWithPath("body.links[].href").description("/api/member/{userId}"),
                 fieldWithPath("body.links[].rel").description("member-update"),
-                fieldWithPath("body.links[].href").description("/api/user/{userId}")
+                fieldWithPath("body.links[].href").description("/api/member/{userId}")
             ))
         );
   }

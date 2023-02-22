@@ -208,7 +208,7 @@ public class ProductApiControllerTest {
   }
 
 
-  @DisplayName("비회원인 경우 단일 상품을 조회했을 때 self link 만 응답에 포함되어야한다.")
+  @DisplayName("비회원인 경우 단일 상품을 조회했을 때 명세 link, self link 만 응답에 포함되어야한다.")
   @Test
   void 비회원_단일_상품조회() throws Exception {
     // when & then
@@ -224,10 +224,10 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("message").value(
             GlobalResponseMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
 
-        .andExpect(jsonPath("body.links[0].rel").value("self"))
-        .andExpect(jsonPath("body.links[0].rel").value("self"))
-        .andExpect(jsonPath("body.links[1].rel").doesNotExist())
+        .andExpect(jsonPath("body.links[0].rel").value("API Specification"))
+        .andExpect(jsonPath("body.links[1].rel").value("self"))
         .andExpect(jsonPath("body.links[2].rel").doesNotExist())
+        .andExpect(jsonPath("body.links[3].rel").doesNotExist())
 
         .andDo(document("product/guest/select-product",
             requestHeaders(
@@ -261,7 +261,7 @@ public class ProductApiControllerTest {
         ));
   }
 
-  @DisplayName("회원이지만 자신이 등록한 상품이 아닌 경우 self link 만 응답에 포함되어야한다.")
+  @DisplayName("회원이지만 자신이 등록한 상품이 아닌 경우 self link, 명세서 link 만 응답에 포함되어야한다.")
   @WithMockCustomUser(userId = 2, username = "anotherUser", role = Role.USER)
   @Test
   void 자신이_등록한_상품이_이닌경우_상품조회() throws Exception {
@@ -278,7 +278,9 @@ public class ProductApiControllerTest {
             GlobalResponseMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
 
         .andExpect(jsonPath("body.links[0].rel").exists())
-        .andExpect(jsonPath("body.links[0].rel").value("self"))
+        .andExpect(jsonPath("body.links[0].rel").value("API Specification"))
+        .andExpect(jsonPath("body.links[1].rel").exists())
+        .andExpect(jsonPath("body.links[1].rel").value("self"))
 
         .andDo(document("product/member/select-product-is-not-writer",
             requestHeaders(
@@ -306,13 +308,15 @@ public class ProductApiControllerTest {
                 fieldWithPath("body.category.name").description("상품을 등록한 카테고리 이름"),
                 fieldWithPath("body.image.images[].id").description("상품 이미지 아이디"),
                 fieldWithPath("body.image.images[].imageUrl").description("상품 이미지 URL"),
+                fieldWithPath("body.links[].rel").description("API Specification"),
+                fieldWithPath("body.links[].href").description("/docs/index.html"),
                 fieldWithPath("body.links[].rel").description("self"),
                 fieldWithPath("body.links[].href").description("/api/product/{productId}")
             )
         ));
   }
 
-  @DisplayName("회원이면서 자신이 등록한 상품인 경우 self, update, delete link 모두 응답에 포함되어야한다.")
+  @DisplayName("회원이면서 자신이 등록한 상품인 경우 명세 link, self, update, delete link 모두 응답에 포함되어야한다.")
   @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 자신이_등록한_상품조회() throws Exception {
@@ -329,11 +333,13 @@ public class ProductApiControllerTest {
             GlobalResponseMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
 
         .andExpect(jsonPath("body.links[0].rel").exists())
-        .andExpect(jsonPath("body.links[0].rel").value("self"))
+        .andExpect(jsonPath("body.links[0].rel").value("API Specification"))
         .andExpect(jsonPath("body.links[1].rel").exists())
-        .andExpect(jsonPath("body.links[1].rel").value("product-delete"))
+        .andExpect(jsonPath("body.links[1].rel").value("self"))
         .andExpect(jsonPath("body.links[2].rel").exists())
-        .andExpect(jsonPath("body.links[2].rel").value("product-update"))
+        .andExpect(jsonPath("body.links[2].rel").value("product-delete"))
+        .andExpect(jsonPath("body.links[3].rel").exists())
+        .andExpect(jsonPath("body.links[3].rel").value("product-update"))
 
         .andDo(document("product/member/select-product",
             requestHeaders(
@@ -372,7 +378,7 @@ public class ProductApiControllerTest {
     ;
   }
 
-  @DisplayName("비회원인 경우 content 내부 각 상품의 단일 상품 조회 link 만 응답에 포함되어야한다.")
+  @DisplayName("비회원인 경우 명세 link 및 content 내부 각 상품의 단일 상품 조회 link 만 응답에 포함되어야한다.")
   @Test
   void 비회원_모든_상품조회() throws Exception {
     // when & then
@@ -387,9 +393,10 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("message").value(
             GlobalResponseMessage.SUCCESS_GET_PRODUCTS.getSuccessMessage()))
 
+        .andExpect(jsonPath("body.links[0].rel").exists())
+        .andExpect(jsonPath("body.links[0].rel").value("API Specification"))
         .andExpect(jsonPath("body.content[0].links[0].rel").exists())
         .andExpect(jsonPath("body.content[0].links[0].rel").value("self"))
-        .andExpect(jsonPath("body.links[0]").doesNotExist())
 
         .andDo(document("product/guest/select-products",
             requestHeaders(
@@ -403,7 +410,8 @@ public class ProductApiControllerTest {
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
                 fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_GET_PRODUCTS),
 
-                fieldWithPath("body.links[]").description(List.class),
+                fieldWithPath("body.links[].rel").description("API Specification"),
+                fieldWithPath("body.links[].href").description("/docs/index.html"),
 
                 fieldWithPath("body.content[].id").description("상품 아이디"),
                 fieldWithPath("body.content[].title").description("상품 제목"),
@@ -430,7 +438,7 @@ public class ProductApiControllerTest {
         ));
   }
 
-  @DisplayName("회원일 경우 content 내부 각 상품의 단일 상품 조회 link, 바깥쪽 links[] 에 상품 등록 link 가 응답에 포함되어야한다.")
+  @DisplayName("회원일 경우 content 내부 각 상품의 단일 상품 조회 link, 바깥쪽 links[] 에 명세 link, 상품 등록 link 가 응답에 포함되어야한다.")
   @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 회원_모든_상품조회() throws Exception {
@@ -448,7 +456,8 @@ public class ProductApiControllerTest {
 
         .andExpect(jsonPath("body.content[0].links[0].rel").value("self"))
         .andExpect(jsonPath("body.links[0].rel").exists())
-        .andExpect(jsonPath("body.links[0].rel").value("product-save"))
+        .andExpect(jsonPath("body.links[0].rel").value("API Specification"))
+        .andExpect(jsonPath("body.links[1].rel").value("product-save"))
 
         .andDo(document("product/member/select-products",
             requestHeaders(
@@ -462,6 +471,8 @@ public class ProductApiControllerTest {
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
                 fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_GET_PRODUCTS),
 
+                fieldWithPath("body.links[].rel").description("API Specification"),
+                fieldWithPath("body.links[].href").description("/docs/index.html"),
                 fieldWithPath("body.links[].rel").description("product-save"),
                 fieldWithPath("body.links[].href").description("/api/product"),
 
