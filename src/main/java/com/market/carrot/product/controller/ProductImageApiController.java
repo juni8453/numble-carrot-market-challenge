@@ -25,7 +25,6 @@ public class ProductImageApiController {
   private final ProductImageService productImageService;
 
   @ResponseStatus(HttpStatus.OK)
-//  @PostMapping("{id}")
   @PutMapping("{id}")
   public GlobalResponseDto updateProductImage(
       @PathVariable Long id, @RequestBody UpdateProductImageRequest imageRequest,
