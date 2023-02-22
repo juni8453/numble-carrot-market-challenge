@@ -174,7 +174,7 @@ public class ProductImageApiControllerTest {
         "Update Image");
 
     // when & then
-    mvc.perform(post("/api/image/1")
+    mvc.perform(put("/api/image/1")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(accept)
@@ -297,7 +297,7 @@ public class ProductImageApiControllerTest {
         "Update Image");
 
     // when & then
-    mvc.perform(post("/api/image/3")
+    mvc.perform(put("/api/image/3")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(accept)
