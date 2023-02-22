@@ -11,6 +11,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -520,7 +521,7 @@ public class ProductApiControllerTest {
     UpdateProductRequest updateProductRequest = getUpdateProductRequest();
 
     // when & then
-    mvc.perform(post("/api/product/1")
+    mvc.perform(put("/api/product/1")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(accept)
@@ -564,7 +565,7 @@ public class ProductApiControllerTest {
     UpdateProductRequest updateProductRequest = getUpdateProductRequest();
 
     //when & then
-    mvc.perform(post("/api/product/1")
+    mvc.perform(put("/api/product/1")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(accept)
@@ -717,7 +718,7 @@ public class ProductApiControllerTest {
     UpdateProductRequest updateProductRequest = getUpdateProductRequest();
 
     // when & then
-    mvc.perform(post("/api/product/2")
+    mvc.perform(put("/api/product/2")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(accept)
