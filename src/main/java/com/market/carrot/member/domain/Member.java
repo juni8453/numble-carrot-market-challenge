@@ -35,14 +35,14 @@ public class Member extends BaseTime implements Serializable {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  public Member(String username, String password, String email, Role role) {
+  private Member(String username, String password, String email, Role role) {
     this.username = username;
     this.password = password;
     this.email = email;
     this.role = role;
   }
 
-  public Member(Long id, String username, String password, String email, Role role) {
+  private Member(Long id, String username, String password, String email, Role role) {
     this.id = id;
     this.username = username;
     this.password = password;
