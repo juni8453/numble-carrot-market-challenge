@@ -1,9 +1,8 @@
 package com.market.carrot.login.controller;
 
-import com.market.carrot.member.controller.dto.request.MemberCreateDto;
 import com.market.carrot.login.service.LoginService;
+import com.market.carrot.member.controller.dto.request.MemberCreateDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,30 +41,5 @@ public class LoginController {
     loginService.save(MemberCreateDto.toEntity(memberCreateDto, encodedPassword));
 
     return "redirect:/loginForm";
-  }
-
-  @GetMapping("/user")
-  public @ResponseBody
-  String user() {
-    return "user";
-  }
-
-  @GetMapping("/member")
-  public @ResponseBody
-  String member() {
-    return "member";
-  }
-
-  @GetMapping("/admin")
-  public @ResponseBody
-  String admin() {
-    return "admin";
-  }
-
-  @Secured("ROLE_USER")
-  @GetMapping("/info")
-  public @ResponseBody
-  String info() {
-    return "개인정보";
   }
 }
