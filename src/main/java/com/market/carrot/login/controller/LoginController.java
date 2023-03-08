@@ -1,7 +1,7 @@
 package com.market.carrot.login.controller;
 
 import com.market.carrot.login.service.LoginService;
-import com.market.carrot.member.controller.dto.request.MemberCreateDto;
+import com.market.carrot.member.controller.dto.request.CreateMemberRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -36,9 +36,9 @@ public class LoginController {
 
   // 회원가입 처리
   @PostMapping("/join")
-  public String join(MemberCreateDto memberCreateDto) {
-    String encodedPassword = passwordEncoder.encode(memberCreateDto.getPassword());
-    loginService.save(MemberCreateDto.toEntity(memberCreateDto, encodedPassword));
+  public String join(CreateMemberRequest createMemberRequest) {
+    String encodedPassword = passwordEncoder.encode(createMemberRequest.getPassword());
+    loginService.save(CreateMemberRequest.toEntity(createMemberRequest, encodedPassword));
 
     return "redirect:/loginForm";
   }
