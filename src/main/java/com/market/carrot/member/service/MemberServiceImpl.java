@@ -2,9 +2,8 @@ package com.market.carrot.member.service;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
-import com.market.carrot.global.Exception.AnotherMemberException;
-import com.market.carrot.global.Exception.ExceptionMessage;
-import com.market.carrot.global.Exception.NotFoundEntityException;
+import com.market.carrot.global.Exception.CustomException;
+import com.market.carrot.global.Exception.ResponseMessage.ExceptionMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.member.controller.MemberApiController;
 import com.market.carrot.member.controller.dto.response.MemberResponse;
@@ -27,11 +26,11 @@ public class MemberServiceImpl implements MemberService {
   @Override
   public MemberModel readMyProfile(Long id, MemberContext memberContext) {
     Member findMember = memberRepository.findById(id)
-        .orElseThrow(() -> new AnotherMemberException(ExceptionMessage.NOT_FOUND_MEMBER,
+        .orElseThrow(() -> new CustomException(ExceptionMessage.NOT_FOUND_MEMBER,
             HttpStatus.BAD_REQUEST));
 
     if (!findMember.checkUser(memberContext)) {
-      throw new AnotherMemberException(ExceptionMessage.IS_NOT_MY_PROFILE,
+      throw new CustomException(ExceptionMessage.IS_NOT_MY_PROFILE,
           HttpStatus.BAD_REQUEST);
     }
 
@@ -56,11 +55,11 @@ public class MemberServiceImpl implements MemberService {
   @Override
   public void delete(Long id, MemberContext memberContext) {
     Member findMember = memberRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_MEMBER,
+        .orElseThrow(() -> new CustomException(ExceptionMessage.NOT_FOUND_MEMBER,
             HttpStatus.BAD_REQUEST));
 
     if (!findMember.checkUser(memberContext)) {
-      throw new AnotherMemberException(ExceptionMessage.IS_NOT_MY_PROFILE_BY_DELETE,
+      throw new CustomException(ExceptionMessage.IS_NOT_MY_PROFILE_BY_DELETE,
           HttpStatus.OK);
     }
 

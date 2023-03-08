@@ -1,9 +1,8 @@
 package com.market.carrot.login.controller;
 
-import com.market.carrot.member.controller.dto.request.MemberCreateDto;
 import com.market.carrot.login.service.LoginService;
+import com.market.carrot.member.controller.dto.request.CreateMemberRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,35 +36,10 @@ public class LoginController {
 
   // 회원가입 처리
   @PostMapping("/join")
-  public String join(MemberCreateDto memberCreateDto) {
-    String encodedPassword = passwordEncoder.encode(memberCreateDto.getPassword());
-    loginService.save(MemberCreateDto.toEntity(memberCreateDto, encodedPassword));
+  public String join(CreateMemberRequest createMemberRequest) {
+    String encodedPassword = passwordEncoder.encode(createMemberRequest.getPassword());
+    loginService.save(CreateMemberRequest.toEntity(createMemberRequest, encodedPassword));
 
     return "redirect:/loginForm";
-  }
-
-  @GetMapping("/user")
-  public @ResponseBody
-  String user() {
-    return "user";
-  }
-
-  @GetMapping("/member")
-  public @ResponseBody
-  String member() {
-    return "member";
-  }
-
-  @GetMapping("/admin")
-  public @ResponseBody
-  String admin() {
-    return "admin";
-  }
-
-  @Secured("ROLE_USER")
-  @GetMapping("/info")
-  public @ResponseBody
-  String info() {
-    return "개인정보";
   }
 }

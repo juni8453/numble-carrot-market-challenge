@@ -1,7 +1,7 @@
 package com.market.carrot.product.controller;
 
 import com.market.carrot.global.GlobalResponseDto;
-import com.market.carrot.global.GlobalResponseMessage;
+import com.market.carrot.global.Exception.ResponseMessage.SuccessMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.product.controller.dto.request.CreateProductRequest;
 import com.market.carrot.product.controller.dto.request.UpdateProductRequest;
@@ -38,7 +38,7 @@ public class ProductApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message(GlobalResponseMessage.SUCCESS_GET_PRODUCTS.getSuccessMessage())
+        .message(SuccessMessage.SUCCESS_GET_PRODUCTS.getSuccessMessage())
         .body(productResponses)
         .build();
   }
@@ -52,7 +52,7 @@ public class ProductApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message(GlobalResponseMessage.SUCCESS_GET_PRODUCT.getSuccessMessage())
+        .message(SuccessMessage.SUCCESS_GET_PRODUCT.getSuccessMessage())
         .body(productResponse)
         .build();
   }
@@ -66,7 +66,7 @@ public class ProductApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.CREATED)
-        .message(GlobalResponseMessage.SUCCESS_POST_INSERT_PRODUCT.getSuccessMessage())
+        .message(SuccessMessage.SUCCESS_POST_INSERT_PRODUCT.getSuccessMessage())
         .build();
   }
 
@@ -80,7 +80,7 @@ public class ProductApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message(GlobalResponseMessage.SUCCESS_POST_UPDATE_PRODUCT.getSuccessMessage())
+        .message(SuccessMessage.SUCCESS_POST_UPDATE_PRODUCT.getSuccessMessage())
         .build();
   }
 
@@ -93,7 +93,7 @@ public class ProductApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message(GlobalResponseMessage.SUCCESS_DELETE_PRODUCT.getSuccessMessage())
+        .message(SuccessMessage.SUCCESS_DELETE_PRODUCT.getSuccessMessage())
         .build();
   }
 }

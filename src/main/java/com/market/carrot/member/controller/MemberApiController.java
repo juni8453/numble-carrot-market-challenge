@@ -1,7 +1,7 @@
 package com.market.carrot.member.controller;
 
 import com.market.carrot.global.GlobalResponseDto;
-import com.market.carrot.global.GlobalResponseMessage;
+import com.market.carrot.global.Exception.ResponseMessage.SuccessMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.member.hateoas.MemberModel;
 import com.market.carrot.member.service.MemberService;
@@ -32,7 +32,7 @@ public class MemberApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message(GlobalResponseMessage.SUCCESS_GET_MEMBER.getSuccessMessage())
+        .message(SuccessMessage.SUCCESS_GET_MEMBER.getSuccessMessage())
         .body(memberModel)
         .build();
   }
@@ -46,7 +46,7 @@ public class MemberApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message(GlobalResponseMessage.SUCCESS_DELETE_MEMBER.getSuccessMessage())
+        .message(SuccessMessage.SUCCESS_DELETE_MEMBER.getSuccessMessage())
         .build();
   }
 }

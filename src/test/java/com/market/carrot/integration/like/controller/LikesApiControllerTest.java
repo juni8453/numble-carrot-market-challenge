@@ -19,8 +19,8 @@ import com.market.carrot.category.service.CategoryService;
 import com.market.carrot.config.DatabaseCleanup;
 import com.market.carrot.config.RestDocsConfig;
 import com.market.carrot.config.WithMockCustomUser;
-import com.market.carrot.global.Exception.ExceptionMessage;
-import com.market.carrot.global.GlobalResponseMessage;
+import com.market.carrot.global.Exception.ResponseMessage.ExceptionMessage;
+import com.market.carrot.global.Exception.ResponseMessage.SuccessMessage;
 import com.market.carrot.likes.service.LikesService;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.member.domain.Member;
@@ -162,7 +162,7 @@ public class LikesApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.CREATED.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_POST_PRODUCT_LIKE.getSuccessMessage()))
+            SuccessMessage.SUCCESS_POST_PRODUCT_LIKE.getSuccessMessage()))
 
         .andDo(document("likes/member/insert-first-likes-post",
             requestHeaders(
@@ -175,7 +175,7 @@ public class LikesApiControllerTest {
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.CREATED),
                 fieldWithPath("message").description(
-                    GlobalResponseMessage.SUCCESS_POST_PRODUCT_LIKE),
+                    SuccessMessage.SUCCESS_POST_PRODUCT_LIKE),
                 fieldWithPath("body").description("null")
             )
         ));
@@ -209,7 +209,7 @@ public class LikesApiControllerTest {
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.CREATED),
                 fieldWithPath("message").description(
-                    GlobalResponseMessage.SUCCESS_POST_PRODUCT_LIKE),
+                    SuccessMessage.SUCCESS_POST_PRODUCT_LIKE),
                 fieldWithPath("body").description("null")
             )
         ));

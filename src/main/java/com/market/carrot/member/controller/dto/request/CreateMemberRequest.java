@@ -7,17 +7,17 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class MemberCreateDto {
+public class CreateMemberRequest {
 
   private String username;
   private String password;
   private String email;
 
-  public static Member toEntity(MemberCreateDto userCreateDto, String encodedPassword) {
+  public static Member toEntity(CreateMemberRequest createMemberRequest, String encodedPassword) {
     return Member.createMember(
-        userCreateDto.getUsername(),
+        createMemberRequest.getUsername(),
         encodedPassword,
-        userCreateDto.getEmail(),
+        createMemberRequest.getEmail(),
         Role.USER
     );
   }

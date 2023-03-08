@@ -22,8 +22,8 @@ import com.market.carrot.category.service.CategoryService;
 import com.market.carrot.config.DatabaseCleanup;
 import com.market.carrot.config.RestDocsConfig;
 import com.market.carrot.config.WithMockCustomUser;
-import com.market.carrot.global.Exception.ExceptionMessage;
-import com.market.carrot.global.GlobalResponseMessage;
+import com.market.carrot.global.Exception.ResponseMessage.ExceptionMessage;
+import com.market.carrot.global.Exception.ResponseMessage.SuccessMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.member.domain.Member;
 import com.market.carrot.login.domain.Role;
@@ -143,7 +143,7 @@ public class ProductImageApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_POST_UPDATE_IMAGE.getSuccessMessage()))
+            SuccessMessage.SUCCESS_POST_UPDATE_IMAGE.getSuccessMessage()))
 
         .andDo(document("image/member/update-image",
             requestHeaders(
@@ -159,7 +159,7 @@ public class ProductImageApiControllerTest {
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
-                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_POST_PRODUCT_LIKE),
+                fieldWithPath("message").description(SuccessMessage.SUCCESS_POST_PRODUCT_LIKE),
                 fieldWithPath("body").description("null")
             )
         ));
@@ -239,7 +239,7 @@ public class ProductImageApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_DELETE_IMAGE.getSuccessMessage()))
+            SuccessMessage.SUCCESS_DELETE_IMAGE.getSuccessMessage()))
 
         .andDo(document("image/member/delete-image",
             requestHeaders(
@@ -251,7 +251,7 @@ public class ProductImageApiControllerTest {
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
-                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_DELETE_IMAGE),
+                fieldWithPath("message").description(SuccessMessage.SUCCESS_DELETE_IMAGE),
                 fieldWithPath("body").description("null")
             )
         ));

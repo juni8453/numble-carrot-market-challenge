@@ -1,11 +1,11 @@
-package com.market.carrot.global;
+package com.market.carrot.global.Exception.ResponseMessage;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum GlobalResponseMessage {
+public enum SuccessMessage {
 
   SUCCESS_POST_CATEGORY("카테고리 등록 성공"),
 

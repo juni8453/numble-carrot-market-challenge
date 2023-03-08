@@ -17,75 +17,41 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
-  @ExceptionHandler(RoleException.class)
-  public GlobalResponseDto incorrectRole(RoleException roleException) {
-    log.error("roleException 발생: {}", roleException.getMessage());
+  @ExceptionHandler(CustomException.class)
+  public GlobalResponseDto incorrectRole(CustomException customException) {
+    log.error("customException 발생: {}", customException.getMessage());
 
     return GlobalResponseDto.builder()
         .code(-1)
         .httpStatus(HttpStatus.UNAUTHORIZED)
-        .message(roleException.getMessage())
-        .build();
-  }
-
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(AnotherMemberException.class)
-  public GlobalResponseDto isNotMyProfile(AnotherMemberException anotherMemberException) {
-    log.error("isNotMyProfileException 발생: {}", anotherMemberException.getMessage());
-
-    return GlobalResponseDto.builder()
-        .code(-1)
-        .httpStatus(HttpStatus.BAD_REQUEST)
-        .message(anotherMemberException.getMessage())
-        .build();
-  }
-
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(NotFoundEntityException.class)
-  public GlobalResponseDto notFoundEntity(NotFoundEntityException notFoundEntityException) {
-    log.error("NotFoundEntityException 발생: {}", notFoundEntityException.getMessage());
-
-    return GlobalResponseDto.builder()
-        .code(-1)
-        .httpStatus(HttpStatus.BAD_REQUEST)
-        .message(notFoundEntityException.getMessage())
-        .build();
-  }
-
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(UserDuplicatedException.class)
-  public GlobalResponseDto userDuplicated(UserDuplicatedException userDuplicatedException) {
-    log.error("UserDuplicatedException 발생: {}", userDuplicatedException.getMessage());
-
-    return GlobalResponseDto.builder()
-        .code(-1)
-        .httpStatus(HttpStatus.BAD_REQUEST)
-        .message(userDuplicatedException.getMessage())
+        .message(customException.getMessage())
         .build();
   }
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public GlobalResponseDto validation(MethodArgumentNotValidException validException) {
+  public GlobalResponseDto validation(
+      MethodArgumentNotValidException validException) {
+
     log.error("ValidException 발생: {}", validException.getMessage());
-    List<ValidationExceptionFieldResponse> responses = new ArrayList<>();
+
+    List<ValidationExceptionField> fields = new ArrayList<>();
 
     for (FieldError fieldError : validException.getFieldErrors()) {
-      ValidationExceptionField validationExceptionField = ValidationExceptionField.builder()
-          .fieldName(fieldError.getField())
-          .fieldMessage(fieldError.getDefaultMessage())
-          .build();
+      ValidationExceptionField validationField =
+          ValidationExceptionField.createValidationField(fieldError);
 
-      ValidationExceptionFieldResponse response = new ValidationExceptionFieldResponse(
-          validationExceptionField);
-      responses.add(response);
+      fields.add(validationField);
     }
+
+    ValidationExceptionFieldResponse fieldResponse =
+        ValidationExceptionFieldResponse.createFieldResponse(fields);
 
     return GlobalResponseDto.builder()
         .code(-1)
         .httpStatus(HttpStatus.BAD_REQUEST)
         .message("Valid 관련 예외 발생")
-        .body(responses)
+        .body(fieldResponse)
         .build();
   }
 
