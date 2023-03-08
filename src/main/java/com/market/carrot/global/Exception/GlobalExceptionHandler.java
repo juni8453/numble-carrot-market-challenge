@@ -17,50 +17,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
-  @ExceptionHandler(RoleException.class)
-  public GlobalResponseDto incorrectRole(RoleException roleException) {
-    log.error("roleException 발생: {}", roleException.getMessage());
+  @ExceptionHandler(CustomException.class)
+  public GlobalResponseDto incorrectRole(CustomException customException) {
+    log.error("customException 발생: {}", customException.getMessage());
 
     return GlobalResponseDto.builder()
         .code(-1)
         .httpStatus(HttpStatus.UNAUTHORIZED)
-        .message(roleException.getMessage())
-        .build();
-  }
-
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(AnotherMemberException.class)
-  public GlobalResponseDto isNotMyProfile(AnotherMemberException anotherMemberException) {
-    log.error("isNotMyProfileException 발생: {}", anotherMemberException.getMessage());
-
-    return GlobalResponseDto.builder()
-        .code(-1)
-        .httpStatus(HttpStatus.BAD_REQUEST)
-        .message(anotherMemberException.getMessage())
-        .build();
-  }
-
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(NotFoundEntityException.class)
-  public GlobalResponseDto notFoundEntity(NotFoundEntityException notFoundEntityException) {
-    log.error("NotFoundEntityException 발생: {}", notFoundEntityException.getMessage());
-
-    return GlobalResponseDto.builder()
-        .code(-1)
-        .httpStatus(HttpStatus.BAD_REQUEST)
-        .message(notFoundEntityException.getMessage())
-        .build();
-  }
-
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(UserDuplicatedException.class)
-  public GlobalResponseDto userDuplicated(UserDuplicatedException userDuplicatedException) {
-    log.error("UserDuplicatedException 발생: {}", userDuplicatedException.getMessage());
-
-    return GlobalResponseDto.builder()
-        .code(-1)
-        .httpStatus(HttpStatus.BAD_REQUEST)
-        .message(userDuplicatedException.getMessage())
+        .message(customException.getMessage())
         .build();
   }
 

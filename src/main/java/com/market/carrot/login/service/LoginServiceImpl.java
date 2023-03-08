@@ -1,7 +1,7 @@
 package com.market.carrot.login.service;
 
-import com.market.carrot.global.Exception.ExceptionMessage;
-import com.market.carrot.global.Exception.UserDuplicatedException;
+import com.market.carrot.global.Exception.CustomException;
+import com.market.carrot.global.Exception.ResponseMessage.ExceptionMessage;
 import com.market.carrot.login.domain.LoginRepository;
 import com.market.carrot.member.domain.Member;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class LoginServiceImpl implements LoginService {
   @Override
   public void save(Member member) {
     if (loginRepository.findByUsername(member.getUsername()).isPresent()) {
-      throw new UserDuplicatedException(ExceptionMessage.USER_DUPLICATED, HttpStatus.BAD_REQUEST);
+      throw new CustomException(ExceptionMessage.USER_DUPLICATED, HttpStatus.BAD_REQUEST);
     }
 
     loginRepository.save(member);

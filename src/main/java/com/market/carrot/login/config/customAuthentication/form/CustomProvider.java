@@ -1,7 +1,7 @@
 package com.market.carrot.login.config.customAuthentication.form;
 
-import com.market.carrot.global.Exception.BadCredentialsException;
-import com.market.carrot.global.Exception.ExceptionMessage;
+import com.market.carrot.global.Exception.CustomException;
+import com.market.carrot.global.Exception.ResponseMessage.ExceptionMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ public class CustomProvider implements AuthenticationProvider {
     MemberContext memberContext = (MemberContext) userDetailsService.loadUserByUsername(username);
 
     if (!passwordEncoder.matches(password, memberContext.getPassword())) {
-      throw new BadCredentialsException(ExceptionMessage.BAD_CREDENTIALS, HttpStatus.BAD_REQUEST);
+      throw new CustomException(ExceptionMessage.BAD_CREDENTIALS, HttpStatus.BAD_REQUEST);
     }
 
     return new UsernamePasswordAuthenticationToken(

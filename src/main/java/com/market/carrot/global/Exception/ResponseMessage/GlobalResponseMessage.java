@@ -1,4 +1,4 @@
-package com.market.carrot.global;
+package com.market.carrot.global.Exception.ResponseMessage;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -2,8 +2,8 @@ package com.market.carrot.product.domain;
 
 import com.market.carrot.BaseTime;
 import com.market.carrot.category.domain.Category;
-import com.market.carrot.global.Exception.AnotherMemberException;
-import com.market.carrot.global.Exception.ExceptionMessage;
+import com.market.carrot.global.Exception.CustomException;
+import com.market.carrot.global.Exception.ResponseMessage.ExceptionMessage;
 import com.market.carrot.member.domain.Member;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ public class Product extends BaseTime {
   public void updateProduct(String updateTitle, String updateContent, int updatePrice,
       Member member) {
     if (!checkUser(member)) {
-      throw new AnotherMemberException(ExceptionMessage.IS_NOT_WRITER, HttpStatus.BAD_REQUEST);
+      throw new CustomException(ExceptionMessage.IS_NOT_WRITER, HttpStatus.BAD_REQUEST);
     }
 
     this.title = updateTitle;

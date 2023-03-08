@@ -3,7 +3,7 @@ package com.market.carrot.category.controller;
 import com.market.carrot.category.controller.dto.request.CreateCategoryRequest;
 import com.market.carrot.category.service.CategoryService;
 import com.market.carrot.global.GlobalResponseDto;
-import com.market.carrot.global.GlobalResponseMessage;
+import com.market.carrot.global.Exception.ResponseMessage.GlobalResponseMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.MediaTypes;

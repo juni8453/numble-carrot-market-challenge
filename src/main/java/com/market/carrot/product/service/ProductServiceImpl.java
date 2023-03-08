@@ -4,9 +4,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 import com.market.carrot.category.domain.Category;
 import com.market.carrot.category.domain.CategoryRepository;
-import com.market.carrot.global.Exception.AnotherMemberException;
-import com.market.carrot.global.Exception.ExceptionMessage;
-import com.market.carrot.global.Exception.NotFoundEntityException;
+import com.market.carrot.global.Exception.CustomException;
+import com.market.carrot.global.Exception.ResponseMessage.ExceptionMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.product.controller.ProductApiController;
 import com.market.carrot.product.domain.Product;
@@ -79,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public ProductModel detail(Long id, MemberContext memberContext) {
     Product findProduct = productRepository.findById(id).orElseThrow(
-        () -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT,
+        () -> new CustomException(ExceptionMessage.NOT_FOUND_PRODUCT,
             HttpStatus.BAD_REQUEST));
 
     ProductResponse productResponse = ProductResponse.builder()
@@ -110,7 +109,7 @@ public class ProductServiceImpl implements ProductService {
     Product saveProduct = Product.createProduct(title, content, price);
 
     Category findCategory = categoryRepository.findById(categoryId)
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_CATEGORY,
+        .orElseThrow(() -> new CustomException(ExceptionMessage.NOT_FOUND_CATEGORY,
             HttpStatus.BAD_REQUEST));
 
     // 연관관계에 의한 Member, Category, Image 값 셋팅
@@ -118,7 +117,7 @@ public class ProductServiceImpl implements ProductService {
     saveProduct.addCategory(findCategory);
 
     if (imagesUrl == null || imagesUrl.isEmpty()) {
-      throw new NotFoundEntityException(ExceptionMessage.IS_NOT_INCLUDED_IMAGE,
+      throw new CustomException(ExceptionMessage.IS_NOT_INCLUDED_IMAGE,
           HttpStatus.BAD_REQUEST);
     }
 
@@ -140,7 +139,7 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public void update(Long id, UpdateProductRequest productRequest, MemberContext memberContext) {
     Product findProduct = productRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT,
+        .orElseThrow(() -> new CustomException(ExceptionMessage.NOT_FOUND_PRODUCT,
             HttpStatus.BAD_REQUEST));
 
     String updateTitle = productRequest.getTitle();
@@ -154,11 +153,11 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public void delete(Long id, MemberContext memberContext) {
     Product findProduct = productRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_PRODUCT,
+        .orElseThrow(() -> new CustomException(ExceptionMessage.NOT_FOUND_PRODUCT,
             HttpStatus.BAD_REQUEST));
 
     if (!findProduct.checkUser(memberContext.getMember())) {
-      throw new AnotherMemberException(ExceptionMessage.IS_NOT_WRITER, HttpStatus.BAD_REQUEST);
+      throw new CustomException(ExceptionMessage.IS_NOT_WRITER, HttpStatus.BAD_REQUEST);
     }
 
     productRepository.delete(findProduct);

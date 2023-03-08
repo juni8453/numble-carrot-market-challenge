@@ -1,8 +1,7 @@
 package com.market.carrot.product.service;
 
-import com.market.carrot.global.Exception.AnotherMemberException;
-import com.market.carrot.global.Exception.ExceptionMessage;
-import com.market.carrot.global.Exception.NotFoundEntityException;
+import com.market.carrot.global.Exception.CustomException;
+import com.market.carrot.global.Exception.ResponseMessage.ExceptionMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.product.domain.Product;
 import com.market.carrot.product.domain.ProductImage;
@@ -24,13 +23,13 @@ public class ProductImageServiceImpl implements ProductImageService {
   public void updateImage(Long id, UpdateProductImageRequest imageRequest,
       MemberContext memberContext) {
     ProductImage findProductImage = productImageRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_IMAGE,
+        .orElseThrow(() -> new CustomException(ExceptionMessage.NOT_FOUND_IMAGE,
             HttpStatus.BAD_REQUEST));
 
     Product findProductByImage = findProductImage.getProduct();
 
     if (!findProductByImage.checkUser(memberContext.getMember())) {
-      throw new AnotherMemberException(ExceptionMessage.IS_NOT_WRITER, HttpStatus.BAD_REQUEST);
+      throw new CustomException(ExceptionMessage.IS_NOT_WRITER, HttpStatus.BAD_REQUEST);
     }
 
     String updateImageUrl = imageRequest.getImageUrl();
@@ -41,13 +40,13 @@ public class ProductImageServiceImpl implements ProductImageService {
   @Override
   public void deleteImage(Long id, MemberContext memberContext) {
     ProductImage findProductImage = productImageRepository.findById(id)
-        .orElseThrow(() -> new NotFoundEntityException(ExceptionMessage.NOT_FOUND_IMAGE,
+        .orElseThrow(() -> new CustomException(ExceptionMessage.NOT_FOUND_IMAGE,
             HttpStatus.BAD_REQUEST));
 
     Product findProductByImage = findProductImage.getProduct();
 
     if (!findProductByImage.checkUser(memberContext.getMember())) {
-      throw new AnotherMemberException(ExceptionMessage.IS_NOT_WRITER, HttpStatus.BAD_REQUEST);
+      throw new CustomException(ExceptionMessage.IS_NOT_WRITER, HttpStatus.BAD_REQUEST);
     }
 
     productImageRepository.delete(findProductImage);
