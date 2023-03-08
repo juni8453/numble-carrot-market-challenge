@@ -30,26 +30,28 @@ public class GlobalExceptionHandler {
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public GlobalResponseDto validation(MethodArgumentNotValidException validException) {
+  public GlobalResponseDto validation(
+      MethodArgumentNotValidException validException) {
+
     log.error("ValidException 발생: {}", validException.getMessage());
-    List<ValidationExceptionFieldResponse> responses = new ArrayList<>();
+
+    List<ValidationExceptionField> fields = new ArrayList<>();
 
     for (FieldError fieldError : validException.getFieldErrors()) {
-      ValidationExceptionField validationExceptionField = ValidationExceptionField.builder()
-          .fieldName(fieldError.getField())
-          .fieldMessage(fieldError.getDefaultMessage())
-          .build();
+      ValidationExceptionField validationField =
+          ValidationExceptionField.createValidationField(fieldError);
 
-      ValidationExceptionFieldResponse response = new ValidationExceptionFieldResponse(
-          validationExceptionField);
-      responses.add(response);
+      fields.add(validationField);
     }
+
+    ValidationExceptionFieldResponse fieldResponse =
+        ValidationExceptionFieldResponse.createFieldResponse(fields);
 
     return GlobalResponseDto.builder()
         .code(-1)
         .httpStatus(HttpStatus.BAD_REQUEST)
         .message("Valid 관련 예외 발생")
-        .body(responses)
+        .body(fieldResponse)
         .build();
   }
 
