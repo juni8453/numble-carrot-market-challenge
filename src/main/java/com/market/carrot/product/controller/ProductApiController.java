@@ -47,7 +47,7 @@ public class ProductApiController {
   @GetMapping("{id}")
   public GlobalResponseDto detail(@PathVariable Long id,
       @AuthenticationPrincipal MemberContext memberContext) {
-    ProductModel productResponse = productService.detail(id, memberContext);
+    ProductModel productResponse = productService.readDetail(id, memberContext);
 
     return GlobalResponseDto.builder()
         .code(1)

@@ -24,7 +24,7 @@ public class MemberServiceImpl implements MemberService {
 
   @Transactional(readOnly = true)
   @Override
-  public MemberModel readMyProfile(Long id, MemberContext memberContext) {
+  public MemberModel readDetail(Long id, MemberContext memberContext) {
     Member findMember = memberRepository.findById(id)
         .orElseThrow(() -> new CustomException(ExceptionMessage.NOT_FOUND_MEMBER,
             HttpStatus.BAD_REQUEST));

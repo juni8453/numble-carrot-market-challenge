@@ -10,7 +10,7 @@ public interface ProductService {
 
   CollectionModel<ProductModel> readAll(MemberContext memberContext);
 
-  ProductModel detail(Long id, MemberContext memberContext);
+  ProductModel readDetail(Long id, MemberContext memberContext);
 
   void save(CreateProductRequest productRequest, MemberContext memberContext);
 
