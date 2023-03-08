@@ -519,7 +519,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h5 id="_http_request">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/product/1?_csrf=ee80e475-cd6a-4137-84c7-2186af949ac7 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/product/1?_csrf=521fec99-06d9-474d-8ab0-5c6ba2fe30cd HTTP/1.1
 Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -537,8 +537,8 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=NmM3ODc1MWMtMWI3MS00ZmIxLThhYjktZDYwMTM3M2UwMGYz; Path=/; HttpOnly; SameSite=Lax
-Content-Length: 979
+Set-Cookie: SESSION=YzBlMGJhOGUtOGFhOS00YjM5LTg4MzItMTU4NDNmYmY4Njk0; Path=/; HttpOnly; SameSite=Lax
+Content-Length: 1057
 
 {
   "code" : 1,
@@ -550,8 +550,8 @@ Content-Length: 979
     "content" : "Init Product Content",
     "price" : 10000,
     "heartCount" : 0,
-    "createdDate" : "2023-02-16T18:57:33.411291",
-    "modifiedDate" : "2023-02-16T18:57:33.411291",
+    "createdDate" : "2023-02-22T17:39:32.734293",
+    "modifiedDate" : "2023-02-22T17:39:32.734293",
     "member" : {
       "id" : 1,
       "username" : "username",
@@ -572,6 +572,9 @@ Content-Length: 979
       } ]
     },
     "links" : [ {
+      "rel" : "API Specification",
+      "href" : "/docs/index.html"
+    }, {
       "rel" : "self",
       "href" : "http://localhost:8080/api/product/1"
     }, {
@@ -732,7 +735,7 @@ Content-Length: 979
 <h5 id="_http_request_2">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/product/?_csrf=56ded3a1-5e51-45a0-818c-69551e8d8866 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/product/?_csrf=954fca69-7bb9-4acb-bdd6-0830bfd2a008 HTTP/1.1
 Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -750,8 +753,8 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=ODc5NGNkN2QtODIwNC00NmZjLWE4NzUtMzM2MDYyMjA2NjEz; Path=/; HttpOnly; SameSite=Lax
-Content-Length: 987
+Set-Cookie: SESSION=YWRhMzg1YzYtZGFiNS00NzU2LWE4YzYtMzg5NWUxNzIwYzZm; Path=/; HttpOnly; SameSite=Lax
+Content-Length: 1065
 
 {
   "code" : 1,
@@ -759,6 +762,9 @@ Content-Length: 987
   "message" : "모든 상품 조회 성공",
   "body" : {
     "links" : [ {
+      "rel" : "API Specification",
+      "href" : "/docs/index.html"
+    }, {
       "rel" : "product-save",
       "href" : "http://localhost:8080/api/product"
     } ],
@@ -768,8 +774,8 @@ Content-Length: 987
       "content" : "Init Product Content",
       "price" : 10000,
       "heartCount" : 0,
-      "createdDate" : "2023-02-16T18:57:33.321995",
-      "modifiedDate" : "2023-02-16T18:57:33.321995",
+      "createdDate" : "2023-02-22T17:39:32.628008",
+      "modifiedDate" : "2023-02-22T17:39:32.628008",
       "member" : {
         "id" : 1,
         "username" : "username",
@@ -829,6 +835,16 @@ Content-Length: 987
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SUCCESS_GET_PRODUCTS</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>body.links[].rel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">API Specification</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>body.links[].href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/docs/index.html</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>body.links[].rel</code></p></td>
@@ -935,7 +951,7 @@ Content-Length: 987
 <h5 id="_http_request_3">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/product/?_csrf=91430259-60f5-468c-aa6c-84714eeae46e HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/product/?_csrf=d85f5167-5875-4fbf-93fa-ed04f59afc2b HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/hal+json;charset=UTF-8
 Content-Length: 185
@@ -1011,7 +1027,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=OGExYTdiNTYtMGQzOS00YzYyLWI3YzItY2MzODM3MTk5MTY5; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: SESSION=NzFlNjQ4MzQtOTYxNi00ZDQyLTljMmUtMDM5Njc2YWRjNDU3; Path=/; HttpOnly; SameSite=Lax
 Content-Length: 99
 
 {
@@ -1069,7 +1085,7 @@ Content-Length: 99
 <h5 id="_http_request_4">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/product/1?_csrf=504aa1f4-c0ee-4111-86d2-5f60f823b32d HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PUT /api/product/1?_csrf=4650d94d-a04f-48a6-a97d-ec494072c47f HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/hal+json;charset=UTF-8
 Content-Length: 81
@@ -1129,7 +1145,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=ZmE5YTk0NTAtYTBlMS00NmU5LWFlMGUtMGRjYjI0NjNhNDIw; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: SESSION=Mjg3NWU1ZjgtNDQxOC00MzNlLWI2ZTYtMzk5MTdmNzNkZjQ3; Path=/; HttpOnly; SameSite=Lax
 Content-Length: 94
 
 {
@@ -1187,7 +1203,7 @@ Content-Length: 94
 <h5 id="_http_request_5">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /api/product/1?_csrf=a558a0ac-9967-470a-8a5c-1bda33e5ddb0 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /api/product/1?_csrf=c321b585-31ee-47c6-a7c0-501b0d49537c HTTP/1.1
 Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -1205,7 +1221,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=ZmFhOTg4YzItNjRjZC00MDUxLWI5ZjQtNjRkMmRlYWJmZmFj; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: SESSION=ZjVmZDVjNDYtY2UyZC00Y2UzLWExZmMtNTU0MmE2ZGNiZmM2; Path=/; HttpOnly; SameSite=Lax
 Content-Length: 94
 
 {
@@ -1266,7 +1282,7 @@ Content-Length: 94
 <h5 id="_http_request_6">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/product/1?_csrf=38af2949-0f44-4968-80e5-8aa0a06ae820 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/product/1?_csrf=5adfcbe8-387f-4424-9b39-56be7d2bd9f0 HTTP/1.1
 Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -1284,7 +1300,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 791
+Content-Length: 869
 
 {
   "code" : 1,
@@ -1296,8 +1312,8 @@ Content-Length: 791
     "content" : "Init Product Content",
     "price" : 10000,
     "heartCount" : 0,
-    "createdDate" : "2023-02-16T18:57:33.361785",
-    "modifiedDate" : "2023-02-16T18:57:33.361785",
+    "createdDate" : "2023-02-22T17:39:32.677914",
+    "modifiedDate" : "2023-02-22T17:39:32.677914",
     "member" : {
       "id" : 1,
       "username" : "username",
@@ -1318,6 +1334,9 @@ Content-Length: 791
       } ]
     },
     "links" : [ {
+      "rel" : "API Specification",
+      "href" : "/docs/index.html"
+    }, {
       "rel" : "self",
       "href" : "http://localhost:8080/api/product/1"
     } ]
@@ -1452,7 +1471,7 @@ Content-Length: 791
 <h5 id="_http_request_7">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/product/?_csrf=f6fd6ccb-405c-4547-9a14-8d7713de490d HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/product/?_csrf=779e41f6-f797-4029-b733-933a8922018e HTTP/1.1
 Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -1470,22 +1489,25 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 898
+Content-Length: 975
 
 {
   "code" : 1,
   "httpStatus" : "OK",
   "message" : "모든 상품 조회 성공",
   "body" : {
-    "links" : [ ],
+    "links" : [ {
+      "rel" : "API Specification",
+      "href" : "/docs/index.html"
+    } ],
     "content" : [ {
       "id" : 1,
       "title" : "Init Product Title",
       "content" : "Init Product Content",
       "price" : 10000,
       "heartCount" : 0,
-      "createdDate" : "2023-02-16T18:57:33.429695",
-      "modifiedDate" : "2023-02-16T18:57:33.429695",
+      "createdDate" : "2023-02-22T17:39:32.756961",
+      "modifiedDate" : "2023-02-22T17:39:32.756961",
       "member" : {
         "id" : 1,
         "username" : "username",
@@ -1547,9 +1569,14 @@ Content-Length: 898
 <td class="tableblock halign-left valign-top"><p class="tableblock">SUCCESS_GET_PRODUCTS</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>body.links[]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">interface java.util.List</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>body.links[].rel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">API Specification</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>body.links[].href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/docs/index.html</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>body.content[].id</code></p></td>
@@ -1654,7 +1681,7 @@ Content-Length: 898
 <h5 id="_http_request_8">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/image/1?_csrf=8698d812-0df7-4d2c-ac80-2559a9775207 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PUT /api/image/1?_csrf=9eadd870-9a91-4b15-9403-c15d692cd133 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/hal+json;charset=UTF-8
 Content-Length: 33
@@ -1702,7 +1729,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=MGZmZDRlMTgtMmM5Yy00ZThmLTg3YTAtYWYzMjlkMThlYTFl; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: SESSION=YmE4OWY1OWEtNjRkYy00MTM1LWIzYmQtZjI2OWZiMzdkMTJl; Path=/; HttpOnly; SameSite=Lax
 Content-Length: 97
 
 {
@@ -1760,7 +1787,7 @@ Content-Length: 97
 <h5 id="_http_request_9">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/image/1?_csrf=f19f6e09-246c-4e7d-8415-0e2225349617 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PUT /api/image/1?_csrf=6e0f2143-2b22-42d1-b007-7f5a98dbe6a9 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/hal+json;charset=UTF-8
 Content-Length: 33
@@ -1784,7 +1811,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=MTAyODE0MDYtNmM1Yy00YzMzLThlMDYtNTAzMGY5ODc3MTVm; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: SESSION=NDM2YTRmYzgtYTFhYy00YTI1LWIzMTYtNzJkN2QwNDQzOGU5; Path=/; HttpOnly; SameSite=Lax
 Content-Length: 127
 
 {
@@ -1842,7 +1869,7 @@ Content-Length: 127
 <h5 id="_http_request_10">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /api/image/1?_csrf=652429ed-4e46-4b99-8be9-dca101a1e009 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /api/image/1?_csrf=e62e5d09-490d-4eb7-b698-e0518ca257ed HTTP/1.1
 Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -1860,7 +1887,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=Y2NlMGRiMDUtYWNmNy00OTgwLTgwZjUtZjY3OGQ3NjBlMzgx; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: SESSION=ZGVkM2Y4ZWItNzgyMS00YWIwLTk0MTctZjUzYzk5OTEwNjI3; Path=/; HttpOnly; SameSite=Lax
 Content-Length: 97
 
 {
@@ -1918,7 +1945,7 @@ Content-Length: 97
 <h5 id="_http_request_11">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /api/image/1?_csrf=ded9351a-b502-48e6-b465-64faee999d5d HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /api/image/1?_csrf=3b49881a-4397-4095-9d19-02035095e02c HTTP/1.1
 Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -1936,7 +1963,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=MmIzM2E3MTYtNzgwZi00Yzk4LWEwMzEtYTQ3Nzg4YWQ0NDMx; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: SESSION=MmQzNGQ5NWMtZmUzOC00Njg0LWExYTYtNzYzMTUwNmU3MTAx; Path=/; HttpOnly; SameSite=Lax
 Content-Length: 127
 
 {
@@ -2002,7 +2029,7 @@ Content-Length: 127
 <h5 id="_http_request_12">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/user/1?_csrf=705e8e6f-0bea-4ac1-a626-7dd6bdb7ab58 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/member/1?_csrf=0255c585-6460-4a1a-873a-d3dabcbeda45 HTTP/1.1
 Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -2020,8 +2047,8 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=NGUxMzUxNjMtYmI2Yi00MmMxLTg1M2MtNjg4ZGE3NWQwOTJl; Path=/; HttpOnly; SameSite=Lax
-Content-Length: 442
+Set-Cookie: SESSION=YjUzNDYzZTctY2ZkNy00NWNhLWI4ODUtNzBmYWZmOThhODQ4; Path=/; HttpOnly; SameSite=Lax
+Content-Length: 526
 
 {
   "code" : 1,
@@ -2032,14 +2059,17 @@ Content-Length: 442
     "username" : "username",
     "email" : "email",
     "links" : [ {
+      "rel" : "API Specification",
+      "href" : "/docs/index.html"
+    }, {
       "rel" : "self",
-      "href" : "http://localhost:8080/api/user/1"
+      "href" : "http://localhost:8080/api/member/1"
     }, {
       "rel" : "member-delete",
-      "href" : "http://localhost:8080/api/user/1"
+      "href" : "http://localhost:8080/api/member/1"
     }, {
       "rel" : "member-update",
-      "href" : "http://localhost:8080/api/user/1"
+      "href" : "http://localhost:8080/api/member/1"
     } ]
   }
 }</code></pre>
@@ -2100,12 +2130,22 @@ Content-Length: 442
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>body.links[].rel</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">API Specification</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>body.links[].href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/docs/index.html</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>body.links[].rel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">self</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>body.links[].href</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/api/user/{userId}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/api/member/{userId}</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>body.links[].rel</code></p></td>
@@ -2115,7 +2155,7 @@ Content-Length: 442
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>body.links[].href</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/api/user/{userId}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/api/member/{userId}</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>body.links[].rel</code></p></td>
@@ -2125,7 +2165,7 @@ Content-Length: 442
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>body.links[].href</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/api/user/{userId}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/api/member/{userId}</p></td>
 </tr>
 </tbody>
 </table>
@@ -2137,7 +2177,7 @@ Content-Length: 442
 <h5 id="_http_request_13">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /api/user/1?_csrf=e1e287f4-4bb0-4dbf-8020-77aec93f58b7 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /api/member/1?_csrf=52c9b436-3fd7-4b79-a088-977a2e7bdacc HTTP/1.1
 Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -2155,7 +2195,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=NTM5ZWE3OTYtNjY2Yi00NjE5LWFhMjEtYzVjNzhiYTE2MmYz; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: SESSION=ZjhlNDFmZjgtNWU0Mi00ZDk4LTlkMGUtZjU0MTY4OGZiYTNm; Path=/; HttpOnly; SameSite=Lax
 Content-Length: 97
 
 {
@@ -2213,7 +2253,7 @@ Content-Length: 97
 <h5 id="_http_request_14">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/user/1?_csrf=f0e68c28-6073-4a42-9362-8f508c402d35 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/member/1?_csrf=254d60bf-ee67-4032-83a6-ad4c353e1c80 HTTP/1.1
 Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -2231,7 +2271,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=ZDI3ZTliMWMtM2VjZC00ZWEzLWJjYTgtMGU5YzEzOWZlZWIz; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: SESSION=Yjc3NWY5MDktODRiNC00NWY4LThlYjYtYzQ1Yjk4ZjE3NWQ3; Path=/; HttpOnly; SameSite=Lax
 Content-Length: 131
 
 {
@@ -2289,7 +2329,7 @@ Content-Length: 131
 <h5 id="_http_request_15">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /api/user/1?_csrf=bea1f085-8111-4e81-8165-be6671ffec61 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /api/member/1?_csrf=14d4beff-14c4-40e2-b44a-5c79d712bd85 HTTP/1.1
 Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -2307,7 +2347,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=Zjg1YzFjMDQtYWE4NC00ZGU4LWIzMmMtYWJjNDYyMzlkZDY1; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: SESSION=YjQ3NzYwODItOGNhOS00MTJmLWE5MDgtNTE2YWZiODU2NGY1; Path=/; HttpOnly; SameSite=Lax
 Content-Length: 131
 
 {
@@ -2378,7 +2418,7 @@ Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080
 Content-Type: application/x-www-form-urlencoded
 
-_csrf=aa83263c-666d-42ae-835e-70f0bea3ef70</code></pre>
+_csrf=6dcab766-eb3b-4b7f-b797-d7c053fe6651</code></pre>
 </div>
 </div>
 </div>
@@ -2394,7 +2434,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=OWVmYjk4YjMtZTM4NS00YTFiLTk5MTEtNGM0NWZhMjBjNDY2; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: SESSION=ZWFhM2Q4MzAtNTg3My00MGMzLTk0YWUtNjM1NzEyZjE1YjNj; Path=/; HttpOnly; SameSite=Lax
 Content-Length: 102
 
 {
@@ -2457,7 +2497,7 @@ Accept: application/hal+json;charset=UTF-8
 Host: localhost:8080
 Content-Type: application/x-www-form-urlencoded
 
-_csrf=e79b9eea-f1ab-4d8c-a3be-e42168244cdd</code></pre>
+_csrf=36c1476f-37c5-43a4-b82b-81ec32e128d7</code></pre>
 </div>
 </div>
 </div>
@@ -2473,7 +2513,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=ODY1ZjZkZDQtMGU3Ni00NDczLWJmYjAtOTNjYWE4YWRlMTRh; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: SESSION=OTNjNWI4ZDItZmYxMS00MzcwLTljMGUtMzcwOGU0NWYzMzg3; Path=/; HttpOnly; SameSite=Lax
 Content-Length: 102
 
 {
@@ -2539,7 +2579,7 @@ Content-Length: 102
 <h5 id="_http_request_18">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/category/?_csrf=c0a11955-e3f4-42c3-8c68-559f449e3ccf HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/category/?_csrf=90103e6c-5cc6-4b6b-8d2e-0abb6d0376cf HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/hal+json;charset=UTF-8
 Content-Length: 30
@@ -2587,7 +2627,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=YjhjMTAzOGItNzJiMC00MzRjLWEyMDctNWNiNmM2NjU0MzVk; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: SESSION=MGI2ZjkzYzEtMmY0My00OTU2LWFhNDItZDlhZDgxODA0NTg5; Path=/; HttpOnly; SameSite=Lax
 Content-Length: 105
 
 {
@@ -2645,7 +2685,7 @@ Content-Length: 105
 <h5 id="_http_request_19">HTTP Request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/category/?_csrf=1948e3d4-7341-4e72-a9a8-2e0a3126c403 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/category/?_csrf=1a0a87ca-8a27-4bcd-a4f4-46aa2e7a9b71 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/hal+json;charset=UTF-8
 Content-Length: 30
@@ -2668,7 +2708,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: SESSION=MTA3YWIyNDktZmVhNy00ZGVkLWE0ZDQtNDU1NTA1YjM5NzYx; Path=/; HttpOnly; SameSite=Lax</code></pre>
+Set-Cookie: SESSION=YWEwYzZlNjItMmIxNC00MzlkLWI2YmYtYmNmNzljYTVhNzlm; Path=/; HttpOnly; SameSite=Lax</code></pre>
 </div>
 </div>
 </div>
@@ -2680,7 +2720,7 @@ Set-Cookie: SESSION=MTA3YWIyNDktZmVhNy00ZGVkLWE0ZDQtNDU1NTA1YjM5NzYx; Path=/; Ht
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-02-16 18:56:21 +0900
+Last updated 2023-02-16 20:42:21 +0900
 </div>
 </div>
 </body>

@@ -19,7 +19,7 @@ import com.market.carrot.config.DatabaseCleanup;
 import com.market.carrot.config.RestDocsConfig;
 import com.market.carrot.config.WithMockCustomUser;
 import com.market.carrot.global.Exception.ResponseMessage.ExceptionMessage;
-import com.market.carrot.global.Exception.ResponseMessage.GlobalResponseMessage;
+import com.market.carrot.global.Exception.ResponseMessage.SuccessMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.member.domain.Member;
 import com.market.carrot.login.domain.Role;
@@ -110,7 +110,7 @@ public class MemberApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_GET_MEMBER.getSuccessMessage()))
+            SuccessMessage.SUCCESS_GET_MEMBER.getSuccessMessage()))
 
         .andDo(document("member/member/select-member",
             requestHeaders(
@@ -122,7 +122,7 @@ public class MemberApiControllerTest {
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
-                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_GET_MEMBER),
+                fieldWithPath("message").description(SuccessMessage.SUCCESS_GET_MEMBER),
                 fieldWithPath("body").description("null"),
 
                 fieldWithPath("body.id").description("회원 아이디"),
@@ -182,7 +182,7 @@ public class MemberApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_DELETE_MEMBER.getSuccessMessage()))
+            SuccessMessage.SUCCESS_DELETE_MEMBER.getSuccessMessage()))
 
         .andDo(document("member/member/delete-member",
             requestHeaders(
@@ -194,7 +194,7 @@ public class MemberApiControllerTest {
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
-                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_DELETE_MEMBER),
+                fieldWithPath("message").description(SuccessMessage.SUCCESS_DELETE_MEMBER),
                 fieldWithPath("body").description("null")
             )
         ));

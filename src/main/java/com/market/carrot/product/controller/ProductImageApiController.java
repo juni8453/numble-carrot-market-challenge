@@ -1,7 +1,7 @@
 package com.market.carrot.product.controller;
 
 import com.market.carrot.global.GlobalResponseDto;
-import com.market.carrot.global.Exception.ResponseMessage.GlobalResponseMessage;
+import com.market.carrot.global.Exception.ResponseMessage.SuccessMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.product.controller.dto.request.UpdateProductImageRequest;
 import com.market.carrot.product.service.ProductImageService;
@@ -36,7 +36,7 @@ public class ProductImageApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message(GlobalResponseMessage.SUCCESS_POST_UPDATE_IMAGE.getSuccessMessage())
+        .message(SuccessMessage.SUCCESS_POST_UPDATE_IMAGE.getSuccessMessage())
         .build();
   }
 
@@ -50,7 +50,7 @@ public class ProductImageApiController {
     return GlobalResponseDto.builder()
         .code(1)
         .httpStatus(HttpStatus.OK)
-        .message(GlobalResponseMessage.SUCCESS_DELETE_IMAGE.getSuccessMessage())
+        .message(SuccessMessage.SUCCESS_DELETE_IMAGE.getSuccessMessage())
         .build();
   }
 }

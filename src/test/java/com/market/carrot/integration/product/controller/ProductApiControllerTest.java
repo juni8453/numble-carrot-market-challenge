@@ -24,7 +24,7 @@ import com.market.carrot.config.DatabaseCleanup;
 import com.market.carrot.config.RestDocsConfig;
 import com.market.carrot.config.WithMockCustomUser;
 import com.market.carrot.global.Exception.ResponseMessage.ExceptionMessage;
-import com.market.carrot.global.Exception.ResponseMessage.GlobalResponseMessage;
+import com.market.carrot.global.Exception.ResponseMessage.SuccessMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.member.domain.Member;
 import com.market.carrot.login.domain.Role;
@@ -142,7 +142,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.CREATED.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_POST_INSERT_PRODUCT.getSuccessMessage()))
+            SuccessMessage.SUCCESS_POST_INSERT_PRODUCT.getSuccessMessage()))
 
         .andDo(document("product/member/insert-product",
             requestHeaders(
@@ -163,7 +163,7 @@ public class ProductApiControllerTest {
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.CREATED),
                 fieldWithPath("message").description(
-                    GlobalResponseMessage.SUCCESS_POST_INSERT_PRODUCT),
+                    SuccessMessage.SUCCESS_POST_INSERT_PRODUCT),
                 fieldWithPath("body").description("null")
             )
         ));
@@ -222,7 +222,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
+            SuccessMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
 
         .andExpect(jsonPath("body.links[0].rel").value("API Specification"))
         .andExpect(jsonPath("body.links[1].rel").value("self"))
@@ -239,7 +239,7 @@ public class ProductApiControllerTest {
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
-                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_GET_PRODUCT),
+                fieldWithPath("message").description(SuccessMessage.SUCCESS_GET_PRODUCT),
                 fieldWithPath("body.id").description("상품 아이디"),
                 fieldWithPath("body.title").description("상품 제목"),
                 fieldWithPath("body.content").description("상품 내용"),
@@ -275,7 +275,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
+            SuccessMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
 
         .andExpect(jsonPath("body.links[0].rel").exists())
         .andExpect(jsonPath("body.links[0].rel").value("API Specification"))
@@ -292,7 +292,7 @@ public class ProductApiControllerTest {
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
-                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_GET_PRODUCT),
+                fieldWithPath("message").description(SuccessMessage.SUCCESS_GET_PRODUCT),
                 fieldWithPath("body.id").description("상품 아이디"),
                 fieldWithPath("body.title").description("상품 제목"),
                 fieldWithPath("body.content").description("상품 내용"),
@@ -330,7 +330,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
+            SuccessMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
 
         .andExpect(jsonPath("body.links[0].rel").exists())
         .andExpect(jsonPath("body.links[0].rel").value("API Specification"))
@@ -351,7 +351,7 @@ public class ProductApiControllerTest {
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
-                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_GET_PRODUCT),
+                fieldWithPath("message").description(SuccessMessage.SUCCESS_GET_PRODUCT),
                 fieldWithPath("body.id").description("상품 아이디"),
                 fieldWithPath("body.title").description("상품 제목"),
                 fieldWithPath("body.content").description("상품 내용"),
@@ -391,7 +391,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_GET_PRODUCTS.getSuccessMessage()))
+            SuccessMessage.SUCCESS_GET_PRODUCTS.getSuccessMessage()))
 
         .andExpect(jsonPath("body.links[0].rel").exists())
         .andExpect(jsonPath("body.links[0].rel").value("API Specification"))
@@ -408,7 +408,7 @@ public class ProductApiControllerTest {
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
-                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_GET_PRODUCTS),
+                fieldWithPath("message").description(SuccessMessage.SUCCESS_GET_PRODUCTS),
 
                 fieldWithPath("body.links[].rel").description("API Specification"),
                 fieldWithPath("body.links[].href").description("/docs/index.html"),
@@ -452,7 +452,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_GET_PRODUCTS.getSuccessMessage()))
+            SuccessMessage.SUCCESS_GET_PRODUCTS.getSuccessMessage()))
 
         .andExpect(jsonPath("body.content[0].links[0].rel").value("self"))
         .andExpect(jsonPath("body.links[0].rel").exists())
@@ -469,7 +469,7 @@ public class ProductApiControllerTest {
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
-                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_GET_PRODUCTS),
+                fieldWithPath("message").description(SuccessMessage.SUCCESS_GET_PRODUCTS),
 
                 fieldWithPath("body.links[].rel").description("API Specification"),
                 fieldWithPath("body.links[].href").description("/docs/index.html"),
@@ -543,7 +543,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_POST_UPDATE_PRODUCT.getSuccessMessage()))
+            SuccessMessage.SUCCESS_POST_UPDATE_PRODUCT.getSuccessMessage()))
 
         .andDo(document("product/member/update-product",
             requestHeaders(
@@ -562,7 +562,7 @@ public class ProductApiControllerTest {
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
                 fieldWithPath("message").description(
-                    GlobalResponseMessage.SUCCESS_POST_UPDATE_PRODUCT),
+                    SuccessMessage.SUCCESS_POST_UPDATE_PRODUCT),
                 fieldWithPath("body").description("null")
             )
         ));
@@ -641,7 +641,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
         .andExpect(jsonPath("message").value(
-            GlobalResponseMessage.SUCCESS_DELETE_PRODUCT.getSuccessMessage()))
+            SuccessMessage.SUCCESS_DELETE_PRODUCT.getSuccessMessage()))
 
         .andDo(document("product/member/delete-product",
             requestHeaders(
@@ -653,7 +653,7 @@ public class ProductApiControllerTest {
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
-                fieldWithPath("message").description(GlobalResponseMessage.SUCCESS_DELETE_PRODUCT),
+                fieldWithPath("message").description(SuccessMessage.SUCCESS_DELETE_PRODUCT),
                 fieldWithPath("body").description("null")
             )
         ));
