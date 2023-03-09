@@ -76,7 +76,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Transactional(readOnly = true)
   @Override
-  public ProductModel detail(Long id, MemberContext memberContext) {
+  public ProductModel readDetail(Long id, MemberContext memberContext) {
     Product findProduct = productRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionMessage.NOT_FOUND_PRODUCT,
             HttpStatus.BAD_REQUEST));

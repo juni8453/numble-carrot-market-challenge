@@ -5,7 +5,7 @@ import com.market.carrot.member.hateoas.MemberModel;
 
 public interface MemberService {
 
-  MemberModel readMyProfile(Long id, MemberContext memberContext);
+  MemberModel readDetail(Long id, MemberContext memberContext);
 
   void delete(Long id, MemberContext memberContext);
 }

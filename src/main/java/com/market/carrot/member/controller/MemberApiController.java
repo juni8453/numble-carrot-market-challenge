@@ -27,7 +27,7 @@ public class MemberApiController {
   @GetMapping("{id}")
   public GlobalResponseDto readMyProfile(@PathVariable Long id, @AuthenticationPrincipal
       MemberContext memberContext) {
-    MemberModel memberModel = memberService.readMyProfile(id, memberContext);
+    MemberModel memberModel = memberService.readDetail(id, memberContext);
 
     return GlobalResponseDto.builder()
         .code(1)
