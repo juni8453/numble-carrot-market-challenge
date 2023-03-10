@@ -22,7 +22,7 @@ public class LikesServiceImpl implements LikesService {
   @Transactional
   @Override
   public void like(Long productId, MemberContext memberContext) {
-    Product findProduct = productRepository.findById(productId)
+    Product findProduct = productRepository.findByIdWithPessimisticLock(productId)
         .orElseThrow(() -> new CustomException(ExceptionMessage.NOT_FOUND_PRODUCT,
             HttpStatus.BAD_REQUEST));
 
