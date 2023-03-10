@@ -4,12 +4,18 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 import com.market.carrot.global.Exception.CustomException;
 import com.market.carrot.global.Exception.ResponseMessage.ExceptionMessage;
+import com.market.carrot.likes.domain.Likes;
+import com.market.carrot.likes.domain.LikesRepository;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.member.controller.MemberApiController;
 import com.market.carrot.member.controller.dto.response.MemberResponse;
 import com.market.carrot.member.domain.Member;
 import com.market.carrot.member.domain.MemberRepository;
 import com.market.carrot.member.hateoas.MemberModel;
+import com.market.carrot.product.domain.Product;
+import com.market.carrot.product.domain.ProductRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
@@ -21,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberServiceImpl implements MemberService {
 
   private final MemberRepository memberRepository;
+  private final ProductRepository productRepository;
+  private final LikesRepository likesRepository;
 
   @Transactional(readOnly = true)
   @Override
@@ -63,6 +71,16 @@ public class MemberServiceImpl implements MemberService {
           HttpStatus.OK);
     }
 
+    List<Product> findProducts = productRepository.findAll().stream()
+        .filter(product -> product.getMember().getId().equals(findMember.getId()))
+        .collect(Collectors.toList());
+
+    List<Likes> findLikes = likesRepository.findAll().stream()
+        .filter(likes -> likes.getMember().getId().equals(findMember.getId()))
+        .collect(Collectors.toList());
+
+    productRepository.deleteAll(findProducts);
+    likesRepository.deleteAll(findLikes);
     memberRepository.delete(findMember);
   }
 }
