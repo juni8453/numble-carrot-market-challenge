@@ -32,7 +32,7 @@ public class MemberServiceImpl implements MemberService {
 
   @Transactional(readOnly = true)
   @Override
-  public MemberModel readDetail(Long id, MemberContext memberContext) {
+  public MemberResponse readDetail(Long id, MemberContext memberContext) {
     Member findMember = memberRepository.findById(id)
         .orElseThrow(() -> new CustomException(ExceptionMessage.NOT_FOUND_MEMBER,
             HttpStatus.BAD_REQUEST));
@@ -42,21 +42,11 @@ public class MemberServiceImpl implements MemberService {
           HttpStatus.BAD_REQUEST);
     }
 
-    MemberResponse memberResponse = MemberResponse.builder()
+    return MemberResponse.builder()
         .id(findMember.getId())
         .username(findMember.getUsername())
         .email(findMember.getEmail())
         .build();
-
-    MemberModel memberModel = new MemberModel(memberResponse);
-    memberModel.add(Link.of("/docs/index.html").withRel("API Specification"));
-    memberModel.add(linkTo(MemberApiController.class).slash(memberResponse.getId()).withSelfRel());
-    memberModel.add(
-        linkTo(MemberApiController.class).slash(memberResponse.getId()).withRel("member-delete"));
-    memberModel.add(
-        linkTo(MemberApiController.class).slash(memberResponse.getId()).withRel("member-update"));
-
-    return memberModel;
   }
 
   @Transactional
