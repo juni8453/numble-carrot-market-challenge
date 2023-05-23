@@ -1,23 +1,19 @@
 package com.market.carrot.member.service;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 import com.market.carrot.global.Exception.CustomException;
+import com.market.carrot.global.Exception.GuestException;
 import com.market.carrot.global.Exception.ResponseMessage.ExceptionMessage;
 import com.market.carrot.likes.domain.Likes;
 import com.market.carrot.likes.domain.LikesRepository;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
-import com.market.carrot.member.controller.MemberApiController;
 import com.market.carrot.member.controller.dto.response.MemberResponse;
 import com.market.carrot.member.domain.Member;
 import com.market.carrot.member.domain.MemberRepository;
-import com.market.carrot.member.hateoas.MemberModel;
 import com.market.carrot.product.domain.Product;
 import com.market.carrot.product.domain.ProductRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +29,10 @@ public class MemberServiceImpl implements MemberService {
   @Transactional(readOnly = true)
   @Override
   public MemberResponse readDetail(Long id, MemberContext memberContext) {
+    if (memberContext == null) {
+      throw new GuestException(ExceptionMessage.GUEST, HttpStatus.FOUND);
+    }
+
     Member findMember = memberRepository.findById(id)
         .orElseThrow(() -> new CustomException(ExceptionMessage.NOT_FOUND_MEMBER,
             HttpStatus.BAD_REQUEST));
