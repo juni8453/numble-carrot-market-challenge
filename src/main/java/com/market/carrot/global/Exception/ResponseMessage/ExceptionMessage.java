@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ExceptionMessage {
 
+  GUEST("비회원은 접근할 수 없습니다."),
+
   INCORRECT_ROLE("권한이 없습니다."),
 
   BAD_CREDENTIALS("일치하지 않는 비밀번호입니다."),

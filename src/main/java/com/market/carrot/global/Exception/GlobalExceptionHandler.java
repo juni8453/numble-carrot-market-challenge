@@ -16,6 +16,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+  @ResponseStatus(HttpStatus.FOUND)
+  @ExceptionHandler(GuestException.class)
+  public GlobalResponseDto redirect(GuestException guestException) {
+    log.error("guestException 발생: {}", guestException.getMessage());
+
+    return GlobalResponseDto.builder()
+        .code(-1)
+        .httpStatus(HttpStatus.FOUND)
+        .message(guestException.getMessage())
+        .build();
+  }
+
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(CustomException.class)
   public GlobalResponseDto incorrectRole(CustomException customException) {
