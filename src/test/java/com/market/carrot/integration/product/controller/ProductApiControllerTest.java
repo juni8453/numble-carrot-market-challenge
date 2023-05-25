@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,9 +25,9 @@ import com.market.carrot.config.WithMockCustomUser;
 import com.market.carrot.global.Exception.ResponseMessage.ExceptionMessage;
 import com.market.carrot.global.Exception.ResponseMessage.SuccessMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
-import com.market.carrot.member.domain.Member;
 import com.market.carrot.login.domain.Role;
 import com.market.carrot.login.service.LoginService;
+import com.market.carrot.member.domain.Member;
 import com.market.carrot.product.controller.dto.request.CreateProductRequest;
 import com.market.carrot.product.controller.dto.request.ProductImageRequest;
 import com.market.carrot.product.controller.dto.request.UpdateProductRequest;
@@ -75,8 +74,6 @@ public class ProductApiControllerTest {
   @Autowired
   private CategoryService categoryService;
 
-  private final String accept = "application/hal+json;charset=UTF-8";
-
   @BeforeEach
   void saveProduct() {
     Member createMember = Member.testConstructor(
@@ -96,32 +93,19 @@ public class ProductApiControllerTest {
     databaseCleanup.execute();
   }
 
-  @DisplayName("비회원인 경우 등록 API 를 호출하면 로그인 페이지로 Redirect 된다.")
+  @DisplayName("비회원인 경우 등록 API 를 호출하면 커스텀 예외 페이지로 이동한다.")
   @Test
   void 비회원_상품_등록() throws Exception {
     // given
     CreateProductRequest createProductRequest = getCreateProductRequest();
 
     // when & then
-    mvc.perform(post("/api/product/")
+    mvc.perform(post("/api/products/")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
-            .accept(accept)
             .content(mapper.writeValueAsString(createProductRequest)))
         .andDo(print())
-        .andExpect(status().is3xxRedirection())
-        .andExpect(header().exists(HttpHeaders.LOCATION))
-
-        .andDo(document("product/guest/insert-product",
-            requestHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
-            ),
-            responseHeaders(
-                headerWithName(HttpHeaders.LOCATION).description("/loginForm")
-            ))
-        )
-    ;
+        .andExpect(status().is3xxRedirection());
   }
 
   @DisplayName("CreateProductRequest 를 받아 상품을 등록할 수 있다.")
@@ -131,10 +115,9 @@ public class ProductApiControllerTest {
     CreateProductRequest createProductRequest = getCreateProductRequest();
 
     // when & then
-    mvc.perform(post("/api/product/")
+    mvc.perform(post("/api/products/")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
-            .accept(accept)
             .content(mapper.writeValueAsString(createProductRequest)))
         .andDo(print())
         .andExpect(status().isCreated())
@@ -146,8 +129,7 @@ public class ProductApiControllerTest {
 
         .andDo(document("product/member/insert-product",
             requestHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
+                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON)
             ),
             requestFields(
                 fieldWithPath("categoryId").description("카테고리 아이디"),
@@ -177,10 +159,9 @@ public class ProductApiControllerTest {
     CreateProductRequest notIncludedProductRequest = getNotIncludedProductRequest();
 
     // when & then
-    mvc.perform(post("/api/product/")
+    mvc.perform(post("/api/products/")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
-            .accept(accept)
             .content(mapper.writeValueAsString(notIncludedProductRequest)))
         .andDo(print())
         .andExpect(status().isBadRequest())
@@ -192,8 +173,7 @@ public class ProductApiControllerTest {
 
         .andDo(document("product/member/insert-product-non-existent-image",
             requestHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
+                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON)
             ),
             responseHeaders(
                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
@@ -207,35 +187,21 @@ public class ProductApiControllerTest {
         ));
   }
 
-
-  @DisplayName("비회원인 경우 단일 상품을 조회했을 때 명세 link, self link 만 응답에 포함되어야한다.")
+  @DisplayName("비회원인 경우라도 단일 상품을 조회할 수 있다.")
   @Test
   void 비회원_단일_상품조회() throws Exception {
     // when & then
-    mvc.perform(get("/api/product/1")
-            .with(csrf())
-            .accept(accept))
+    mvc.perform(get("/api/products/1")
+            .with(csrf()))
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(header().string(HttpHeaders.CONTENT_TYPE, accept))
 
         .andExpect(jsonPath("code").value(1))
         .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
         .andExpect(jsonPath("message").value(
             SuccessMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
 
-        .andExpect(jsonPath("body.links[0].rel").value("API Specification"))
-        .andExpect(jsonPath("body.links[1].rel").value("self"))
-        .andExpect(jsonPath("body.links[2].rel").doesNotExist())
-        .andExpect(jsonPath("body.links[3].rel").doesNotExist())
-
         .andDo(document("product/guest/select-product",
-            requestHeaders(
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
-            ),
-            responseHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
-            ),
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
@@ -254,21 +220,18 @@ public class ProductApiControllerTest {
                 fieldWithPath("body.category.id").description("상품을 등록한 카테고리 아이디"),
                 fieldWithPath("body.category.name").description("상품을 등록한 카테고리 이름"),
                 fieldWithPath("body.image.images[].id").description("상품 이미지 아이디"),
-                fieldWithPath("body.image.images[].imageUrl").description("상품 이미지 URL"),
-                fieldWithPath("body.links[].rel").description("self"),
-                fieldWithPath("body.links[].href").description("/api/product/{productId}")
+                fieldWithPath("body.image.images[].imageUrl").description("상품 이미지 URL")
             )
         ));
   }
 
-  @DisplayName("회원이지만 자신이 등록한 상품이 아닌 경우 self link, 명세서 link 만 응답에 포함되어야한다.")
+  @DisplayName("회원이지만 자신이 등록한 상품이 아닌 경우라도 단일 상품을 조회할 수 있다.")
   @WithMockCustomUser(userId = 2, username = "anotherUser", role = Role.USER)
   @Test
   void 자신이_등록한_상품이_이닌경우_상품조회() throws Exception {
     // when & then
-    mvc.perform(get("/api/product/1")
-            .with(csrf())
-            .accept(accept))
+    mvc.perform(get("/api/products/1")
+            .with(csrf()))
         .andDo(print())
         .andExpect(status().isOk())
 
@@ -277,18 +240,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("message").value(
             SuccessMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
 
-        .andExpect(jsonPath("body.links[0].rel").exists())
-        .andExpect(jsonPath("body.links[0].rel").value("API Specification"))
-        .andExpect(jsonPath("body.links[1].rel").exists())
-        .andExpect(jsonPath("body.links[1].rel").value("self"))
-
         .andDo(document("product/member/select-product-is-not-writer",
-            requestHeaders(
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
-            ),
-            responseHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
-            ),
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
@@ -307,23 +259,18 @@ public class ProductApiControllerTest {
                 fieldWithPath("body.category.id").description("상품을 등록한 카테고리 아이디"),
                 fieldWithPath("body.category.name").description("상품을 등록한 카테고리 이름"),
                 fieldWithPath("body.image.images[].id").description("상품 이미지 아이디"),
-                fieldWithPath("body.image.images[].imageUrl").description("상품 이미지 URL"),
-                fieldWithPath("body.links[].rel").description("API Specification"),
-                fieldWithPath("body.links[].href").description("/docs/index.html"),
-                fieldWithPath("body.links[].rel").description("self"),
-                fieldWithPath("body.links[].href").description("/api/product/{productId}")
+                fieldWithPath("body.image.images[].imageUrl").description("상품 이미지 URL")
             )
         ));
   }
 
-  @DisplayName("회원이면서 자신이 등록한 상품인 경우 명세 link, self, update, delete link 모두 응답에 포함되어야한다.")
+  @DisplayName("회원이면서 자신이 등록한 상품인 경우 해당 상품을 조회할 수 있다.")
   @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 자신이_등록한_상품조회() throws Exception {
     // when & then
-    mvc.perform(get("/api/product/1")
-            .with(csrf())
-            .accept(accept))
+    mvc.perform(get("/api/products/1")
+            .with(csrf()))
         .andDo(print())
         .andExpect(status().isOk())
 
@@ -332,22 +279,7 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("message").value(
             SuccessMessage.SUCCESS_GET_PRODUCT.getSuccessMessage()))
 
-        .andExpect(jsonPath("body.links[0].rel").exists())
-        .andExpect(jsonPath("body.links[0].rel").value("API Specification"))
-        .andExpect(jsonPath("body.links[1].rel").exists())
-        .andExpect(jsonPath("body.links[1].rel").value("self"))
-        .andExpect(jsonPath("body.links[2].rel").exists())
-        .andExpect(jsonPath("body.links[2].rel").value("product-delete"))
-        .andExpect(jsonPath("body.links[3].rel").exists())
-        .andExpect(jsonPath("body.links[3].rel").value("product-update"))
-
         .andDo(document("product/member/select-product",
-            requestHeaders(
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
-            ),
-            responseHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
-            ),
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
@@ -366,86 +298,18 @@ public class ProductApiControllerTest {
                 fieldWithPath("body.category.id").description("상품을 등록한 카테고리 아이디"),
                 fieldWithPath("body.category.name").description("상품을 등록한 카테고리 이름"),
                 fieldWithPath("body.image.images[].id").description("상품 이미지 아이디"),
-                fieldWithPath("body.image.images[].imageUrl").description("상품 이미지 URL"),
-                fieldWithPath("body.links[].rel").description("self"),
-                fieldWithPath("body.links[].href").description("/api/product/{productId}"),
-                fieldWithPath("body.links[].rel").description("product-delete"),
-                fieldWithPath("body.links[].href").description("/api/product/{productId}"),
-                fieldWithPath("body.links[].rel").description("product-update"),
-                fieldWithPath("body.links[].href").description("/api/product/{productId}")
-            )
-        ))
-    ;
-  }
-
-  @DisplayName("비회원인 경우 명세 link 및 content 내부 각 상품의 단일 상품 조회 link 만 응답에 포함되어야한다.")
-  @Test
-  void 비회원_모든_상품조회() throws Exception {
-    // when & then
-    mvc.perform(get("/api/product/")
-            .with(csrf())
-            .accept(accept))
-        .andDo(print())
-        .andExpect(status().isOk())
-
-        .andExpect(jsonPath("code").value(1))
-        .andExpect(jsonPath("httpStatus").value(HttpStatus.OK.name()))
-        .andExpect(jsonPath("message").value(
-            SuccessMessage.SUCCESS_GET_PRODUCTS.getSuccessMessage()))
-
-        .andExpect(jsonPath("body.links[0].rel").exists())
-        .andExpect(jsonPath("body.links[0].rel").value("API Specification"))
-        .andExpect(jsonPath("body.content[0].links[0].rel").exists())
-        .andExpect(jsonPath("body.content[0].links[0].rel").value("self"))
-
-        .andDo(document("product/guest/select-products",
-            requestHeaders(
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
-            ),
-            responseHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
-            ),
-            responseFields(
-                fieldWithPath("code").description("응답 성공 코드"),
-                fieldWithPath("httpStatus").description(HttpStatus.OK),
-                fieldWithPath("message").description(SuccessMessage.SUCCESS_GET_PRODUCTS),
-
-                fieldWithPath("body.links[].rel").description("API Specification"),
-                fieldWithPath("body.links[].href").description("/docs/index.html"),
-
-                fieldWithPath("body.content[].id").description("상품 아이디"),
-                fieldWithPath("body.content[].title").description("상품 제목"),
-                fieldWithPath("body.content[].content").description("상품 내용"),
-                fieldWithPath("body.content[].price").description("상품 가격"),
-                fieldWithPath("body.content[].heartCount").description("상품 좋아요 수"),
-                fieldWithPath("body.content[].createdDate").description("상품 등록 날짜"),
-                fieldWithPath("body.content[].modifiedDate").description("상품 수정 날짜"),
-
-                fieldWithPath("body.content[].member.id").description("상품을 등록한 회원 아이디"),
-                fieldWithPath("body.content[].member.username").description("상품을 등록한 회원 이름"),
-                fieldWithPath("body.content[].member.email").description("상품을 등록한 회원 이메일"),
-                fieldWithPath("body.content[].member.role").description("상품을 등록한 회원 권한"),
-
-                fieldWithPath("body.content[].category.id").description("상품을 등록한 카테고리 아이디"),
-                fieldWithPath("body.content[].category.name").description("상품을 등록한 카테고리 이름"),
-
-                fieldWithPath("body.content[].image.images[].id").description("상품 이미지 아이디"),
-                fieldWithPath("body.content[].image.images[].imageUrl").description("상품 이미지 URL"),
-
-                fieldWithPath("body.content[].links[].rel").description("self"),
-                fieldWithPath("body.content[].links[].href").description("/api/product/{productId}")
+                fieldWithPath("body.image.images[].imageUrl").description("상품 이미지 URL")
             )
         ));
   }
 
-  @DisplayName("회원일 경우 content 내부 각 상품의 단일 상품 조회 link, 바깥쪽 links[] 에 명세 link, 상품 등록 link 가 응답에 포함되어야한다.")
+  @DisplayName("회원일 경우 모든 상품을 조회할 수 있다.")
   @WithMockCustomUser(userId = 1, username = "username", role = Role.USER)
   @Test
   void 회원_모든_상품조회() throws Exception {
     // when & then
-    mvc.perform(get("/api/product/")
-            .with(csrf())
-            .accept(accept))
+    mvc.perform(get("/api/products/")
+            .with(csrf()))
         .andDo(print())
         .andExpect(status().isOk())
 
@@ -454,74 +318,46 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("message").value(
             SuccessMessage.SUCCESS_GET_PRODUCTS.getSuccessMessage()))
 
-        .andExpect(jsonPath("body.content[0].links[0].rel").value("self"))
-        .andExpect(jsonPath("body.links[0].rel").exists())
-        .andExpect(jsonPath("body.links[0].rel").value("API Specification"))
-        .andExpect(jsonPath("body.links[1].rel").value("product-save"))
-
         .andDo(document("product/member/select-products",
-            requestHeaders(
-                headerWithName(HttpHeaders.ACCEPT).description(accept)
-            ),
-            responseHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(accept)
-            ),
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
                 fieldWithPath("message").description(SuccessMessage.SUCCESS_GET_PRODUCTS),
 
-                fieldWithPath("body.links[].rel").description("API Specification"),
-                fieldWithPath("body.links[].href").description("/docs/index.html"),
-                fieldWithPath("body.links[].rel").description("product-save"),
-                fieldWithPath("body.links[].href").description("/api/product"),
+                fieldWithPath("body[].id").description("상품 아이디"),
+                fieldWithPath("body[].title").description("상품 제목"),
+                fieldWithPath("body[].content").description("상품 내용"),
+                fieldWithPath("body[].price").description("상품 가격"),
+                fieldWithPath("body[].heartCount").description("상품 좋아요 수"),
+                fieldWithPath("body[].createdDate").description("상품 등록 날짜"),
+                fieldWithPath("body[].modifiedDate").description("상품 수정 날짜"),
 
-                fieldWithPath("body.content[].id").description("상품 아이디"),
-                fieldWithPath("body.content[].title").description("상품 제목"),
-                fieldWithPath("body.content[].content").description("상품 내용"),
-                fieldWithPath("body.content[].price").description("상품 가격"),
-                fieldWithPath("body.content[].heartCount").description("상품 좋아요 수"),
-                fieldWithPath("body.content[].createdDate").description("상품 등록 날짜"),
-                fieldWithPath("body.content[].modifiedDate").description("상품 수정 날짜"),
+                fieldWithPath("body[].member.id").description("상품을 등록한 회원 아이디"),
+                fieldWithPath("body[].member.username").description("상품을 등록한 회원 이름"),
+                fieldWithPath("body[].member.email").description("상품을 등록한 회원 이메일"),
+                fieldWithPath("body[].member.role").description("상품을 등록한 회원 권한"),
 
-                fieldWithPath("body.content[].member.id").description("상품을 등록한 회원 아이디"),
-                fieldWithPath("body.content[].member.username").description("상품을 등록한 회원 이름"),
-                fieldWithPath("body.content[].member.email").description("상품을 등록한 회원 이메일"),
-                fieldWithPath("body.content[].member.role").description("상품을 등록한 회원 권한"),
+                fieldWithPath("body[].category.id").description("상품을 등록한 카테고리 아이디"),
+                fieldWithPath("body[].category.name").description("상품을 등록한 카테고리 이름"),
 
-                fieldWithPath("body.content[].category.id").description("상품을 등록한 카테고리 아이디"),
-                fieldWithPath("body.content[].category.name").description("상품을 등록한 카테고리 이름"),
-
-                fieldWithPath("body.content[].image.images[].id").description("상품 이미지 아이디"),
-                fieldWithPath("body.content[].image.images[].imageUrl").description("상품 이미지 URL"),
-
-                fieldWithPath("body.content[].links[].rel").description("self"),
-                fieldWithPath("body.content[].links[].href").description("/api/product/{productId}")
+                fieldWithPath("body[].image.images[].id").description("상품 이미지 아이디"),
+                fieldWithPath("body[].image.images[].imageUrl").description("상품 이미지 URL")
             )
         ));
   }
 
-  @DisplayName("비회원인 경우 수정 API 를 호출하면 로그인 페이지로 Redirect 된다.")
+  @DisplayName("비회원인 경우 수정 API 를 호출하면 커스텀 예외 페이지로 이동한다.")
   @Test
   void 비회원_상품_수정() throws Exception {
-    // when & then
-    mvc.perform(post("/api/product/1")
-            .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(accept))
-        .andDo(print())
-        .andExpect(status().is3xxRedirection())
-        .andExpect(header().exists(HttpHeaders.LOCATION))
+    UpdateProductRequest updateProductRequest = getUpdateProductRequest();
 
-        .andDo(document("product/guest/update-product",
-            requestHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
-            ),
-            responseHeaders(
-                headerWithName(HttpHeaders.LOCATION).description("/loginForm")
-            )
-        ));
+    // when & then
+    mvc.perform(put("/api/products/1")
+            .with(csrf())
+            .content(mapper.writeValueAsString(updateProductRequest))
+            .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().is3xxRedirection());
   }
 
   @DisplayName("회원일 경우 자신이 등록한 상품을 수정할 수 있다.")
@@ -532,10 +368,9 @@ public class ProductApiControllerTest {
     UpdateProductRequest updateProductRequest = getUpdateProductRequest();
 
     // when & then
-    mvc.perform(put("/api/product/1")
+    mvc.perform(put("/api/products/1")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
-            .accept(accept)
             .content(mapper.writeValueAsString(updateProductRequest)))
         .andDo(print())
         .andExpect(status().isOk())
@@ -546,17 +381,10 @@ public class ProductApiControllerTest {
             SuccessMessage.SUCCESS_POST_UPDATE_PRODUCT.getSuccessMessage()))
 
         .andDo(document("product/member/update-product",
-            requestHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
-            ),
             requestFields(
                 fieldWithPath("title").description("수정 상품 제목"),
                 fieldWithPath("content").description("수정 상품 내용"),
                 fieldWithPath("price").description("수정 상품 가격")
-            ),
-            responseHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
             ),
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
@@ -576,10 +404,9 @@ public class ProductApiControllerTest {
     UpdateProductRequest updateProductRequest = getUpdateProductRequest();
 
     //when & then
-    mvc.perform(put("/api/product/1")
+    mvc.perform(put("/api/products/1")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
-            .accept(accept)
             .content(mapper.writeValueAsString(updateProductRequest)))
         .andDo(print())
         .andExpect(status().isBadRequest())
@@ -589,13 +416,6 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("message").value(ExceptionMessage.IS_NOT_WRITER.getErrorMessage()))
 
         .andDo(document("product/member/update-product-is-not-writer",
-            requestHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
-            ),
-            responseHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
-            ),
             responseFields(
                 fieldWithPath("code").description("응답 실패 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.BAD_REQUEST),
@@ -605,26 +425,14 @@ public class ProductApiControllerTest {
         ));
   }
 
-  @DisplayName("비회원인 경우 삭제 API 를 호출하면 로그인 페이지로 Redirect 된다.")
+  @DisplayName("비회원인 경우 삭제 API 를 호출하면 커스텀 예외 페이지로 이동한다.")
   @Test
   void 비회원_상품_삭제() throws Exception {
     // when & then
-    mvc.perform(delete("/api/product/1")
-            .with(csrf())
-            .accept(accept))
+    mvc.perform(delete("/api/products/1")
+            .with(csrf()))
         .andDo(print())
-        .andExpect(status().is3xxRedirection())
-        .andExpect(header().exists(HttpHeaders.LOCATION))
-
-        .andDo(document("product/guest/delete-prodcut",
-            requestHeaders(
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
-            ),
-            responseHeaders(
-                headerWithName(HttpHeaders.LOCATION).description("/loginForm")
-            ))
-        )
-    ;
+        .andExpect(status().is3xxRedirection());
   }
 
   @DisplayName("회원일 경우 자신이 등록한 상품을 삭제할 수 있다.")
@@ -632,9 +440,8 @@ public class ProductApiControllerTest {
   @Test
   void 회원_상품_삭제() throws Exception {
     // when & then
-    mvc.perform(delete("/api/product/1")
-            .with(csrf())
-            .accept(accept))
+    mvc.perform(delete("/api/products/1")
+            .with(csrf()))
         .andDo(print())
         .andExpect(status().isOk())
 
@@ -644,12 +451,6 @@ public class ProductApiControllerTest {
             SuccessMessage.SUCCESS_DELETE_PRODUCT.getSuccessMessage()))
 
         .andDo(document("product/member/delete-product",
-            requestHeaders(
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
-            ),
-            responseHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
-            ),
             responseFields(
                 fieldWithPath("code").description("응답 성공 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.OK),
@@ -664,9 +465,8 @@ public class ProductApiControllerTest {
   @Test
   void 자신이_등록한_상품이_아닌경우_상품삭제_400() throws Exception {
     // when & then
-    mvc.perform(delete("/api/product/1")
-            .with(csrf())
-            .accept(accept))
+    mvc.perform(delete("/api/products/1")
+            .with(csrf()))
         .andDo(print())
         .andExpect(status().isBadRequest())
 
@@ -675,12 +475,6 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("message").value(ExceptionMessage.IS_NOT_WRITER.getErrorMessage()))
 
         .andDo(document("product/member/delete-product-is-not-writer",
-            requestHeaders(
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
-            ),
-            responseHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
-            ),
             responseFields(
                 fieldWithPath("code").description("응답 실패 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.BAD_REQUEST),
@@ -695,9 +489,8 @@ public class ProductApiControllerTest {
   @Test
   void 존재하지_않는_상품_단일_조회() throws Exception {
     // when & then
-    mvc.perform(get("/api/product/2")
-            .with(csrf())
-            .accept(accept))
+    mvc.perform(get("/api/products/2")
+            .with(csrf()))
         .andDo(print())
         .andExpect(status().isBadRequest())
 
@@ -706,12 +499,6 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("message").value(ExceptionMessage.NOT_FOUND_PRODUCT.getErrorMessage()))
 
         .andDo(document("product/common/select-product",
-            requestHeaders(
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
-            ),
-            responseHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
-            ),
             responseFields(
                 fieldWithPath("code").description("응답 실패 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.BAD_REQUEST),
@@ -729,10 +516,9 @@ public class ProductApiControllerTest {
     UpdateProductRequest updateProductRequest = getUpdateProductRequest();
 
     // when & then
-    mvc.perform(put("/api/product/2")
+    mvc.perform(put("/api/products/2")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
-            .accept(accept)
             .content(mapper.writeValueAsString(updateProductRequest)))
         .andDo(print())
         .andExpect(status().isBadRequest())
@@ -742,13 +528,6 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("message").value(ExceptionMessage.NOT_FOUND_PRODUCT.getErrorMessage()))
 
         .andDo(document("product/common/update-product",
-            requestHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON),
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
-            ),
-            responseHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
-            ),
             responseFields(
                 fieldWithPath("code").description("응답 실패 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.BAD_REQUEST),
@@ -763,9 +542,8 @@ public class ProductApiControllerTest {
   @Test
   void 존재하지_않는_상품_삭제() throws Exception {
     // when & then
-    mvc.perform(delete("/api/product/2")
-            .with(csrf())
-            .accept(accept))
+    mvc.perform(delete("/api/products/2")
+            .with(csrf()))
         .andDo(print())
         .andExpect(status().isBadRequest())
 
@@ -774,12 +552,6 @@ public class ProductApiControllerTest {
         .andExpect(jsonPath("message").value(ExceptionMessage.NOT_FOUND_PRODUCT.getErrorMessage()))
 
         .andDo(document("product/common/delete-product",
-            requestHeaders(
-                headerWithName(HttpHeaders.ACCEPT).description(MediaTypes.HAL_JSON_VALUE)
-            ),
-            responseHeaders(
-                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaTypes.HAL_JSON_VALUE)
-            ),
             responseFields(
                 fieldWithPath("code").description("응답 실패 코드"),
                 fieldWithPath("httpStatus").description(HttpStatus.BAD_REQUEST),

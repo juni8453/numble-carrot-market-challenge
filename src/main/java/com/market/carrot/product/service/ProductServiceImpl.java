@@ -3,6 +3,7 @@ package com.market.carrot.product.service;
 import com.market.carrot.category.domain.Category;
 import com.market.carrot.category.domain.CategoryRepository;
 import com.market.carrot.global.Exception.CustomException;
+import com.market.carrot.global.Exception.GuestException;
 import com.market.carrot.global.Exception.ResponseMessage.ExceptionMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.product.controller.dto.request.CreateProductRequest;
@@ -74,6 +75,10 @@ public class ProductServiceImpl implements ProductService {
   @Transactional
   @Override
   public void save(CreateProductRequest productRequest, MemberContext memberContext) {
+    if (memberContext == null) {
+      throw new GuestException(ExceptionMessage.GUEST, HttpStatus.FOUND);
+    }
+
     String title = productRequest.getTitle();
     String content = productRequest.getContent();
     int price = productRequest.getPrice();
@@ -112,6 +117,10 @@ public class ProductServiceImpl implements ProductService {
   @Transactional
   @Override
   public void update(Long id, UpdateProductRequest productRequest, MemberContext memberContext) {
+    if (memberContext == null) {
+      throw new GuestException(ExceptionMessage.GUEST, HttpStatus.FOUND);
+    }
+
     Product findProduct = productRepository.findById(id)
         .orElseThrow(() -> new CustomException(ExceptionMessage.NOT_FOUND_PRODUCT,
             HttpStatus.BAD_REQUEST));
@@ -126,6 +135,10 @@ public class ProductServiceImpl implements ProductService {
   @Transactional
   @Override
   public void delete(Long id, MemberContext memberContext) {
+    if (memberContext == null) {
+      throw new GuestException(ExceptionMessage.GUEST, HttpStatus.FOUND);
+    }
+
     Product findProduct = productRepository.findById(id)
         .orElseThrow(() -> new CustomException(ExceptionMessage.NOT_FOUND_PRODUCT,
             HttpStatus.BAD_REQUEST));
