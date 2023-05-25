@@ -5,6 +5,7 @@ import com.market.carrot.global.Exception.ResponseMessage.SuccessMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.product.controller.dto.request.CreateProductRequest;
 import com.market.carrot.product.controller.dto.request.UpdateProductRequest;
+import com.market.carrot.product.controller.dto.response.ProductResponse;
 import com.market.carrot.product.hateoas.ProductModel;
 import com.market.carrot.product.service.ProductService;
 import javax.validation.Valid;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/product/", produces = MediaTypes.HAL_JSON_VALUE)
+@RequestMapping(value = "/api/products/")
 @RestController
 public class ProductApiController {
 
@@ -47,7 +48,7 @@ public class ProductApiController {
   @GetMapping("{id}")
   public GlobalResponseDto detail(@PathVariable Long id,
       @AuthenticationPrincipal MemberContext memberContext) {
-    ProductModel productResponse = productService.readDetail(id, memberContext);
+    ProductResponse productResponse = productService.readDetail(id, memberContext);
 
     return GlobalResponseDto.builder()
         .code(1)

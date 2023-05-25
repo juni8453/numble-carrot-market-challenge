@@ -76,12 +76,12 @@ public class ProductServiceImpl implements ProductService {
 
   @Transactional(readOnly = true)
   @Override
-  public ProductModel readDetail(Long id, MemberContext memberContext) {
+  public ProductResponse readDetail(Long id, MemberContext memberContext) {
     Product findProduct = productRepository.findById(id).orElseThrow(
         () -> new CustomException(ExceptionMessage.NOT_FOUND_PRODUCT,
             HttpStatus.BAD_REQUEST));
 
-    ProductResponse productResponse = ProductResponse.builder()
+    return ProductResponse.builder()
         .id(findProduct.getId())
         .title(findProduct.getTitle())
         .content(findProduct.getContent())
@@ -93,8 +93,6 @@ public class ProductServiceImpl implements ProductService {
         .category(CategoryByProductResponse.from(findProduct))
         .image(ImagesResponse.from(findProduct))
         .build();
-
-    return getResponseByProductDetail(memberContext, productResponse);
   }
 
   @Transactional
