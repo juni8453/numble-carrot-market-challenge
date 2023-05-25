@@ -1,17 +1,15 @@
 package com.market.carrot.product.controller;
 
-import com.market.carrot.global.GlobalResponseDto;
 import com.market.carrot.global.Exception.ResponseMessage.SuccessMessage;
+import com.market.carrot.global.GlobalResponseDto;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.product.controller.dto.request.CreateProductRequest;
 import com.market.carrot.product.controller.dto.request.UpdateProductRequest;
 import com.market.carrot.product.controller.dto.response.ProductResponse;
-import com.market.carrot.product.hateoas.ProductModel;
 import com.market.carrot.product.service.ProductService;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,7 +32,7 @@ public class ProductApiController {
   @ResponseStatus(HttpStatus.OK)
   @GetMapping
   public GlobalResponseDto read(@AuthenticationPrincipal MemberContext memberContext) {
-    CollectionModel<ProductModel> productResponses = productService.readAll(memberContext);
+    List<ProductResponse> productResponses = productService.readAll(memberContext);
 
     return GlobalResponseDto.builder()
         .code(1)

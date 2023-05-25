@@ -1,16 +1,10 @@
 package com.market.carrot.product.service;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 import com.market.carrot.category.domain.Category;
 import com.market.carrot.category.domain.CategoryRepository;
 import com.market.carrot.global.Exception.CustomException;
 import com.market.carrot.global.Exception.ResponseMessage.ExceptionMessage;
 import com.market.carrot.login.config.customAuthentication.common.MemberContext;
-import com.market.carrot.product.controller.ProductApiController;
-import com.market.carrot.product.domain.Product;
-import com.market.carrot.product.domain.ProductImage;
-import com.market.carrot.product.domain.ProductRepository;
 import com.market.carrot.product.controller.dto.request.CreateProductRequest;
 import com.market.carrot.product.controller.dto.request.ProductImageRequest;
 import com.market.carrot.product.controller.dto.request.UpdateProductRequest;
@@ -18,13 +12,12 @@ import com.market.carrot.product.controller.dto.response.CategoryByProductRespon
 import com.market.carrot.product.controller.dto.response.ImagesResponse;
 import com.market.carrot.product.controller.dto.response.MemberByProductResponse;
 import com.market.carrot.product.controller.dto.response.ProductResponse;
-import com.market.carrot.product.hateoas.ProductModel;
-import com.market.carrot.product.hateoas.ProductModelAssembler;
+import com.market.carrot.product.domain.Product;
+import com.market.carrot.product.domain.ProductImage;
+import com.market.carrot.product.domain.ProductRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,9 +31,10 @@ public class ProductServiceImpl implements ProductService {
 
   @Transactional(readOnly = true)
   @Override
-  public CollectionModel<ProductModel> readAll(MemberContext memberContext) {
+  public List<ProductResponse> readAll(MemberContext memberContext) {
     List<Product> products = productRepository.readAll();
-    List<ProductResponse> productResponses = products.stream()
+
+    return products.stream()
         .map(product -> ProductResponse.builder()
             .id(product.getId())
             .title(product.getTitle())
@@ -54,24 +48,6 @@ public class ProductServiceImpl implements ProductService {
             .image(ImagesResponse.from(product))
             .build())
         .collect(Collectors.toList());
-
-    // 각 EntityModel<ProductResponse>> 값의 Link 를 추가해야한다.
-    ProductModelAssembler assembler = new ProductModelAssembler();
-
-    // toCollectionModel() -> toResources() -> toListOfResources() -> toModel() -> createModelWithId() -> instantiateModel()
-    // instantiateModel() 로직에서 실제 selfWithRel() 동작
-    CollectionModel<ProductModel> productModels = assembler.toCollectionModel(productResponses);
-
-    // 비회원이든 회원이든 명세 link 필요
-    productModels.add(Link.of("/docs/index.html").withRel("API Specification"));
-
-    // 회원이라면 명세 link, 상품 등록 API 호출 + 단일 상품 조회 APi 호출이 가능해야 한다.
-    // 비회원이라면 명세 link, 단일 상품 조회 API 호출만 가능해야한다. (위 로직에서 이미 적용 완료)
-    if (memberContext != null) {
-      productModels.add(linkTo(ProductApiController.class).withRel("product-save"));
-    }
-
-    return productModels;
   }
 
   @Transactional(readOnly = true)
@@ -159,40 +135,5 @@ public class ProductServiceImpl implements ProductService {
     }
 
     productRepository.delete(findProduct);
-  }
-
-  /**
-   * Private Method
-   */
-
-  /**
-   * detail() 관련 Private Method
-   */
-  private ProductModel getResponseByProductDetail(MemberContext memberContext,
-      ProductResponse productResponse) {
-    Long productId = productResponse.getId();
-    String memberOfProductName = productResponse.getMember().getUsername();
-
-    ProductModel entityModelByProductResponse = new ProductModel(productResponse);
-    addHateoasLink(entityModelByProductResponse, productId);
-
-    // 자신이 작성한 상품인 경우 삭제 및 수정 API 호출이 가능하다.
-    if (memberContext != null && memberContext.getMember().getUsername()
-        .equals(memberOfProductName)) {
-      addHateoasLink(entityModelByProductResponse, productId, "product-delete");
-      addHateoasLink(entityModelByProductResponse, productId, "product-update");
-    }
-
-    return entityModelByProductResponse;
-  }
-
-  private void addHateoasLink(ProductModel productModel, Long productId) {
-    productModel.add(Link.of("/docs/index.html").withRel("API Specification"));
-    productModel.add(linkTo(ProductApiController.class).slash(productId).withSelfRel());
-  }
-
-  private void addHateoasLink(ProductModel productModel, Long productId,
-      String linkRelation) {
-    productModel.add(linkTo(ProductApiController.class).slash(productId).withRel(linkRelation));
   }
 }

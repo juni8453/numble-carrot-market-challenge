@@ -4,12 +4,11 @@ import com.market.carrot.login.config.customAuthentication.common.MemberContext;
 import com.market.carrot.product.controller.dto.request.CreateProductRequest;
 import com.market.carrot.product.controller.dto.request.UpdateProductRequest;
 import com.market.carrot.product.controller.dto.response.ProductResponse;
-import com.market.carrot.product.hateoas.ProductModel;
-import org.springframework.hateoas.CollectionModel;
+import java.util.List;
 
 public interface ProductService {
 
-  CollectionModel<ProductModel> readAll(MemberContext memberContext);
+  List<ProductResponse> readAll(MemberContext memberContext);
 
   ProductResponse readDetail(Long id, MemberContext memberContext);
 
